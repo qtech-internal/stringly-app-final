@@ -1,0 +1,448 @@
+import 'dart:async';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_icp_auth/authentication/login.dart';
+import 'package:flutter_icp_auth/internal/url_listener.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:stringly/GetxControllerAndBindings/initialBindings.dart';
+import 'package:stringly/Screens/error/technicalError.dart';
+import 'package:stringly/Screens/loaders/first_loader.dart';
+import 'package:stringly/StorageServices/get_storage_service.dart';
+import 'package:stringly/constants/globals.dart';
+import 'package:stringly/intraction.dart';
+import './notifications/NotificationService.dart';
+import 'matched_queue.dart';
+import 'Screens/NetworkOverlay.dart';
+import 'Reuseable Widget/Routes/app_routes.dart';
+import 'Screens/Reward Settings/RewardAcheivedOverlay2.dart';
+import 'Screens/FocusOverlay.dart';
+import 'Screens/UserInfo1.dart';
+import 'integration.dart';
+
+import 'package:flutter/material.dart';
+import 'package:agent_dart/agent_dart.dart';
+import 'Screens/share/loadingScreen.dart';
+import 'Screens/share/loadinscreen.dart';
+import 'Screens/mainScreenNav.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+
+  await GetStorage.init();
+  await NotificationService.initialize();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyCaLnXztz3oYyXT9RaY1PoVDkQ54bCoHeY",
+      appId: "1:46516214045:android:29d70492fae2d540aae9f4",
+      messagingSenderId: "46516214045",
+      projectId: "stringly-76c69",
+      storageBucket: "stringly-76c69.appspot.com",
+    ),
+  );
+
+  runApp(MyApp());
+}
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    return GetMaterialApp(
+      title: 'Stringly',
+      initialBinding: AllBindings(),
+      theme: ThemeData(
+        fontFamily: 'SFProDisplay', // Set default font family here
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white, // Set global AppBar color
+        ),
+        popupMenuTheme: PopupMenuThemeData(
+          color: Colors.white, // Set popup menu background color
+          textStyle:
+              TextStyle(color: Colors.black), // Set popup menu text color
+        ),
+      ),
+      navigatorKey: GlobalConstant.navigatorKey,
+      initialRoute:
+          AppPages.initial, // Set the initial route for GetX navigation
+      getPages: AppPages.routes, // Register your routes with GetX
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    // Define an animation that starts large and shrinks to original size
+    _scaleAnimation = Tween<double>(begin: 1.3, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Start the animation
+    _controller.forward();
+
+    // When the animation completes, trigger the transition with a fade effect
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _navigateToWelcomePage();
+      }
+    });
+  }
+
+  void _navigateToWelcomePage() {
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const Welcomepage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var fadeAnimation = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOut,
+          );
+          return FadeTransition(opacity: fadeAnimation, child: child);
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: ScaleTransition(
+          scale: _scaleAnimation,
+          child: Image.asset(
+            'assets/newImage/COLOURED LOGO.png',
+            width: 174,
+            height: 46.76,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Welcomepage extends StatefulWidget {
+  const Welcomepage({super.key});
+
+  @override
+  State<Welcomepage> createState() => _WelcomepageState();
+}
+
+class _WelcomepageState extends State<Welcomepage> {
+  bool isLoggedIn = false;
+ late bool? checkUser;
+  String _principalId = "Log in to see your principal";
+
+  // ---------------------------------------------------
+  // Must declare these in your application
+  // ---------------------------------------------------
+  bool isLocal = GlobalConstant.isLocal;
+  Service idlService = FieldsMethod.idl;
+  String backendCanisterId = GlobalConstant.backendCanisterId;
+  String middlePageCanisterId = GlobalConstant.middlePageCanisterId;
+
+  // update checkUser value
+  Future<void> _checkUser() async {
+    try {
+      final result = await Intraction.checkNewUser();
+      if (result.containsKey('response')) {
+        final value = result['response'];
+        bool userType = value.containsKey('Ok');
+        setState(() {
+          checkUser = userType;
+        });
+      } else {
+        Get.off(const TechnicalError());
+      }
+    } catch (e) {
+      Get.off(const TechnicalError());
+    }
+  }
+
+
+  @override
+  void initState() {
+
+    super.initState();
+
+    // Call the login check immediately after the widget is created.
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    debugPrint("Starting login check...");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FirstLoader.openLoadingDialog();
+      if (!StorageService.hasData('FirstTimeOpeningThisApp')) {
+        FirstLoader.stopLoading();
+      }
+    });
+
+    // Perform the login check asynchronously
+    bool loggedIn =
+        await AuthLogIn.checkLoginStatus(isLocal, backendCanisterId);
+    debugPrint("Login status from checkLoginStatus: $loggedIn");
+
+    // If the widget is still part of the widget tree, update the state
+    if (mounted) {
+      setState(() {
+        isLoggedIn = loggedIn;
+      });
+
+      // After setting the login status, navigate based on the login state
+      if (isLoggedIn) {
+        // Navigate based on user check
+        // start loader
+        // FirstLoader.openLoadingDialog();
+        await _checkUser();
+
+        if (checkUser != null && checkUser!) {
+          debugPrint(
+              "Navigating directly to Mainscreennav (without AnimatedSplashScreen)");
+          // stop loader
+
+          if (StorageService.hasData('FirstTimeOpeningThisApp'))
+            FirstLoader.stopLoading();
+
+          Get.off(Mainscreennav());
+        } else {
+          debugPrint("Navigating to Userinfo1 screen");
+          // stop loader
+          if (StorageService.hasData('FirstTimeOpeningThisApp'))
+            FirstLoader.stopLoading();
+
+          Get.off(Userinfo1());
+        }
+      } else {
+        // If not logged in, set up manual login
+        if (StorageService.hasData('FirstTimeOpeningThisApp'))
+          FirstLoader.stopLoading();
+
+        debugPrint("User not logged in. Setting up manual login listener.");
+        UrlListener.initListener(_manualLogin);
+      }
+    }
+  }
+
+  Future<void> _manualLogin(Uri uri) async {
+    debugPrint("Manual login triggered with URI: ${uri.toString()}");
+
+    List<dynamic> result = await AuthLogIn.fetchAgent(
+        uri.queryParameters, isLocal, backendCanisterId, idlService);
+
+    if (!StorageService.hasData('FirstTimeOpeningThisApp')) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        FirstLoader.openLoadingDialog();
+      });
+    } else {
+      FirstLoader.openLoadingDialog();
+    }
+    if (result.isNotEmpty) {
+      // Ensure we are calling setState only after the build process
+      // start loader
+
+      if (mounted) {
+        Intraction.actor = AuthLogIn.getActor(Intraction.backendCanisterId, Intraction.idleService);
+        await _checkUser();
+
+        setState(() {
+          isLoggedIn = uri.queryParameters['status'] == "true";
+          _principalId = result[0];
+
+          // Only navigate if successfully logged in
+          if (isLoggedIn) {
+            debugPrint("Manual login successful, principal ID: $_principalId");
+
+            if (checkUser != null && checkUser!) {
+              debugPrint("Navigating directly to Mainscreennav (manual login)");
+              // stop loader
+              FirstLoader.stopLoading();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => Mainscreennav(),
+                ),
+              );
+            } else {
+              debugPrint("Navigating to Userinfo1 screen (manual login)");
+              // stop loader
+              FirstLoader.stopLoading();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Userinfo1()),
+              );
+            }
+          } else {
+            debugPrint("Manual login failed, user not logged in.");
+            // stop loader
+            FirstLoader.stopLoading();
+            _principalId = "Log in to see your principal";
+          }
+        });
+      }
+    } else {
+      FirstLoader.stopLoading();
+    }
+  }
+
+  @override
+  void dispose() {
+    UrlListener.cancelListener();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // const SizedBox(height: 70),
+              // Padding(
+              //   padding: const EdgeInsets.all(16.0),
+              //   child: Text(
+              //     'Principal ID: $_principalId',
+              //     style: TextStyle(
+              //       fontFamily: 'SFProDisplay',
+              //       fontSize: 14,
+              //       color: Colors.black,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+              Column(
+                children: [
+                  const Center(
+                    child: Image(
+                      image: AssetImage('assets/newImage/COLOURED LOGO.png'),
+                      width: 174,
+                      height: 46.19,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  const Text(
+                    'String your vibe.',
+                    style: TextStyle(
+                      fontFamily: 'SFProDisplay',
+                      fontSize: 14,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 200, left: 13, right: 13),
+                    child: SizedBox(
+                      width: 276,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          StorageService.write('FirstTimeOpeningThisApp', 'No');
+
+                          if (!isLoggedIn) {
+                            await AuthLogIn.authenticate(
+                                isLocal,
+                                middlePageCanisterId,
+                                "exampleCallback",
+                                "example");
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 19, vertical: 15),
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Sign Up with Internet Identity',
+                              style: TextStyle(
+                                  fontFamily: 'SFProDisplay',
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // SizedBox(
+              //   width: 276,
+              //   height: 50,
+              //   child: ElevatedButton(
+              //     onPressed: () {},
+              //     style: ElevatedButton.styleFrom(
+              //       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              //       backgroundColor: Colors.black,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(10),
+              //       ),
+              //     ),
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Text(
+              //           'Sign up with Email',
+              //           style: TextStyle(
+              //             fontFamily: 'SFProDisplay',
+              //             fontSize: 13,
+              //             color: Colors.white,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 30),
+            ],
+          ),
+        ));
+  }
+}
