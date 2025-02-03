@@ -57,57 +57,59 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
         ),
         actions: [
-          Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipOval(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFFD83694),
-                          Color(0xFF0039C7),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+          Obx(() {
+            return Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipOval(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFD83694),
+                            Color(0xFF0039C7),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(
-                          1.5), // Thickness of the gradient border
-                      child: CircleAvatar(
-                        backgroundImage: controller.loggedUserImage.value !=
-                                null
-                            ? NetworkImage(controller.loggedUserImage.value!)
-                            : null,
-                        radius:
-                            20, // Radius of the image inside the gradient border
-                        backgroundColor: Colors
-                            .white, // Optional: Background color for placeholder
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            1.5), // Thickness of the gradient border
+                        child: CircleAvatar(
+                          backgroundImage: controller.loggedUserImage.value !=
+                                  null
+                              ? NetworkImage(controller.loggedUserImage.value!)
+                              : null,
+                          radius:
+                              20, // Radius of the image inside the gradient border
+                          backgroundColor: Colors
+                              .white, // Optional: Background color for placeholder
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                right: -6,
-                bottom: -10,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 19, // Set the size of the icon
+                Positioned(
+                  right: -6,
+                  bottom: -10,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 19, // Set the size of the icon
+                    ),
+                    onPressed: () {
+                      Get.put(ProfileController());
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const AccountSetting()));
+                    },
                   ),
-                  onPressed: () {
-                    Get.put(ProfileController());
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AccountSetting()));
-                  },
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          }),
         ],
       ),
       body: FutureBuilder(

@@ -1,17 +1,16 @@
 import 'dart:async';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_icp_auth/authentication/login.dart';
 import 'package:flutter_icp_auth/internal/url_listener.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:stringly/GetxControllerAndBindings/initialBindings.dart';
 import 'package:stringly/Screens/error/technicalError.dart';
 import 'package:stringly/Screens/loaders/first_loader.dart';
 import 'package:stringly/StorageServices/get_storage_service.dart';
 import 'package:stringly/constants/globals.dart';
 import 'package:stringly/intraction.dart';
+
 import './notifications/NotificationService.dart';
 import 'matched_queue.dart';
 import 'Screens/NetworkOverlay.dart';
@@ -31,9 +30,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterLocalNotificationsPlugin().resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+  await FlutterLocalNotificationsPlugin()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
 
   await GetStorage.init();
   await NotificationService.initialize();
@@ -49,15 +50,13 @@ void main() async {
 
   runApp(MyApp());
 }
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
-
-
+    FlutterLocalNotificationsPlugin();
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return GetMaterialApp(
       title: 'Stringly',
       initialBinding: AllBindings(),
@@ -167,7 +166,7 @@ class Welcomepage extends StatefulWidget {
 
 class _WelcomepageState extends State<Welcomepage> {
   bool isLoggedIn = false;
- late bool? checkUser;
+  late bool? checkUser;
   String _principalId = "Log in to see your principal";
 
   // ---------------------------------------------------
@@ -196,10 +195,8 @@ class _WelcomepageState extends State<Welcomepage> {
     }
   }
 
-
   @override
   void initState() {
-
     super.initState();
 
     // Call the login check immediately after the widget is created.
@@ -280,7 +277,8 @@ class _WelcomepageState extends State<Welcomepage> {
       // start loader
 
       if (mounted) {
-        Intraction.actor = AuthLogIn.getActor(Intraction.backendCanisterId, Intraction.idleService);
+        Intraction.actor = AuthLogIn.getActor(
+            Intraction.backendCanisterId, Intraction.idleService);
         await _checkUser();
 
         setState(() {
