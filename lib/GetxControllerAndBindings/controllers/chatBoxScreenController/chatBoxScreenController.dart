@@ -346,17 +346,6 @@ class ChatScreenController extends GetxController {
     // Ensure the message text is not empty
     if (createMessageController.value.text.isNotEmpty) {
       try {
-        // Emit the message to the socket server
-        InitializeSocket.socket.emit(
-          'sendMessage',
-          json.encode({
-            'principal': principal.value,
-            'to_user_id': ids.value['receiver_id'],
-            'chat_id': chatId,
-            'message': createMessageController.value.text,
-          }),
-        );
-
         // Create a new message object
         var newMessage = {
           'sender': ids.value['sender_id'],
@@ -388,7 +377,17 @@ class ChatScreenController extends GetxController {
         }
 
         sortedMessages.refresh();
+
         scrollToBottom();
+        InitializeSocket.socket.emit(
+          'sendMessage',
+          json.encode({
+            'principal': principal.value,
+            'to_user_id': ids.value['receiver_id'],
+            'chat_id': chatId,
+            'message': createMessageController.value.text,
+          }),
+        );
 
         debugPrint('PRINTING CHAT ---------------------');
         debugPrint(sortedMessages.value.toString());
@@ -415,28 +414,28 @@ class ChatScreenController extends GetxController {
     DateTime inputDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
 
     // Get the difference in days
-    int daysDifference = today.difference(inputDate).inDays;
+    // int daysDifference = today.difference(inputDate).inDays;
 
     // Format the time
     String timeString = DateFormat('hh:mm a').format(dateTime);
-
+    return timeString;
     // Determine the appropriate date format
-    if (daysDifference == 0) {
-      // Today
-      return timeString;
-    } else if (daysDifference == 1) {
-      // Yesterday
-      return "Yesterday, $timeString";
-    } else if (daysDifference < 7) {
-      // Within the last week
-      return "${DateFormat('EEEE').format(dateTime)}, $timeString"; // Day of the week (e.g., Monday)
-    } else if (dateTime.year == now.year) {
-      // Within the same year
-      return "${DateFormat('d MMM').format(dateTime)}, $timeString"; // Day and month (e.g., 16 Jan)
-    } else {
-      // For dates in a different year
-      return "${DateFormat('d MMM yyyy').format(dateTime)}, $timeString"; // Full date (e.g., 16 Jan 2024)
-    }
+    // if (daysDifference == 0) {
+    //   // Today
+    //   return timeString;
+    // } else if (daysDifference == 1) {
+    //   // Yesterday
+    //   return "Yesterday, $timeString";
+    // } else if (daysDifference < 7) {
+    //   // Within the last week
+    //   return "${DateFormat('EEEE').format(dateTime)}, $timeString"; // Day of the week (e.g., Monday)
+    // } else if (dateTime.year == now.year) {
+    //   // Within the same year
+    //   return "${DateFormat('d MMM').format(dateTime)}, $timeString"; // Day and month (e.g., 16 Jan)
+    // } else {
+    //   // For dates in a different year
+    //   return "${DateFormat('d MMM yyyy').format(dateTime)}, $timeString"; // Full date (e.g., 16 Jan 2024)
+    // }
   }
 
   void scrollToBottom() {

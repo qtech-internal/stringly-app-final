@@ -58,56 +58,48 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ),
         actions: [
           Obx(() {
-            return Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipOval(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFD83694),
-                            Color(0xFF0039C7),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Stack(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFD83694),
+                          Color(0xFF0039C7),
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                            1.5), // Thickness of the gradient border
-                        child: CircleAvatar(
-                          backgroundImage: controller.loggedUserImage.value !=
-                                  null
-                              ? NetworkImage(controller.loggedUserImage.value!)
-                              : null,
-                          radius:
-                              20, // Radius of the image inside the gradient border
-                          backgroundColor: Colors
-                              .white, // Optional: Background color for placeholder
-                        ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: controller.loggedUserImage.value != null
+                          ? NetworkImage(controller.loggedUserImage.value!)
+                          : null,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -2,
+                    right: -1,
+                    child: InkWell(
+                      onTap: () {
+                        Get.put(ProfileController());
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AccountSetting()));
+                      },
+                      child: const Icon(
+                        Icons.edit_outlined,
+                        color: Colors.white,
+                        size: 20,
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  right: -6,
-                  bottom: -10,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 19, // Set the size of the icon
-                    ),
-                    onPressed: () {
-                      Get.put(ProfileController());
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AccountSetting()));
-                    },
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
           }),
         ],

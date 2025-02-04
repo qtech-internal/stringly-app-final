@@ -6,16 +6,22 @@ class PreviewchatImage extends StatelessWidget {
   final bool isLocal;
   final String name;
   final dynamic time;
-  const PreviewchatImage({super.key, required this.imagePath, required this.isLocal, required this.name, this.time});
-
-
+  const PreviewchatImage(
+      {super.key,
+      required this.imagePath,
+      required this.isLocal,
+      required this.name,
+      this.time});
 
   String _formatWhatsAppDateOnPreviewImage(String dateTimeString) {
     // Parse the string into a DateTime object (assumed to be in UTC)
-    DateTime dateTime = DateTime.parse(dateTimeString).add(Duration(hours: 5, minutes: 30)); // Convert to IST
+    DateTime dateTime = DateTime.parse(dateTimeString)
+        .add(Duration(hours: 5, minutes: 30)); // Convert to IST
 
     // Get the current date and time in IST
-    DateTime now = DateTime.now().toUtc().add(Duration(hours: 5, minutes: 30)); // Convert now to IST
+    DateTime now = DateTime.now()
+        .toUtc()
+        .add(Duration(hours: 5, minutes: 30)); // Convert now to IST
 
     // Remove the time component for accurate day comparison
     DateTime today = DateTime(now.year, now.month, now.day);
@@ -46,9 +52,6 @@ class PreviewchatImage extends StatelessWidget {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,26 +63,36 @@ class PreviewchatImage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Align(
-              alignment: AlignmentDirectional.topStart,
-                child: Text(name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),)),
+                alignment: AlignmentDirectional.topStart,
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500),
+                )),
             Align(
                 alignment: AlignmentDirectional.topStart,
-                child: Text(_formatWhatsAppDateOnPreviewImage(time), style: const TextStyle(fontSize: 12),)),
+                child: Text(
+                  _formatWhatsAppDateOnPreviewImage(time),
+                  style: const TextStyle(fontSize: 12),
+                )),
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: isLocal== true ? Image.file(imagePath)  : Image.network(imagePath,
-              loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(
-              child: CircularProgressIndicator(), // Show loading indicator while the image is loading
-              );
-              },
-          ),
-        ),
+      body: Center(
+        child: isLocal == true
+            ? Image.file(
+                imagePath,
+              )
+            : Image.network(
+                imagePath,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(
+                    child:
+                        CircularProgressIndicator(), // Show loading indicator while the image is loading
+                  );
+                },
+              ),
       ),
     );
   }

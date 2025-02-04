@@ -33,10 +33,13 @@ class _DetailednetworkingState extends State<Detailednetworking> {
     await Intraction.hideUser(receiverId: widget.data.userId!);
     RequestProcessLoader.stopLoading();
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) =>  Mainscreennav()), // Replace LoginScreen with your login page widget.
-          (Route<dynamic> route) => false, // Remove all the previous routes.
+      MaterialPageRoute(
+          builder: (context) =>
+              Mainscreennav()), // Replace LoginScreen with your login page widget.
+      (Route<dynamic> route) => false, // Remove all the previous routes.
     );
   }
+
   Future<void> _handleMenuItemClickn(BuildContext context, String value) async {
     if (value == 'report') {
       Navigator.of(context)
@@ -118,7 +121,7 @@ class _DetailednetworkingState extends State<Detailednetworking> {
                               images[0],
                               height: 400,
                               width: double.infinity,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 // Show a broken image icon if there's an error
                                 return const Center(
@@ -375,18 +378,20 @@ class _DetailednetworkingState extends State<Detailednetworking> {
                                   children: widget.data.hobbies != null &&
                                           widget.data.hobbies!.isNotEmpty
                                       ? [
-                                    for (int i = 0;
-                                    i < widget.data.hobbies!.length;
-                                    i++) ...[
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom: 4.0),
-                                        child: Text(
-                                          '• ${widget.data.hobbies![i]}',
-                                          style: const TextStyle(fontSize: 14),
-                                        ),
-                                      ),
-                                    ],
-                                  ]
+                                          for (int i = 0;
+                                              i < widget.data.hobbies!.length;
+                                              i++) ...[
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 4.0),
+                                              child: Text(
+                                                '• ${widget.data.hobbies![i]}',
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ],
+                                        ]
                                       : [Text('')],
                                 )
                               ],
@@ -431,7 +436,8 @@ class _DetailednetworkingState extends State<Detailednetworking> {
                       bottom: 35,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16,),
+                          horizontal: 16,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(10),

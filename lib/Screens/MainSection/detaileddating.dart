@@ -25,8 +25,10 @@ class _DetailedDatingState extends State<DetailedDating> {
     await Intraction.hideUser(receiverId: widget.data.userId!);
     RequestProcessLoader.stopLoading();
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) =>  Mainscreennav()), // Replace LoginScreen with your login page widget.
-          (Route<dynamic> route) => false, // Remove all the previous routes.
+      MaterialPageRoute(
+          builder: (context) =>
+              Mainscreennav()), // Replace LoginScreen with your login page widget.
+      (Route<dynamic> route) => false, // Remove all the previous routes.
     );
   }
 
@@ -121,7 +123,7 @@ class _DetailedDatingState extends State<DetailedDating> {
                               images[0],
                               height: 400,
                               width: double.infinity,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 // Show a broken image icon if there's an error
                                 return const Center(
@@ -255,8 +257,8 @@ class _DetailedDatingState extends State<DetailedDating> {
                             Spacer(),
 
                             // Middle item with equal spacing
-                            buildInfoItem(
-                                'assets/DDgender.png', widget.data.gender ?? ' '),
+                            buildInfoItem('assets/DDgender.png',
+                                widget.data.gender ?? ' '),
 
                             // Spacer to provide equal spacing for the last item
                             Spacer(),
@@ -284,8 +286,8 @@ class _DetailedDatingState extends State<DetailedDating> {
                           thickness: 0.29,
                         ),
                         // Third Row: Want Children
-                        buildDetailItem(
-                            'assets/DDchildren.png', widget.data.familyPlans ?? ''),
+                        buildDetailItem('assets/DDchildren.png',
+                            widget.data.familyPlans ?? ''),
                         const Divider(
                           color: Color(0xffDC73B6),
                           thickness: 0.29,
@@ -400,10 +402,12 @@ class _DetailedDatingState extends State<DetailedDating> {
                                               i < widget.data.hobbies!.length;
                                               i++) ...[
                                             Padding(
-                                              padding: const EdgeInsets.only(bottom: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 4.0),
                                               child: Text(
                                                 '• ${widget.data.hobbies![i]}',
-                                                style: const TextStyle(fontSize: 14),
+                                                style: const TextStyle(
+                                                    fontSize: 14),
                                               ),
                                             ),
                                           ],
@@ -453,7 +457,8 @@ class _DetailedDatingState extends State<DetailedDating> {
                       bottom: 35,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16,),
+                          horizontal: 16,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(10),

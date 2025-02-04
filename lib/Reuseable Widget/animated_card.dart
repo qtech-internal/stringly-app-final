@@ -58,7 +58,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
       left: 20.0,
       right: 20.0,
       child: Opacity(
-        opacity: widget.index - widget.currentIndex == 1 ? 0.9 : 1.0,
+        opacity: 1,
         child: Transform.scale(
           scale: widget.index - widget.currentIndex == 1 ? 0.98 : 1.0,
           child: GestureDetector(
@@ -206,35 +206,25 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                       color: Colors.white, size: 50.0),
                                 ),
                               ),
-                              // CachedNetworkImage(
-                              //       imageUrl: widget.imageData['path']!,
-                              //       fit: BoxFit.cover,
-                              //       maxWidthDiskCache: 300,
-                              //       maxHeightDiskCache: 300,
-                              //       placeholder: (context, url) => const Center(
-                              //           child:
-                              //               CircularProgressIndicator()), // Show a loader
-                              //       errorWidget: (context, url, error) => Container(
-                              //         color: Colors.grey,
-                              //         child: const Icon(Icons.broken_image,
-                              //             color: Colors.white, size: 50.0),
-                              //       ),
-                              //     ),
-                              // Image.network(
-                              //   widget.imageData['path']!,
-                              //   errorBuilder: (BuildContext context,
-                              //       Object error, StackTrace? stackTrace) {
-                              //     return Container(
-                              //       color: Colors.grey,
-                              //       child: const Icon(
-                              //         Icons.broken_image,
-                              //         color: Colors.white,
-                              //         size: 50.0,
-                              //       ),
-                              //     );
-                              //   },
-                              //   fit: BoxFit.cover,
-                              // ),
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: [
+                                        Colors.black.withOpacity(
+                                            0.7), // Dark overlay at the bottom
+                                        Colors.transparent,
+                                      ],
+                                      stops: const [
+                                        0.0, // Start gradient at the bottom
+                                        0.5, // End gradient at 50% height (can be adjusted)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Positioned.fill(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart'; // Import the image_cropper package
 import 'package:photo_manager/photo_manager.dart';
 
 class CustomImagePickerOneAtATime extends StatefulWidget {
@@ -16,6 +17,7 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
   List<AssetPathEntity> albums = [];
   AssetEntity? selectedImage;
   String selectedAlbum = "Recents";
+  String? croppedImagePath;
 
   @override
   void initState() {
@@ -54,7 +56,39 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
     final ImagePicker picker = ImagePicker();
     final XFile? photo = await picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      Navigator.pop(context, [photo.path]);
+      await _cropImage(photo.path); // Crop the image after picking
+    }
+  }
+
+  Future<void> _cropImage(String imagePath) async {
+    File? croppedFile = (await ImageCropper().cropImage(
+      sourcePath: imagePath,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ),
+      ],
+    )) as File?;
+
+    if (croppedFile != null) {
+      setState(() {
+        croppedImagePath = croppedFile.path; // Store the cropped image path
+        selectedImage = null; // Reset selectedImage to null
+      });
+      Navigator.pop(context, [croppedFile.path]);
     }
   }
 
@@ -69,8 +103,7 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'The selected image is too large (${fileSizeMB.toStringAsFixed(
-                  2)} MB). Please choose an image smaller than 5MB.',
+              'The selected image is too large (${fileSizeMB.toStringAsFixed(2)} MB). Please choose an image smaller than 5MB.',
               style: const TextStyle(color: Colors.white),
             ),
             backgroundColor: Colors.red,
@@ -79,9 +112,13 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
         return; // Prevent selecting the image
       }
     }
+
+    // Set the selected image before cropping
     setState(() {
-      selectedImage = image;
+      selectedImage = image; // Set the selected image
     });
+
+    await _cropImage(file!.path); // Crop the image after selecting
   }
 
   void _openAlbumSelectionDialog() {
@@ -122,6 +159,13 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
       body: Column(
         children: [
           // Large preview for the selected image or the last image in the gallery
+          croppedImagePath != null
+              ? Image.file(
+            File(croppedImagePath!),
+            height: 350,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ):
           selectedImage != null
               ? FutureBuilder<File?>(
             future: selectedImage!.file,

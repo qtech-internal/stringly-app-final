@@ -160,7 +160,7 @@ class _FilterPreferencesState extends State<FilterPreferences> {
                           });
                         }
                       },
-                      label: const Text('What would you prefer to date?'),
+                      label: const Text('Who would you prefer to date?'),
                     ),
 
                     const SizedBox(height: 20),

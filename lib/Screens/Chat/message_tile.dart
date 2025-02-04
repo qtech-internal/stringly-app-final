@@ -105,10 +105,11 @@ class MessageTile extends StatelessWidget {
         Align(
           alignment: Alignment.bottomRight,
           child: Text(
-            message['timestamp'] ?? '', // Provide a default value if null
+            message['timestamp'] ?? '',
             style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 11,
+              color:
+                  isSender ? const Color(0xffFAFAFA) : const Color(0xff0B0A0A),
+              fontSize: 9,
             ),
           ),
         ),
@@ -134,8 +135,9 @@ class MessageTile extends StatelessWidget {
           child: Text(
             message['timestamp'] ?? '', // Provide a default value if null
             style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 11,
+              color:
+                  isSender ? const Color(0xffFAFAFA) : const Color(0xff0B0A0A),
+              fontSize: 9,
             ),
           ),
         ),
@@ -154,8 +156,9 @@ class MessageTile extends StatelessWidget {
           child: Text(
             message['timestamp'] ?? '', // Provide a default value if null
             style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 11,
+              color:
+                  isSender ? const Color(0xffFAFAFA) : const Color(0xff0B0A0A),
+              fontSize: 9,
             ),
           ),
         ),

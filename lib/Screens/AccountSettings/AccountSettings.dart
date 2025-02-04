@@ -647,12 +647,12 @@ class _AccountSettingState extends State<AccountSetting> {
                                                                 ElevatedButton(
                                                                   onPressed:
                                                                       () {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                        controller.setProfilePicture(
-                                                                            networkImages[
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    controller.setProfilePicture(
+                                                                        networkImages[
                                                                             i]);
-                                                                      },
+                                                                  },
                                                                   style: ElevatedButton
                                                                       .styleFrom(
                                                                     backgroundColor:
@@ -1357,95 +1357,95 @@ class _AccountSettingState extends State<AccountSetting> {
                             );
                           }
                         }),
-                        const SizedBox(height: 20),
-                        const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Linked Accounts',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 5),
-                          child: Column(
-                            children: [
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Instagram',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
-                                  ),
-                                  Image(
-                                    image: AssetImage(
-                                        'assets/socialMedia/hugeicons_instagram.png'),
-                                    height: 18,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Divider(color: Colors.grey[300], thickness: 1),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Facebook',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
-                                  ),
-                                  Image(
-                                    image: AssetImage(
-                                        'assets/socialMedia/facebook.png'),
-                                    height: 18,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Divider(color: Colors.grey[300], thickness: 1),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Spotify',
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
-                                  ),
-                                  Image(
-                                    image: AssetImage(
-                                        'assets/socialMedia/Group.png'),
-                                    height: 18,
-                                    color: Colors.grey,
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Divider(color: Colors.grey[300], thickness: 1),
-                            ],
-                          ),
-                        ),
+                        // const SizedBox(height: 20),
+                        // const Padding(
+                        //   padding: EdgeInsets.all(10.0),
+                        //   child: Align(
+                        //     alignment: Alignment.topLeft,
+                        //     child: Text(
+                        //       'Linked Accounts',
+                        //       style: TextStyle(
+                        //           fontSize: 18, fontWeight: FontWeight.w600),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 8.0, vertical: 5),
+                        //   child: Column(
+                        //     children: [
+                        //       const Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Text(
+                        //             'Instagram',
+                        //             style: TextStyle(
+                        //                 color: Colors.grey, fontSize: 14),
+                        //           ),
+                        //           Image(
+                        //             image: AssetImage(
+                        //                 'assets/socialMedia/hugeicons_instagram.png'),
+                        //             height: 18,
+                        //             color: Colors.grey,
+                        //           )
+                        //         ],
+                        //       ),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       Divider(color: Colors.grey[300], thickness: 1),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       const Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Text(
+                        //             'Facebook',
+                        //             style: TextStyle(
+                        //                 color: Colors.grey, fontSize: 14),
+                        //           ),
+                        //           Image(
+                        //             image: AssetImage(
+                        //                 'assets/socialMedia/facebook.png'),
+                        //             height: 18,
+                        //             color: Colors.grey,
+                        //           )
+                        //         ],
+                        //       ),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       Divider(color: Colors.grey[300], thickness: 1),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       const Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Text(
+                        //             'Spotify',
+                        //             style: TextStyle(
+                        //                 color: Colors.grey, fontSize: 14),
+                        //           ),
+                        //           Image(
+                        //             image: AssetImage(
+                        //                 'assets/socialMedia/Group.png'),
+                        //             height: 18,
+                        //             color: Colors.grey,
+                        //           )
+                        //         ],
+                        //       ),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       Divider(color: Colors.grey[300], thickness: 1),
+                        //     ],
+                        //   ),
+                        // ),
                         const SizedBox(height: 40),
                       ],
                     ),

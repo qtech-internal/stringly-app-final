@@ -243,8 +243,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                       child: Text(
                         widget.message['timestamp'] ?? '',
                         style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 11,
+                          color: widget.isSender
+                              ? const Color(0xffFAFAFA)
+                              : const Color(0xff0B0A0A),
+                          fontSize: 9,
                         ),
                       ),
                     ),

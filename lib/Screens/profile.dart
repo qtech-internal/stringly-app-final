@@ -421,8 +421,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 10),
 
                         // Name and Pronouns
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                       Center(
+                        child:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               controller.nameController.value.text,
@@ -433,7 +434,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontFamily: 'SFProDisplay',
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(height: 4),
                             Text(
                               controller.pronounsController.value.text,
                               style: const TextStyle(
@@ -444,6 +445,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ],
                         ),
+                        ),
+
+
                         const SizedBox(height: 30),
 
                         // About Me Section

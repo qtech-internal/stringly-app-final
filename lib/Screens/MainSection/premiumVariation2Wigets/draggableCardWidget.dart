@@ -21,25 +21,25 @@ class DraggableCardWidget extends StatefulWidget {
   final VoidCallback onRightSwipeMore;
   final String context;
 
-  const DraggableCardWidget({
-    Key? key,
-    required this.name,
-    required this.image,
-    required this.age,
-    required this.interests,
-    required this.location,
-    required this.index,
-    required this.sideColor,
-    required this.overlayIcon,
-    required this.userDetail,
-    required this.userId,
-    required this.loggedUserId,
-    required this.onLeftButtonPressed,
-    required this.onRightButtonPressed,
-    required this.onLeftSwipeMore,
-    required this.onRightSwipeMore,
-    required this.context
-  }) : super(key: key);
+  const DraggableCardWidget(
+      {Key? key,
+      required this.name,
+      required this.image,
+      required this.age,
+      required this.interests,
+      required this.location,
+      required this.index,
+      required this.sideColor,
+      required this.overlayIcon,
+      required this.userDetail,
+      required this.userId,
+      required this.loggedUserId,
+      required this.onLeftButtonPressed,
+      required this.onRightButtonPressed,
+      required this.onLeftSwipeMore,
+      required this.onRightSwipeMore,
+      required this.context})
+      : super(key: key);
 
   @override
   _DraggableCardWidgetState createState() => _DraggableCardWidgetState();
@@ -47,21 +47,20 @@ class DraggableCardWidget extends StatefulWidget {
 
 class _DraggableCardWidgetState extends State<DraggableCardWidget> {
   double _dragOffset = 0.0;
-  final double _maxDrag = 100.0;
+  final double _maxDrag = 120.0;
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
     setState(() {
       _dragOffset += details.delta.dx;
       _dragOffset = _dragOffset.clamp(-_maxDrag, _maxDrag);
+      if (_dragOffset <= -_maxDrag) {
+        widget.onLeftSwipeMore();
+        _resetDragOffset();
+      } else if (_dragOffset >= _maxDrag) {
+        widget.onRightSwipeMore();
+        _resetDragOffset();
+      }
     });
-
-    if (_dragOffset <= -_maxDrag) {
-      widget.onLeftSwipeMore();
-      _resetDragOffset();
-    } else if (_dragOffset >= _maxDrag) {
-      widget.onRightSwipeMore();
-      _resetDragOffset();
-    }
   }
 
   void _resetDragOffset() {
@@ -70,11 +69,11 @@ class _DraggableCardWidgetState extends State<DraggableCardWidget> {
     });
   }
 
-  void reset() {
-    setState(() {
-      _dragOffset = 0.0;
-    });
-  }
+  // void reset() {
+  //   setState(() {
+  //     _dragOffset = 0.0;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +124,7 @@ class _DraggableCardWidgetState extends State<DraggableCardWidget> {
             offset: Offset(_dragOffset, 0),
             child: GestureDetector(
               onHorizontalDragUpdate: _onHorizontalDragUpdate,
+              onHorizontalDragEnd: (_) => _resetDragOffset(),
               child: Card(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -195,15 +195,15 @@ class _DraggableCardWidgetState extends State<DraggableCardWidget> {
                               onTap: () {
                                 widget.context == 'dating'
                                     ? Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailedDating(
-                                                data: widget.userDetail)))
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailedDating(
+                                                    data: widget.userDetail)))
                                     : Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Detailednetworking(
-                                                data: widget.userDetail)));
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Detailednetworking(
+                                                    data: widget.userDetail)));
                               },
                               child: const Text(
                                 'Click to view details',

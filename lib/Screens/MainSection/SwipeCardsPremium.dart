@@ -673,6 +673,8 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                             children: [
                               Image.asset(
                                 'assets/reward.png',
+                                height: 16,
+                                width: 16,
                               ),
                               const SizedBox(width: 2),
                               const Flexible(
@@ -732,7 +734,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                         } else if (snapshot.hasData) {
                           return Expanded(
                             child: Padding(
-                              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * .023),
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      .023),
                               child: Stack(
                                 children: currentIndex >= images.length
                                     ? [
@@ -758,7 +762,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
 
                                             SizedBox(height: 8),
                                             Text(
-                                              'This is for now Come Back Later.',
+                                              'This is for now Come back later',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w400,
                                                   fontFamily: 'SFProDisplay',
@@ -821,8 +825,8 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                               isToggled, // Ensure you have this variable defined in your context
                                           onSwipeComplete: () {
                                             Future.delayed(
-                                                const Duration(milliseconds: 200),
-                                                () {
+                                                const Duration(
+                                                    milliseconds: 200), () {
                                               setState(() {
                                                 cardOffset = Offset.zero;
                                                 cardRotation = 0.0;

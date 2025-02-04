@@ -13,7 +13,8 @@ class PremiumVariation2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.delete<WhoLikeYouPageController>();
-    final WhoLikeYouPageController controller = Get.put(WhoLikeYouPageController());
+    final WhoLikeYouPageController controller =
+        Get.put(WhoLikeYouPageController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -40,13 +41,41 @@ class PremiumVariation2 extends StatelessWidget {
         child: Obx(() {
           if (controller.isLoading.value) {
             return MessageScreenLoader.simpleLoader(text: 'Wait, Loading...');
-          }
-         else if (controller.errorMessage.value.isNotEmpty) {
+          } else if (controller.errorMessage.value.isNotEmpty) {
             return technicalErrorWidget();
-          }
-         else if (controller.allRightSwipeData.isEmpty && !controller.dataFetched.value) {
+          } else if (controller.allRightSwipeData.isEmpty &&
+              !controller.dataFetched.value) {
             return const Center(
-              child: Image(image: AssetImage('assets/no_likes.png')),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage('assets/no_likes.png'),
+                    height: 120,
+                    width: 120,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'No Likes Just Yet!',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'SFProDisplay'),
+                  ),
+                  SizedBox(height: 8),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Finding the right match takes time. Stay active—you never know who’s next!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'SFProDisplay'),
+                    ),
+                  )
+                ],
+              ),
             );
           } else {
             return Column(
@@ -96,11 +125,13 @@ class PremiumVariation2 extends StatelessWidget {
                             builder: (BuildContext context) {
                               return PremiumVariation2Matched(
                                 usersInfo: {
-                                  'loggedUserImage': controller.loggedUserInfo['image'],
+                                  'loggedUserImage':
+                                      controller.loggedUserInfo['image'],
                                   'currentUserProfileImage': data['image'],
                                   'profileUserName': data['name'],
                                   'ProfileUserId': data['userId'],
-                                  'loggedUserId': controller.loggedUserInfo['userId'],
+                                  'loggedUserId':
+                                      controller.loggedUserInfo['userId'],
                                 },
                               );
                             },
@@ -116,11 +147,13 @@ class PremiumVariation2 extends StatelessWidget {
                             builder: (BuildContext context) {
                               return PremiumVariation2Matched(
                                 usersInfo: {
-                                  'loggedUserImage': controller.loggedUserInfo['image'],
+                                  'loggedUserImage':
+                                      controller.loggedUserInfo['image'],
                                   'currentUserProfileImage': data['image'],
                                   'profileUserName': data['name'],
                                   'ProfileUserId': data['userId'],
-                                  'loggedUserId': controller.loggedUserInfo['userId'],
+                                  'loggedUserId':
+                                      controller.loggedUserInfo['userId'],
                                 },
                               );
                             },
