@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:stringly/Screens/MainSection/detailedNetworking.dart';
 import 'package:stringly/Screens/MainSection/detaileddating.dart';
 import 'package:stringly/intraction.dart';
@@ -39,7 +41,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
 
     final double swipeProgress = (cardOffset.dx.abs() / 100.0).clamp(0.0, 1.0);
     final double thresholdProgress =
-    ((swipeProgress - 0.8) * 1.25).clamp(0.0, 0.2);
+        ((swipeProgress - 0.8) * 1.25).clamp(0.0, 0.2);
 
     if (cardOffset.dx > 0) {
       return Colors.green.withOpacity(thresholdProgress);
@@ -62,97 +64,104 @@ class _AnimatedCardState extends State<AnimatedCard> {
           child: GestureDetector(
             onPanUpdate: widget.index == widget.currentIndex
                 ? (details) {
-              setState(() {
-                cardOffset = Offset(
-                  cardOffset.dx + details.delta.dx,
-                  -cardOffset.dx.abs() * 0.2,
-                );
+                    setState(() {
+                      cardOffset = Offset(
+                        cardOffset.dx + details.delta.dx,
+                        -cardOffset.dx.abs() * 0.2,
+                      );
 
-                cardRotation = -cardOffset.dx * 0.001;
-              });
-            }
+                      cardRotation = -cardOffset.dx * 0.001;
+                    });
+                  }
                 : null,
             onPanEnd: widget.index == widget.currentIndex
                 ? (details) {
-              const double velocityThreshold = 1000.0;
-              final double velocity = details.velocity.pixelsPerSecond.dx;
+                    const double velocityThreshold = 1000.0;
+                    final double velocity = details.velocity.pixelsPerSecond.dx;
 
-              if (cardOffset.dx.abs() > 100 ||
-                  velocity.abs() > velocityThreshold) {
-                final bool isRight = cardOffset.dx > 0 || velocity > 0;
+                    if (cardOffset.dx.abs() > 100 ||
+                        velocity.abs() > velocityThreshold) {
+                      final bool isRight = cardOffset.dx > 0 || velocity > 0;
 
-                setState(() {
-                  cardOffset = Offset(
-                    isRight
-                        ? MediaQuery.of(context).size.width * 1.5
-                        : -MediaQuery.of(context).size.width * 1.5,
-                    -MediaQuery.of(context).size.height * 0.4,
-                  );
+                      setState(() {
+                        cardOffset = Offset(
+                          isRight
+                              ? MediaQuery.of(context).size.width * 1.5
+                              : -MediaQuery.of(context).size.width * 1.5,
+                          -MediaQuery.of(context).size.height * 0.4,
+                        );
 
-                  cardRotation = isRight ? -0.2 : 0.2;
-                });
+                        cardRotation = isRight ? -0.2 : 0.2;
+                      });
 
-                Map<String, String> matchPopParams = {
-                  'loggedUserImage':  widget.imageData['logged_user_image']!,
-                  'currentUserProfileImage':  widget.imageData['path']!,
-                  'profileUserName':  widget.imageData['name']!,
-                  'ProfileUserId': widget.imageData['current_profile_user_id'],
-                  'loggedUserId': widget.imageData['logged_user_id'],
-                };
+                      Map<String, String> matchPopParams = {
+                        'loggedUserImage':
+                            widget.imageData['logged_user_image']!,
+                        'currentUserProfileImage': widget.imageData['path']!,
+                        'profileUserName': widget.imageData['name']!,
+                        'ProfileUserId':
+                            widget.imageData['current_profile_user_id'],
+                        'loggedUserId': widget.imageData['logged_user_id'],
+                      };
 
-                SwipeInputModel swipeInput = SwipeInputModel(
-                  receiverId: widget.imageData['current_profile_user_id'],
-                  site: widget.site,
-                  senderId: widget.imageData['logged_user_id'],
-                );
-
-                if (isRight) {
-                  // Intraction.rightSwipe(swipeInput);
-                  Future<void> rightSwipeWithPop() async {
-                    final result = await Intraction.rightSwipeAtProfilePage(swipeInput);
-                    if(result == GlobalConstantForSiteDatingNetworking.matchFoundConditionStatement) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return PremiumVariation2Matched(
-                            usersInfo: matchPopParams,
-                          );
-                        },
+                      SwipeInputModel swipeInput = SwipeInputModel(
+                        receiverId: widget.imageData['current_profile_user_id'],
+                        site: widget.site,
+                        senderId: widget.imageData['logged_user_id'],
                       );
+
+                      if (isRight) {
+                        // Intraction.rightSwipe(swipeInput);
+                        Future<void> rightSwipeWithPop() async {
+                          final result =
+                              await Intraction.rightSwipeAtProfilePage(
+                                  swipeInput);
+                          if (result ==
+                              GlobalConstantForSiteDatingNetworking
+                                  .matchFoundConditionStatement) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return PremiumVariation2Matched(
+                                  usersInfo: matchPopParams,
+                                );
+                              },
+                            );
+                          }
+                        }
+
+                        rightSwipeWithPop();
+                      } else {
+                        Intraction.leftSwipe(swipeInput);
+                      }
+
+                      widget.onSwipeComplete();
+                    } else {
+                      setState(() {
+                        cardOffset = Offset.zero;
+                        cardRotation = 0.0;
+                      });
                     }
                   }
-                  rightSwipeWithPop();
-                } else {
-                  Intraction.leftSwipe(swipeInput);
-                }
-
-                widget.onSwipeComplete();
-              } else {
-                setState(() {
-                  cardOffset = Offset.zero;
-                  cardRotation = 0.0;
-                });
-              }
-            }
                 : null,
             onTap: widget.index == widget.currentIndex
                 ? () {
-              if (widget.isToggled) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Detailednetworking(
-                        data: widget.imageData['forDetailNetworking']),
-                  ),
-                );
-              } else {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => DetailedDating(
-                        data: widget.imageData['forDetailNetworking']),
-                  ),
-                );
-              }
-            }
+                    if (widget.isToggled) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Detailednetworking(
+                              data: widget.imageData['forDetailNetworking']),
+                        ),
+                      );
+                    } else {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => DetailedDating(
+                              data: widget.imageData['forDetailNetworking']),
+                        ),
+                      );
+                    }
+                  }
                 : null,
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.65,
@@ -162,7 +171,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                     : Offset.zero,
                 child: Transform.rotate(
                   angle:
-                  widget.index == widget.currentIndex ? cardRotation : 0.0,
+                      widget.index == widget.currentIndex ? cardRotation : 0.0,
                   origin: Offset(0, MediaQuery.of(context).size.height * 0.65),
                   child: Stack(
                     children: [
@@ -176,21 +185,56 @@ class _AnimatedCardState extends State<AnimatedCard> {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Image.network(
-                                widget.imageData['path']!,
-                                errorBuilder: (BuildContext context,
-                                    Object error, StackTrace? stackTrace) {
-                                  return Container(
-                                    color: Colors.grey,
-                                    child: const Icon(
-                                      Icons.broken_image,
-                                      color: Colors.white,
-                                      size: 50.0,
-                                    ),
-                                  );
-                                },
+                              CachedNetworkImage(
+                                imageUrl: widget.imageData['path']!,
                                 fit: BoxFit.cover,
+                                maxWidthDiskCache: 300,
+                                maxHeightDiskCache: 300,
+                                placeholder: (context, url) =>
+                                    Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => Container(
+                                  color: Colors.grey,
+                                  child: const Icon(Icons.broken_image,
+                                      color: Colors.white, size: 50.0),
+                                ),
                               ),
+                              // CachedNetworkImage(
+                              //       imageUrl: widget.imageData['path']!,
+                              //       fit: BoxFit.cover,
+                              //       maxWidthDiskCache: 300,
+                              //       maxHeightDiskCache: 300,
+                              //       placeholder: (context, url) => const Center(
+                              //           child:
+                              //               CircularProgressIndicator()), // Show a loader
+                              //       errorWidget: (context, url, error) => Container(
+                              //         color: Colors.grey,
+                              //         child: const Icon(Icons.broken_image,
+                              //             color: Colors.white, size: 50.0),
+                              //       ),
+                              //     ),
+                              // Image.network(
+                              //   widget.imageData['path']!,
+                              //   errorBuilder: (BuildContext context,
+                              //       Object error, StackTrace? stackTrace) {
+                              //     return Container(
+                              //       color: Colors.grey,
+                              //       child: const Icon(
+                              //         Icons.broken_image,
+                              //         color: Colors.white,
+                              //         size: 50.0,
+                              //       ),
+                              //     );
+                              //   },
+                              //   fit: BoxFit.cover,
+                              // ),
                               Positioned.fill(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
@@ -207,7 +251,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                   padding: const EdgeInsets.only(right: 30.0),
                                   child: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '${widget.imageData['name']}, ${widget.imageData['age']}',
@@ -237,8 +281,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                       const SizedBox(height: 5),
                                       SizedBox(
                                         width:
-                                        MediaQuery.of(context).size.width -
-                                            100,
+                                            MediaQuery.of(context).size.width -
+                                                100,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               right: 20.0),
