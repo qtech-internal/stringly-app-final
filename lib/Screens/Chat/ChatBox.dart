@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:stringly/GetxControllerAndBindings/controllers/chatBoxScreenController/chatBoxScreenController.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenController/messageScreenController.dart';
@@ -34,11 +35,6 @@ class _ChatBoxState extends State<ChatBox> {
         controller.isUserScrolling.value = true;
       }
     });
-    debugPrint('PRINTING CHAT ---------------------');
-    debugPrint(messageController.messages.value
-        .firstWhere(
-            (message) => message['chat_id'] == widget.userInfo['chat_id'])
-        .toString());
   }
 
   @override
@@ -63,15 +59,7 @@ class _ChatBoxState extends State<ChatBox> {
             automaticallyImplyLeading: false,
             foregroundColor: Colors.white,
             backgroundColor: Colors.black,
-            // leading: IconButton(
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //     icon: const Icon(
-            //       Icons.arrow_back_outlined,
-            //       color: Colors.white,
-            //     )),
-            // elevation: 0,
+
             toolbarHeight: 66, // AppBar height increased by 10px
             title: Row(
               children: [
@@ -168,24 +156,49 @@ class _ChatBoxState extends State<ChatBox> {
                       height: 2,
                     ),
                     Expanded(
-                      child: ListView.builder(
-                        controller: controller.scrollController.value,
-                        itemCount: controller.messages.value.length,
-                        itemBuilder: (context, index) {
-                          bool isSender = controller.messages.value[index]
-                                  ['sender'] ==
-                              controller.ids.value['sender_id'];
-                          bool isLastMessage =
-                              index == controller.messages.value.length - 1;
+                      child: Obx(() {
+                        return ListView.builder(
+                          controller: controller.scrollController.value,
+                          itemCount: controller.sortedMessages.value.length,
+                          itemBuilder: (context, index) {
+                            var item = controller.sortedMessages.value[index];
+                            print('Item $item');
 
-                          return MessageTile(
-                            message: controller.messages.value[index],
-                            isSender: isSender,
-                            isLastMessage: isLastMessage,
-                            scrollToBottom: () => controller.scrollToBottom,
-                          );
-                        },
-                      ),
+                            if (item['type'] == 'date') {
+                              return Center(
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    controller
+                                        .getFormattedDisplayDate(item['date']),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              bool isSender = item['sender'] ==
+                                  controller.ids.value['sender_id'];
+                              bool isLastMessage = index ==
+                                  controller.sortedMessages.value.length - 1;
+
+                              return MessageTile(
+                                message: item,
+                                isSender: isSender,
+                                isLastMessage: isLastMessage,
+                                scrollToBottom: () => controller.scrollToBottom,
+                              );
+                            }
+                          },
+                        );
+                      }),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -239,82 +252,13 @@ class _ChatBoxState extends State<ChatBox> {
                           const SizedBox(width: 10),
                           GestureDetector(
                             onTap: () async {
-                              debugPrint(
-                                  'chat_id ${widget.userInfo['chat_id']}');
-                              if (controller.createMessageController.value.text
-                                  .isNotEmpty) {
-                                try {
-                                  InitializeSocket.socket.emit(
-                                    'sendMessage',
-                                    json.encode({
-                                      'principal': controller.principal.value,
-                                      'to_user_id':
-                                          controller.ids.value['receiver_id'],
-                                      'chat_id': widget.userInfo['chat_id'],
-                                      'message': controller
-                                          .createMessageController.value.text,
-                                    }),
-                                  );
-
-                                  controller.messages.value.add({
-                                    'sender': controller.ids.value['sender_id'],
-                                    'senderName': 'You',
-                                    'rawTime': DateTime.now()
-                                        .toUtc()
-                                        .toIso8601String(),
-                                    'text': controller.createMessageController
-                                            .value.text.isNotEmpty
-                                        ? controller
-                                            .createMessageController.value.text
-                                        : '',
-                                    'timestamp': controller
-                                        .convertCreateTimeAtFetchMessage(
-                                            DateTime.now()
-                                                .toUtc()
-                                                .toIso8601String()),
-                                  });
-
-                                  controller.scrollToBottom();
-
-                                  controller.messages.refresh();
-
-                                  // UPDATE
-
-                                  final message = messageController
-                                      .messages.value
-                                      .firstWhere((message) =>
-                                          message['chat_id'] ==
-                                          widget.userInfo['chat_id']);
-
-                                  message['message'] = controller
-                                      .createMessageController.value.text;
-
-                                  message['rawTime'] =
-                                      DateTime.now().toUtc().toIso8601String();
-                                  message['time'] = messageController
-                                      .formatWhatsAppDateOnMessageScreen(
-                                          DateTime.now()
-                                              .toUtc()
-                                              .toIso8601String());
-                                  messageController.moveToTop(
-                                      widget.userInfo['chat_id'],
-                                      controller
-                                          .createMessageController.value.text);
-
-                                  debugPrint(
-                                      'PRINTING CHAT ---------------------');
-                                  debugPrint(messageController.messages.value
-                                      .firstWhere((message) =>
-                                          message['chat_id'] ==
-                                          widget.userInfo['chat_id'])
-                                      .toString());
-                                } catch (e) {
-                                  debugPrint('Error sending message: $e');
-                                }
-
-                                controller.createMessageController.value
-                                    .clear();
-                              }
+                              await controller
+                                  .sendMessage(widget.userInfo['chat_id']);
+                              messageController.moveToTop(
+                                  widget.userInfo['chat_id'],
+                                  controller
+                                      .createMessageController.value.text);
+                              controller.createMessageController.value.clear();
                             },
                             child: Container(
                               decoration: const BoxDecoration(

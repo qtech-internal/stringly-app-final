@@ -34,6 +34,9 @@ class ChatScreenController extends GetxController {
 
   var createMessageController = TextEditingController().obs;
   var messages = Rx<List<Map<String, dynamic>>>([]);
+  Rx<List<Map<String, dynamic>>> sortedMessages =
+      Rx<List<Map<String, dynamic>>>([]);
+
   var principal = Rx<String?>(null);
 
   var scrollController = ScrollController().obs;
@@ -114,7 +117,6 @@ class ChatScreenController extends GetxController {
   Future<void> sendAudioMessage(
       String path, Map<String, dynamic> userInfo) async {
     String audioUrl = '';
-    // Upload the audio file and send the message
     try {
       final audioUrl = await AudioUploadAndGetUrl.uploadAudioAndGetUrl(
           pickedFile: File(path));
@@ -130,18 +132,37 @@ class ChatScreenController extends GetxController {
           }),
         );
 
-        messages.value.add({
+        var newMessage = {
           'sender': ids.value['sender_id'],
-          'local': true,
           'senderName': 'You',
           'rawTime': DateTime.now().toUtc().toIso8601String(),
           'audio': audioUrl['Ok'] as String, // Use the audioUrl here
           'timestamp': convertCreateTimeAtFetchMessage(
               DateTime.now().toUtc().toIso8601String()),
-        });
+        };
 
+        messages.value.add(newMessage);
+
+        bool todayKeyExists = sortedMessages.value.any(
+          (message) => message['type'] == 'date' && message['date'] == 'Today',
+        );
+
+        if (todayKeyExists) {
+          int todayLength = sortedMessages.value
+              .map((today) => today['date'] == 'Today')
+              .length;
+
+          sortedMessages.value.insert(todayLength, newMessage);
+        } else {
+          sortedMessages.value.add({'type': 'date', 'date': 'Today'});
+          sortedMessages.value.add(newMessage);
+        }
+
+        sortedMessages.refresh();
         scrollToBottom();
-        messages.refresh();
+
+        debugPrint('PRINTING AUDIO CHAT ---------------------');
+        debugPrint(sortedMessages.value.toString());
       } else {
         debugPrint('Error uploading audio: ${audioUrl['Err']}');
       }
@@ -182,6 +203,7 @@ class ChatScreenController extends GetxController {
       Map<String, dynamic> userInfo) async {
     // update message status for read
     messages.value = [];
+    sortedMessages.value = [];
     InitializeSocket.socket.emit(
         'updateMessageStatus',
         json.encode({
@@ -196,12 +218,12 @@ class ChatScreenController extends GetxController {
           'to_user_id': ids.value['receiver_id'],
         }));
     InitializeSocket.socket.on('historyResponse', (data) {
-      debugPrint('------------------------history -------------------- $data');
+      //  debugPrint('------------------------history -------------------- $data');
 
       if (data['status'] == true) {
         if (data['historyUsers'].isNotEmpty) {
           final allMessages = data['historyUsers'];
-          debugPrint('---all message----------$allMessages');
+          //  debugPrint('---all message----------$allMessages');
           messages.value.addAll(List<Map<String, dynamic>>.from(
             allMessages.map((data) {
               return {
@@ -223,15 +245,159 @@ class ChatScreenController extends GetxController {
             }),
           ));
           messages.value.reversed;
-          debugPrint('-----------message--------$messages');
+
           messages.refresh();
+          sortedMessages.value = groupMessagesByDate(messages.value);
         }
       }
       isUserScrolling.value = false;
       scrollToBottom();
     });
     messages.refresh();
-    debugPrint('Messages Values ---------------${messages.value}');
+
+    //  debugPrint('Messages Values ---------------${messages.value}');
+  }
+
+  List<Map<String, dynamic>> groupMessagesByDate(
+      List<Map<String, dynamic>> messages) {
+    Map<DateTime, List<Map<String, dynamic>>> groupedMessages = {};
+
+    for (var message in messages) {
+      DateTime messageDate = DateTime.parse(message['rawTime']).toLocal();
+      DateTime formattedDate = _getFormattedDate(messageDate);
+
+      if (!groupedMessages.containsKey(formattedDate)) {
+        groupedMessages[formattedDate] = [];
+      }
+      groupedMessages[formattedDate]!.add(message);
+    }
+
+    List<Map<String, dynamic>> sortedMessages = [];
+
+    var sortedKeys = groupedMessages.keys.toList()
+      ..sort((a, b) => a.compareTo(b));
+
+    for (var date in sortedKeys) {
+      String displayDate = _getDisplayDate(date);
+
+      bool dateExists = sortedMessages
+          .any((item) => item['type'] == 'date' && item['date'] == displayDate);
+
+      if (!dateExists) {
+        sortedMessages.add({'type': 'date', 'date': displayDate});
+      }
+
+      sortedMessages.addAll(groupedMessages[date]!);
+    }
+
+    return sortedMessages;
+  }
+
+  DateTime _getFormattedDate(DateTime messageDate) {
+    DateTime today = DateTime.now();
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+
+    if (messageDate.year == today.year &&
+        messageDate.month == today.month &&
+        messageDate.day == today.day) {
+      return today;
+    }
+
+    if (messageDate.year == yesterday.year &&
+        messageDate.month == yesterday.month &&
+        messageDate.day == yesterday.day) {
+      return yesterday;
+    }
+
+    if (messageDate.isAfter(today.subtract(Duration(days: today.weekday)))) {
+      return messageDate;
+    }
+
+    return DateTime(messageDate.year, messageDate.month, messageDate.day);
+  }
+
+  String _getDisplayDate(DateTime date) {
+    DateTime today = DateTime.now();
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+
+    // Check if it's today or yesterday
+    if (date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day) {
+      return 'Today';
+    }
+
+    if (date.year == yesterday.year &&
+        date.month == yesterday.month &&
+        date.day == yesterday.day) {
+      return 'Yesterday';
+    }
+
+    // Otherwise, return the weekday (Monday, Tuesday, etc.) or full date
+    if (date.isAfter(today.subtract(Duration(days: today.weekday)))) {
+      return DateFormat('EEEE').format(date); // Monday, Tuesday, etc.
+    }
+
+    return DateFormat('yyyy-MM-dd')
+        .format(date); // For older dates, use the full date
+  }
+
+  Future<void> sendMessage(String chatId) async {
+    // Ensure the message text is not empty
+    if (createMessageController.value.text.isNotEmpty) {
+      try {
+        // Emit the message to the socket server
+        InitializeSocket.socket.emit(
+          'sendMessage',
+          json.encode({
+            'principal': principal.value,
+            'to_user_id': ids.value['receiver_id'],
+            'chat_id': chatId,
+            'message': createMessageController.value.text,
+          }),
+        );
+
+        // Create a new message object
+        var newMessage = {
+          'sender': ids.value['sender_id'],
+          'senderName': 'You',
+          'rawTime': DateTime.now().toUtc().toIso8601String(),
+          'text': createMessageController.value.text,
+          'timestamp': convertCreateTimeAtFetchMessage(
+            DateTime.now().toUtc().toIso8601String(),
+          ),
+        };
+
+        // Add the new message to the controller's message list
+        messages.value.add(newMessage);
+
+        // Check if 'Today' key exists in sortedMessages
+        bool todayKeyExists = sortedMessages.value.any(
+          (message) => message['type'] == 'date' && message['date'] == 'Today',
+        );
+
+        if (todayKeyExists) {
+          int todayLength = sortedMessages.value
+              .map((today) => today['date'] == 'Today')
+              .length;
+
+          sortedMessages.value.insert(todayLength, newMessage);
+        } else {
+          sortedMessages.value.add({'type': 'date', 'date': 'Today'});
+          sortedMessages.value.add(newMessage);
+        }
+
+        sortedMessages.refresh();
+        scrollToBottom();
+
+        debugPrint('PRINTING CHAT ---------------------');
+        debugPrint(sortedMessages.value.toString());
+      } catch (e) {
+        debugPrint('Error sending message: $e');
+      }
+
+      // Clear the message input after sending
+    }
   }
 
   String _formatWhatsAppDateOnChatHistory(String dateTimeString) {
@@ -274,15 +440,12 @@ class ChatScreenController extends GetxController {
   }
 
   void scrollToBottom() {
-    // Schedule the scroll after the widget rebuilds
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.value.hasClients && !isUserScrolling.value) {
-        scrollController.value.animateTo(
-          scrollController.value.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
+      scrollController.value.animateTo(
+        scrollController.value.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     });
   }
 
@@ -297,7 +460,7 @@ class ChatScreenController extends GetxController {
 
     // Add images if fewer than 4 images are already selected
     if (imagePaths.isNotEmpty) {
-      messages.value.add({
+      final newMessage = {
         'sender': ids.value['sender_id'],
         'local': true,
         'senderName': 'You',
@@ -305,8 +468,24 @@ class ChatScreenController extends GetxController {
         'photo': File(imagePaths.last),
         'timestamp': convertCreateTimeAtFetchMessage(
             DateTime.now().toUtc().toIso8601String()),
-      });
-      messages.refresh();
+      };
+      messages.value.add(newMessage);
+      bool todayKeyExists = sortedMessages.value.any(
+        (message) => message['type'] == 'date' && message['date'] == 'Today',
+      );
+
+      if (todayKeyExists) {
+        int todayLength = sortedMessages.value
+            .map((today) => today['date'] == 'Today')
+            .length;
+
+        sortedMessages.value.insert(todayLength, newMessage);
+      } else {
+        sortedMessages.value.add({'type': 'date', 'date': 'Today'});
+        sortedMessages.value.add(newMessage);
+      }
+
+      sortedMessages.refresh();
       isUserScrolling.value = false;
       scrollToBottom();
       try {
@@ -384,6 +563,42 @@ class ChatScreenController extends GetxController {
       profileLoading.value = false;
     } finally {
       profileLoading.value = false;
+    }
+  }
+
+  String getFormattedDisplayDate(String displayDate) {
+    if (displayDate == 'Today') {
+      return 'Today'; // Simply return "Today"
+    }
+    if (displayDate == 'Yesterday') {
+      return 'Yesterday'; // Simply return "Yesterday"
+    }
+
+    if ([
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ].contains(displayDate)) {
+      return displayDate; // Return the day as is (e.g., Monday, Tuesday)
+    }
+
+    try {
+      DateTime parsedDate = DateTime.parse(displayDate);
+      int currentYear = DateTime.now().year;
+
+      if (parsedDate.year == currentYear) {
+        return DateFormat('d MMM')
+            .format(parsedDate); // Format as d MMM (e.g., 26 Jan)
+      } else {
+        return DateFormat('d MMM yyyy')
+            .format(parsedDate); // Format as d MMM yyyy (e.g., 26 Jan 2025)
+      }
+    } catch (e) {
+      return displayDate;
     }
   }
 }
