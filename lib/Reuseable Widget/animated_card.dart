@@ -51,6 +51,23 @@ class _AnimatedCardState extends State<AnimatedCard> {
     return Colors.transparent;
   }
 
+  Future<void> rightSwipeWithPop(
+      SwipeInputModel swipeInput, Map<String, String> matchPopParams) async {
+    final result = await Intraction.rightSwipeAtProfilePage(swipeInput);
+
+    if (result ==
+        GlobalConstantForSiteDatingNetworking.matchFoundConditionStatement) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PremiumVariation2Matched(
+            usersInfo: matchPopParams,
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -75,7 +92,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                   }
                 : null,
             onPanEnd: widget.index == widget.currentIndex
-                ? (details) {
+                ? (details) async {
                     const double velocityThreshold = 1000.0;
                     final double velocity = details.velocity.pixelsPerSecond.dx;
 
@@ -112,25 +129,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
 
                       if (isRight) {
                         // Intraction.rightSwipe(swipeInput);
-                        Future<void> rightSwipeWithPop() async {
-                          final result =
-                              await Intraction.rightSwipeAtProfilePage(
-                                  swipeInput);
-                          if (result ==
-                              GlobalConstantForSiteDatingNetworking
-                                  .matchFoundConditionStatement) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return PremiumVariation2Matched(
-                                  usersInfo: matchPopParams,
-                                );
-                              },
-                            );
-                          }
-                        }
 
-                        rightSwipeWithPop();
+                        await rightSwipeWithPop(swipeInput, matchPopParams);
                       } else {
                         Intraction.leftSwipe(swipeInput);
                       }

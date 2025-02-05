@@ -657,7 +657,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                               width: 24,
                               height: 24),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 12),
                         GestureDetector(
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -672,9 +672,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Image.asset(
-                                'assets/reward.png',
-                                height: 16,
-                                width: 16,
+                                'assets/coin2.png',
+                                height: 12,
+                                width: 12,
                               ),
                               const SizedBox(width: 2),
                               const Flexible(
