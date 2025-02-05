@@ -736,7 +736,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                             child: Padding(
                               padding: EdgeInsets.only(
                                   top: MediaQuery.of(context).size.height *
-                                      .023),
+                                      .025),
                               child: Stack(
                                 children: currentIndex >= images.length
                                     ? [

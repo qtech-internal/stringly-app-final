@@ -58,7 +58,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
       left: 20.0,
       right: 20.0,
       child: Opacity(
-        opacity: 1,
+        opacity: widget.index - widget.currentIndex == 1 ? 0.9 : 1.0,
         child: Transform.scale(
           scale: widget.index - widget.currentIndex == 1 ? 0.98 : 1.0,
           child: GestureDetector(
@@ -279,7 +279,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                           child: Text(
                                             widget.imageData['info']!,
                                             style: const TextStyle(
-                                              color: Colors.white70,
+                                              color: Colors.white,
                                               fontSize: 16,
                                             ),
                                             textAlign: TextAlign.left,

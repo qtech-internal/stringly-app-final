@@ -113,6 +113,7 @@ MERGED from [:path_provider_android] /home/amit_verma/Desktop/quad_work/new/stri
 MERGED from [:permission_handler_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/permission_handler_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:photo_manager] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/photo_manager/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-13:12
 MERGED from [:shared_preferences_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:sqflite_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/sqflite_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:uni_links] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/uni_links/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:video_player_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/video_player_android/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:workmanager] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/workmanager/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
@@ -357,6 +358,8 @@ MERGED from [:photo_manager] /home/amit_verma/Desktop/quad_work/new/stringly_app
 MERGED from [:photo_manager] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/photo_manager/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:shared_preferences_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:shared_preferences_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/shared_preferences_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:sqflite_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/sqflite_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:sqflite_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/sqflite_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:uni_links] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/uni_links/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:uni_links] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/uni_links/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:video_player_android] /home/amit_verma/Desktop/quad_work/new/stringly_app/build/video_player_android/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
