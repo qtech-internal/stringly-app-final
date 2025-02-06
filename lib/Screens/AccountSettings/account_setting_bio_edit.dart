@@ -65,7 +65,8 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
           }
           if (userInputParams.education != null) {
             // setEductionValue = userInputParams.education.toString() ?? '';
-            educationControllerBioEdit.text = userInputParams.education.toString();
+            educationControllerBioEdit.text =
+                userInputParams.education.toString();
           }
           _educationController = userInputParams.education ?? '';
           _instituteNameController.text = userInputParams.instituteName ?? '';
@@ -73,7 +74,7 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
             _graduationYearController =
                 userInputParams.graduationYear.toString();
           }
-          if(userInputParams.lookingFor != null) {
+          if (userInputParams.lookingFor != null) {
             what_you_looking_exactly.text = userInputParams.lookingFor!;
           }
           _jobTitleOccupationController.text = userInputParams.jobTitle ?? '';
@@ -218,36 +219,38 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                           ),
                         ),
 
-                        if(selectedHobbies.isNotEmpty) const SizedBox(
-                          height: 20,
-                        ),
-                        // Display selected hobbies
-                       if(selectedHobbies.isNotEmpty) Align(
-                          alignment: Alignment.centerLeft,
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: selectedHobbies.map(
-                              (hobby) {
-                                return Chip(
-                                  label: Text(hobby),
-                                  deleteIcon: const Icon(Icons.close),
-                                  onDeleted: () {
-                                    setState(() {
-                                      selectedHobbies.remove(hobby);
-                                    });
-                                  },
-                                  backgroundColor: Colors.grey[300],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                    side: const BorderSide(
-                                        color: Colors.transparent),
-                                  ),
-                                );
-                              },
-                            ).toList(),
+                        if (selectedHobbies.isNotEmpty)
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
+                        // Display selected hobbies
+                        if (selectedHobbies.isNotEmpty)
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: selectedHobbies.map(
+                                (hobby) {
+                                  return Chip(
+                                    label: Text(hobby),
+                                    deleteIcon: const Icon(Icons.close),
+                                    onDeleted: () {
+                                      setState(() {
+                                        selectedHobbies.remove(hobby);
+                                      });
+                                    },
+                                    backgroundColor: Colors.grey[300],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                      side: const BorderSide(
+                                          color: Colors.transparent),
+                                    ),
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
 
                         const SizedBox(height: 20),
 
@@ -368,9 +371,13 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                       userInputParams.updateField('profession',
                                           yourMainProfession.text);
                                     }
-                                    if (educationControllerBioEdit.text.trim().isNotEmpty) {
+                                    if (educationControllerBioEdit.text
+                                        .trim()
+                                        .isNotEmpty) {
                                       userInputParams.updateField(
-                                          'education', educationControllerBioEdit.text.trim());
+                                          'education',
+                                          educationControllerBioEdit.text
+                                              .trim());
                                     }
                                     userInputParams.updateField('instituteName',
                                         _instituteNameController.text);
@@ -387,9 +394,11 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                     userInputParams.updateField(
                                         'jobRole', _jobRoleController.text);
 
-                                    if (what_you_looking_exactly.text.trim().isNotEmpty) {
-                                      userInputParams.updateField(
-                                          'lookingFor', what_you_looking_exactly.text);
+                                    if (what_you_looking_exactly.text
+                                        .trim()
+                                        .isNotEmpty) {
+                                      userInputParams.updateField('lookingFor',
+                                          what_you_looking_exactly.text);
                                     }
 
                                     Future<void> createUser() async {
@@ -424,6 +433,8 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                         _graduationYearController ?? '';
                                     controller.jobRoleController.value.text =
                                         _jobTitleOccupationController.text;
+                                    controller.whatAreYouLook.value.text =
+                                        what_you_looking_exactly.text;
                                     controller.companyName.value.text =
                                         _companyNameController.text;
 
@@ -454,6 +465,10 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                     profileController
                                             .jobTitleController.value.text =
                                         _jobTitleOccupationController.text;
+                                    profileController
+                                        .whatYouLookingController
+                                        .value
+                                        .text = what_you_looking_exactly.text;
                                     profileController
                                         .companyNameController
                                         .value

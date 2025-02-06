@@ -255,60 +255,9 @@ class _AccountSettingState extends State<AccountSetting> {
                       ],
                     ),
                   ),
-                )
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please select your gender';
-                //   }
-                //   return null;
-                // },
-                ),
+                )),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _selectedHobbies() {
-    return GestureDetector(
-      onTap: () async {
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HobbiesScreen()),
-        );
-        if (result != null && result is Map<String, List<String>>) {
-          setState(() {
-            controller.selectedHobbies.value = result['selectedHobbies'] ?? [];
-          });
-        }
-      },
-      child: Container(
-        height: 50,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-          border: Border.all(color: Colors.grey), // Add grey border here
-          boxShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.3), blurRadius: 6),
-          ],
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Hobbies & Interests',
-                style: TextStyle(color: Colors.black, fontSize: 16),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.arrow_right, color: Colors.black),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -366,116 +315,6 @@ class _AccountSettingState extends State<AccountSetting> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Stack(
-                            //   alignment: Alignment.center,
-                            //   children: [
-                            //     // Incomplete Circle Gradient Border
-                            //     Container(
-                            //       width: 130, // Size for border
-                            //       height: 130,
-                            //       decoration: const BoxDecoration(
-                            //         shape: BoxShape.circle,
-                            //         color: Colors
-                            //             .transparent, // Make the background transparent
-                            //       ),
-                            //       child: Stack(
-                            //         children: [
-                            //           // Incomplete Circular Gradient
-                            //           ClipPath(
-                            //             clipper:
-                            //                 IncompleteCircleClipper(), // Custom clipper for incomplete circle
-                            //             child: Container(
-                            //               width: 130,
-                            //               height: 130,
-                            //               decoration: const BoxDecoration(
-                            //                 gradient: LinearGradient(
-                            //                   colors: [
-                            //                     Color(0xFFD83694),
-                            //                     Color(0xFF0039C7)
-                            //                   ],
-                            //                   begin: Alignment.topLeft,
-                            //                   end: Alignment.bottomRight,
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //     // Inner White Circle for padding
-                            //     Container(
-                            //       width:
-                            //           120, // Slightly smaller for white padding effect
-                            //       height: 120,
-                            //       decoration: const BoxDecoration(
-                            //         shape: BoxShape.circle,
-                            //         color: Colors.white, // White padding
-                            //       ),
-                            //       child: Center(
-                            //         child: ClipOval(
-                            //           child: controller.profileImage.value != null
-                            //               ? Image.file(
-                            //                   controller.profileImage.value!,
-                            //                   width: 110, // Profile image size
-                            //                   height: 110,
-                            //                   fit: BoxFit.cover,
-                            //                 )
-                            //               : controller.networkImageOfProfile
-                            //                           .value !=
-                            //                       null
-                            //                   ? Image.network(
-                            //                       controller.networkImageOfProfile
-                            //                           .value!,
-                            //                       width: 110,
-                            //                       height: 110,
-                            //                       fit: BoxFit.cover,
-                            //                     )
-                            //                   : null,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     Positioned(
-                            //       bottom: 20,
-                            //       right: 106,
-                            //       child: Container(
-                            //         width: 20,
-                            //         height: 20,
-                            //         decoration: const BoxDecoration(
-                            //             shape: BoxShape.circle,
-                            //             color: Colors.pink),
-                            //         child: Center(
-                            //           child: Text(
-                            //             '${(0.75 * 100).toInt()}%', // Example percentage
-                            //             style: const TextStyle(
-                            //               fontSize: 8,
-                            //               fontWeight: FontWeight.bold,
-                            //               color: Colors.white,
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //     if (controller.isUserVerified.value)
-                            // Positioned(
-                            //   bottom: 5,
-                            //   right: 5,
-                            //   child: Container(
-                            //     width: 40,
-                            //     height: 30,
-                            //     decoration: const BoxDecoration(
-                            //       shape: BoxShape.rectangle,
-                            //       color: Colors.transparent,
-                            //     ),
-                            //     child: const Center(
-                            //       child: Image(
-                            //           image: AssetImage(
-                            //               'assets/verified_transparent.png')),
-                            //     ),
-                            //   ),
-                            // ),
-                            //   ],
-                            // ),
-
                             Obx(() {
                               return ProfileCircleWidget(
                                 isVerified: false,
@@ -548,7 +387,7 @@ class _AccountSettingState extends State<AccountSetting> {
                                     children: List.generate(
                                       networkImages.length,
                                       (i) => GestureDetector(
-                                        onLongPress: () {
+                                        onTap: () {
                                           showDialog(
                                             context: context,
                                             builder: (context) {
@@ -714,108 +553,67 @@ class _AccountSettingState extends State<AccountSetting> {
                                                   ),
                                                 ),
                                               ),
-                                              if (controller.iconState.value[
-                                                      networkImages[i]] !=
-                                                  true)
-                                                Positioned(
-                                                  bottom: 0,
-                                                  right: 20,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      controller
-                                                              .iconState.value[
-                                                          networkImages[
-                                                              i]] = true;
-                                                      controller.iconState
-                                                          .refresh();
-                                                    },
-                                                    child: Container(
-                                                      height: 15,
-                                                      width: 50,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  5),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  5),
-                                                        ),
-                                                      ),
-                                                      child: const Image(
-                                                        image: AssetImage(
-                                                            'assets/image_delete_action.png'),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              if (controller.iconState.value[
-                                                      networkImages[i]] ==
-                                                  true)
-                                                Positioned(
-                                                  top: 30,
-                                                  right: 30,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      if (networkImages.length >
-                                                          1) {
-                                                        final imageToRemove =
-                                                            networkImages[i];
-                                                        networkImages.remove(
-                                                            imageToRemove);
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 30,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    if (networkImages.length >
+                                                        1) {
+                                                      final imageToRemove =
+                                                          networkImages[i];
+                                                      networkImages.remove(
+                                                          imageToRemove);
+                                                      controller.iconState.value
+                                                          .remove(
+                                                              imageToRemove);
+                                                      controller.deleteImage();
+                                                      if (networkImages
+                                                          .isNotEmpty) {
                                                         controller
-                                                            .iconState.value
-                                                            .remove(
-                                                                imageToRemove);
-                                                        controller
-                                                            .deleteImage();
-                                                        if (networkImages
-                                                            .isNotEmpty) {
-                                                          controller
-                                                                  .networkImageOfProfile
-                                                                  .value =
-                                                              networkImages
-                                                                  .first;
-                                                        }
-                                                      } else {
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                              'One pic is required for profile',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                            ),
-                                                            duration: Duration(
-                                                                seconds: 2),
-                                                          ),
-                                                        );
+                                                                .networkImageOfProfile
+                                                                .value =
+                                                            networkImages.first;
                                                       }
-                                                    },
-                                                    child: Container(
-                                                      height: 30,
-                                                      width: 30,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                      child: const Center(
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          color: Colors.red,
-                                                          size: 20,
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          content: Text(
+                                                            'One pic is required for profile',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                          duration: Duration(
+                                                              seconds: 2),
                                                         ),
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                    height: 30,
+                                                    width: 30,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(5),
+                                                              topRight: Radius
+                                                                  .circular(5)),
+                                                    ),
+                                                    child: const Center(
+                                                      child: Icon(
+                                                        Icons.delete_outlined,
+                                                        color: Colors.red,
+                                                        size: 20,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
+                                              ),
                                             ],
                                           ),
                                         ),

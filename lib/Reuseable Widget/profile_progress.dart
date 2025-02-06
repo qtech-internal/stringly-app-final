@@ -25,8 +25,8 @@ class ProfileCircleWidget extends StatelessWidget {
       children: [
         // Profile Image
         Container(
-          width: dynamicSize - 20,
-          height: dynamicSize - 20,
+          width: dynamicSize - 10,
+          height: dynamicSize - 10,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: imageUrl != null
@@ -44,8 +44,8 @@ class ProfileCircleWidget extends StatelessWidget {
           size: Size(dynamicSize, dynamicSize),
           painter: ProgressArcPainter(
             // progress: progress,
-            gradient: const LinearGradient(
-              colors: [Color(0xFF0039C7), Color(0xFFD83694)],
+            gradient: LinearGradient(
+              colors: [Colors.grey.shade300, Colors.grey.shade300],
               begin: Alignment.topRight,
               end: Alignment.topLeft,
             ),
@@ -158,7 +158,7 @@ class ProgressArcPainter extends CustomPainter {
     final rect = Rect.fromCircle(center: center, radius: radius);
     final paint = Paint()
       ..shader = gradient.createShader(rect)
-      ..strokeWidth = 5.0
+      ..strokeWidth = 3.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
