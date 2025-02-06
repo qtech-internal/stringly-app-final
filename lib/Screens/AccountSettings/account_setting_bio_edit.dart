@@ -33,6 +33,7 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
 
   TextEditingController yourMainProfession = TextEditingController();
   TextEditingController educationControllerBioEdit = TextEditingController();
+  TextEditingController what_you_looking_exactly = TextEditingController();
 
   List<String> selectedHobbies = [];
 
@@ -71,6 +72,9 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
           if (userInputParams.graduationYear != null) {
             _graduationYearController =
                 userInputParams.graduationYear.toString();
+          }
+          if(userInputParams.lookingFor != null) {
+            what_you_looking_exactly.text = userInputParams.lookingFor!;
           }
           _jobTitleOccupationController.text = userInputParams.jobTitle ?? '';
           _companyNameController.text = userInputParams.company ?? '';
@@ -214,11 +218,11 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                           ),
                         ),
 
-                        const SizedBox(
+                        if(selectedHobbies.isNotEmpty) const SizedBox(
                           height: 20,
                         ),
                         // Display selected hobbies
-                        Align(
+                       if(selectedHobbies.isNotEmpty) Align(
                           alignment: Alignment.centerLeft,
                           child: Wrap(
                             spacing: 8,
@@ -311,6 +315,25 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Add What you are looking for exactly?',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GradientTextField(
+                      controller: what_you_looking_exactly,
+                      height: 100,
+                      maxLines: null,
+                      hintText: 'Write, what you are looking for exactly',
+                    ),
                     const SizedBox(height: 100),
                     // Next Button
                     Center(
@@ -363,6 +386,11 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                         'company', _companyNameController.text);
                                     userInputParams.updateField(
                                         'jobRole', _jobRoleController.text);
+
+                                    if (what_you_looking_exactly.text.trim().isNotEmpty) {
+                                      userInputParams.updateField(
+                                          'lookingFor', what_you_looking_exactly.text);
+                                    }
 
                                     Future<void> createUser() async {
                                       try {

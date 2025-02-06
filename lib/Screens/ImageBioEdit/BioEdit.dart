@@ -148,11 +148,11 @@ class _BioEditScreenState extends State<BioEditScreen> {
                     ),
                   ),
 
-                  const SizedBox(
+                  if(selectedHobbies.isNotEmpty)  const SizedBox(
                     height: 20,
                   ),
                   // Display selected hobbies
-                  Align(
+                  if(selectedHobbies.isNotEmpty)   Align(
                     alignment: Alignment.centerLeft,
                     child: Wrap(
                       spacing: 8,

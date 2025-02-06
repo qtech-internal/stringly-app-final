@@ -7,6 +7,7 @@ class GlobalConstant {
   static String backendCanisterId = 'pnk7d-ryaaa-aaaag-atzxa-cai';
   static String middlePageCanisterId = 'ehmai-2qaaa-aaaag-att2a-cai';
   static bool isLocal = false;
+
   static bool isLoggedIn=false;
 
   static String googleMapApiKey = "AIzaSyBr2rLjHYyCQPf82mpqckqgFkfqRsEW8wo";
