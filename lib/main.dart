@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_icp_auth/authentication/login.dart';
 import 'package:flutter_icp_auth/internal/url_listener.dart';
 import 'package:get/get.dart';
@@ -12,21 +13,14 @@ import 'package:stringly/constants/globals.dart';
 import 'package:stringly/intraction.dart';
 
 import './notifications/NotificationService.dart';
-import 'matched_queue.dart';
-import 'Screens/NetworkOverlay.dart';
 import 'Reuseable Widget/Routes/app_routes.dart';
-import 'Screens/Reward Settings/RewardAcheivedOverlay2.dart';
-import 'Screens/FocusOverlay.dart';
 import 'Screens/UserInfo1.dart';
 import 'integration.dart';
 
 import 'package:flutter/material.dart';
 import 'package:agent_dart/agent_dart.dart';
-import 'Screens/share/loadingScreen.dart';
-import 'Screens/share/loadinscreen.dart';
 import 'Screens/mainScreenNav.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
@@ -98,7 +92,6 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
     );
 
-    // Define an animation that starts large and shrinks to original size
     _scaleAnimation = Tween<double>(begin: 1.3, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -106,10 +99,8 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // Start the animation
     _controller.forward();
 
-    // When the animation completes, trigger the transition with a fade effect
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _navigateToWelcomePage();
@@ -164,7 +155,8 @@ class Welcomepage extends StatefulWidget {
   State<Welcomepage> createState() => _WelcomepageState();
 }
 
-class _WelcomepageState extends State<Welcomepage> {
+class _WelcomepageState extends State<Welcomepage>
+    with SingleTickerProviderStateMixin {
   bool isLoggedIn = false;
   late bool? checkUser;
   String _principalId = "Log in to see your principal";
@@ -176,6 +168,10 @@ class _WelcomepageState extends State<Welcomepage> {
   Service idlService = FieldsMethod.idl;
   String backendCanisterId = GlobalConstant.backendCanisterId;
   String middlePageCanisterId = GlobalConstant.middlePageCanisterId;
+
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
 
   // update checkUser value
   Future<void> _checkUser() async {
@@ -198,8 +194,28 @@ class _WelcomepageState extends State<Welcomepage> {
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
 
-    // Call the login check immediately after the widget is created.
+    _scaleAnimation = Tween<double>(begin: 1.1, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _controller.forward();
+      });
+    });
+
     _checkLoginStatus();
   }
 
@@ -328,119 +344,159 @@ class _WelcomepageState extends State<Welcomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // const SizedBox(height: 70),
-              // Padding(
-              //   padding: const EdgeInsets.all(16.0),
-              //   child: Text(
-              //     'Principal ID: $_principalId',
-              //     style: TextStyle(
-              //       fontFamily: 'SFProDisplay',
-              //       fontSize: 14,
-              //       color: Colors.black,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.4),
-              Column(
-                children: [
-                  const Center(
-                    child: Image(
-                      image: AssetImage('assets/newImage/COLOURED LOGO.png'),
-                      width: 174,
-                      height: 46.19,
-                    ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.43),
+              ScaleTransition(
+                scale: _scaleAnimation,
+                child: Image.asset(
+                  'assets/newImage/COLOURED LOGO.png',
+                  width: 174,
+                  height: 46.76,
+                ),
+              ),
+              const SizedBox(height: 5),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: const Text(
+                  'String your vibe.',
+                  style: TextStyle(
+                    fontFamily: 'SFProDisplay',
+                    fontSize: 14,
+                    color: Color(0xFF000000),
                   ),
-                  const SizedBox(height: 5),
-                  const Text(
-                    'String your vibe.',
-                    style: TextStyle(
-                      fontFamily: 'SFProDisplay',
-                      fontSize: 14,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: 200, left: 13, right: 13),
-                    child: SizedBox(
-                      width: 276,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          StorageService.write('FirstTimeOpeningThisApp', 'No');
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 200, left: 13, right: 13),
+                  child: SizedBox(
+                    width: 276,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        StorageService.write('FirstTimeOpeningThisApp', 'No');
 
-                          if (!isLoggedIn) {
-                            await AuthLogIn.authenticate(
-                                isLocal,
-                                middlePageCanisterId,
-                                "exampleCallback",
-                                "example");
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 19, vertical: 15),
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        if (!isLoggedIn) {
+                          await AuthLogIn.authenticate(
+                              isLocal,
+                              middlePageCanisterId,
+                              "exampleCallback",
+                              "example");
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 19, vertical: 15),
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Sign Up with Internet Identity',
+                            style: TextStyle(
+                                fontFamily: 'SFProDisplay',
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
                           ),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Sign Up with Internet Identity',
-                              style: TextStyle(
-                                  fontFamily: 'SFProDisplay',
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-              // SizedBox(
-              //   width: 276,
-              //   height: 50,
-              //   child: ElevatedButton(
-              //     onPressed: () {},
-              //     style: ElevatedButton.styleFrom(
-              //       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              //       backgroundColor: Colors.black,
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10),
-              //       ),
-              //     ),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Text(
-              //           'Sign up with Email',
-              //           style: TextStyle(
-              //             fontFamily: 'SFProDisplay',
-              //             fontSize: 13,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 30),
             ],
           ),
-        ));
+        ),
+      ),
+    );
+
+    // return Scaffold(
+    //     backgroundColor: Colors.white,
+    //     body: SingleChildScrollView(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: [
+    // SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+    //           Column(
+    //             children: [
+    //               const Center(
+    //                 child: Image(
+    //                   image: AssetImage('assets/newImage/COLOURED LOGO.png'),
+    //                   width: 174,
+    //                   height: 46.19,
+    //                 ),
+    //               ),
+    //               const SizedBox(height: 5),
+    //               const Text(
+    //                 'String your vibe.',
+    //                 style: TextStyle(
+    //                   fontFamily: 'SFProDisplay',
+    //                   fontSize: 14,
+    //                   color: Color(0xFF000000),
+    //                 ),
+    //               ),
+    //               SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+    //               Padding(
+    //                 padding:
+    //                     const EdgeInsets.only(bottom: 200, left: 13, right: 13),
+    //                 child: SizedBox(
+    //                   width: 276,
+    //                   height: 50,
+    //                   child: ElevatedButton(
+    //                     onPressed: () async {
+    //                       StorageService.write('FirstTimeOpeningThisApp', 'No');
+
+    //                       if (!isLoggedIn) {
+    //                         await AuthLogIn.authenticate(
+    //                             isLocal,
+    //                             middlePageCanisterId,
+    //                             "exampleCallback",
+    //                             "example");
+    //                       }
+    //                     },
+    //                     style: ElevatedButton.styleFrom(
+    //                       padding: const EdgeInsets.symmetric(
+    //                           horizontal: 19, vertical: 15),
+    //                       backgroundColor: Colors.black,
+    //                       shape: RoundedRectangleBorder(
+    //                         borderRadius: BorderRadius.circular(10),
+    //                       ),
+    //                     ),
+    //                     child: const Row(
+    //                       mainAxisAlignment: MainAxisAlignment.center,
+    //                       children: [
+    //                         Text(
+    //                           'Sign Up with Internet Identity',
+    //                           style: TextStyle(
+    //                               fontFamily: 'SFProDisplay',
+    //                               fontSize: 14,
+    //                               color: Colors.white,
+    //                               fontWeight: FontWeight.w500),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     ));
   }
 }

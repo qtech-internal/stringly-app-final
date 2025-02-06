@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenController/messageScreenController.dart';
@@ -78,8 +79,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                     child: CircleAvatar(
                       radius: 20,
                       backgroundImage: controller.loggedUserImage.value != null
-                          ? NetworkImage(controller.loggedUserImage.value!)
+                          ? CachedNetworkImageProvider(
+                              controller.loggedUserImage.value!)
                           : null,
+                      backgroundColor: Colors.grey[300],
                     ),
                   ),
                   Positioned(
