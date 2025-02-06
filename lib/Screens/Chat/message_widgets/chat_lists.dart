@@ -81,7 +81,8 @@ class ChatLists extends GetView<MessageScreenController> {
               _buildSearchBar(),
             const SizedBox(height: 20),
             Expanded(
-              child: controller.filteredMessages.value.isEmpty
+              child: controller.filteredMessages.value.isEmpty &&
+                      controller.makeSearchBarAndchatListVisible.value
                   ? const Center(
                       child: Text(
                         'No User Found',
