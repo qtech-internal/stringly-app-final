@@ -15,13 +15,19 @@ class Mainscreennav extends StatefulWidget {
 
 class _MainscreennavState extends State<Mainscreennav> {
   int _selectedIndex = 0;
+  bool isPremiumUser  = true;
 
   Widget _getScreen(int index) {
     switch (index) {
       case 0:
         return SwipingScreenPremium();
       case 1:
-        return PremiumVariation2();
+      // Check if the user is a premium user
+        if (isPremiumUser ) {
+          return PremiumVariation2();
+        } else {
+          return PremiumVariation1(); // Redirect to PremiumVariation1 if not premium
+        }
       case 2:
         return MessagesScreen();
       case 3:

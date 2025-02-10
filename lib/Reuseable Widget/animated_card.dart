@@ -8,6 +8,7 @@ import 'package:stringly/models/global_constant_for_site_dating_networking.dart'
 import 'package:stringly/models/swipe_input_model.dart';
 
 import '../Screens/MainSection/LikeScreenVariationMatched.dart';
+import '../Screens/MainSection/super_like_animation.dart';
 
 class AnimatedCard extends StatefulWidget {
   final Map<String, dynamic> imageData;
@@ -301,12 +302,19 @@ class _AnimatedCardState extends State<AnimatedCard> {
                         bottom: 20,
                         right: 20,
                         child: GestureDetector(
-                          onTapDown: (details) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Center(child: Text('Coming soon!')),
-                                duration: Duration(seconds: 1),
-                              ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: Center(
+                                    child: SuperLikeAnimation(
+                                        username: widget.imageData['name']
+                                            .split(' ')[0]),
+                                  ),
+                                );
+                              },
                             );
                           },
                           child: Image.asset(
