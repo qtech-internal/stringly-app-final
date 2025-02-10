@@ -1,0 +1,38 @@
+List<String> skillsItem = [
+  'Painting',
+  'Journaling',
+  'Dancing',
+  'Writing Poems',
+  'Sketching',
+  'Photography',
+  'Pottery',
+  'Calligraphy',
+  'Creative Writing',
+  'Playing a Musical Instrument',
+  'Singing',
+  'Crafting',
+  'Cooking/Baking',
+  'Gardening',
+  'Sewing/Knitting',
+  'Origami',
+  'Acting',
+  'Meditation/Yoga',
+  'Scrapbooking',
+  'Storytelling',
+  'Making Digital Art',
+  'Learning a New Language',
+  'Woodworking',
+  'Learning Magic Tricks'
+];
+List<String> items = [
+  'Technology & Software Development',
+  'Arts & Entertainment',
+  'Media & Journalism',
+  'Music & Performing Arts',
+  'Banking & Finance',
+  'Consulting',
+  'Marketing & Advertising',
+  'Healthcare & Medicine',
+  'Education & Research',
+  'Business & Management'
+];
