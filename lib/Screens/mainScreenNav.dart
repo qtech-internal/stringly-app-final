@@ -15,7 +15,7 @@ class Mainscreennav extends StatefulWidget {
 
 class _MainscreennavState extends State<Mainscreennav> {
   int _selectedIndex = 0;
-  bool isPremiumUser  = true;
+  bool isPremiumUser  = false;
 
   Widget _getScreen(int index) {
     switch (index) {

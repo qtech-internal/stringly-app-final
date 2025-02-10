@@ -14,6 +14,8 @@ class GlobalConstant {
 
   static Map<String, dynamic>? chatCredentials;
 
+  static bool isPremiumUser = false;
+
   // logged user principal and User id
   static String? principal;
   static String? userId;
