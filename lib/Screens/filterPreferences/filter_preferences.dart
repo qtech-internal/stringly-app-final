@@ -274,8 +274,8 @@ class _FilterPreferencesState extends State<FilterPreferences> {
                         if (_distance >= 100)
                           GradientTextField(
                               controller: _selectedState,
-                              label: const Text('Enter a State'),
-                              hintText: 'State'),
+                              label: const Text('State'),
+                              hintText: 'Enter a State'),
                         // GradientdropdownTextField(
                         //   hintText: 'Choose a State',
                         //   items: states,

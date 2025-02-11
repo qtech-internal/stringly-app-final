@@ -16,7 +16,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     super.initState();
     // Read the stored value and update the local state
     setState(() {
-      _isProfileVisible = StorageService.read('profileVisibility');
+      _isProfileVisible = StorageService.read('profileVisibility') ?? false;
       _isToggled = _isProfileVisible;
     });
   }

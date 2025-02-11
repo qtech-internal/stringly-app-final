@@ -657,7 +657,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                               width: 24,
                               height: 24),
                         ),
-                        const SizedBox(width: 12),
+
                         // GestureDetector(
                         //   onTap: () {
                         //     ScaffoldMessenger.of(context).showSnackBar(

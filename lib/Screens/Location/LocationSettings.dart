@@ -20,7 +20,7 @@ class _LocationSettingsState extends State<LocationSettings> {
     super.initState();
     // Initialize the GPS state from storage or default to false
     setState(() {
-      _gpsEnabled = StorageService.read('gpsEnableService');
+      _gpsEnabled = StorageService.read('gpsEnableService') ?? false;
       _isToggled = _gpsEnabled;
     });
   }
