@@ -1,7 +1,7 @@
 import 'package:stringly/intraction.dart';
 import 'package:stringly/models/user_profile_params_model.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
-import './notifications/NotificationService.dart';
+import 'NotificationService.dart';
 import 'package:get_storage/get_storage.dart';
 
 class MatchedQueue {

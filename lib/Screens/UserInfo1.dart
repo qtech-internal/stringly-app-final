@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:get/get_common/get_reset.dart';
-import 'package:stringly/intraction.dart';
-import 'package:stringly/nested_dropdown.dart';
 import '../Reuseable Widget/GradientWidget.dart';
 import '../Reuseable Widget/gradienttextfield.dart';
 import '../models/user_input_params.dart';

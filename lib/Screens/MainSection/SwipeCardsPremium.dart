@@ -1,6 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 
-import './../../matched_queue.dart';
+import '../../notifications/matched_queue.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
