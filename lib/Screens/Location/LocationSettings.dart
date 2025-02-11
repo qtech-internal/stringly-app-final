@@ -19,7 +19,10 @@ class _LocationSettingsState extends State<LocationSettings> {
   void initState() {
     super.initState();
     // Initialize the GPS state from storage or default to false
-    _gpsEnabled = StorageService.read('gpsEnableService') ?? widget.gpsEnabled;
+    setState(() {
+      _gpsEnabled = StorageService.read('gpsEnableService');
+      _isToggled = _gpsEnabled;
+    });
   }
 
   // Function to toggle GPS setting
@@ -41,6 +44,7 @@ class _LocationSettingsState extends State<LocationSettings> {
         _isToggled = !_isToggled;
       });
     }
+    StorageService.write('gpsEnableService', _isToggled);
   }
 
   // Function to show the GPS permission dialog
@@ -110,9 +114,13 @@ class _LocationSettingsState extends State<LocationSettings> {
                 child: ElevatedButton(
                   onPressed: () {
                     // Update GPS state when the user clicks "Allow"
+
+                    StorageService.write('gpsEnableService', !_isToggled);
                     setState(() {
-                      _isToggled = true; // Turn on GPS
+                      _isToggled = StorageService.read(
+                          'gpsEnableService'); // Turn on GPS
                     });
+
                     Navigator.of(context).pop(); // Close the dialog
                     _showGpsOverlay(); // Show the GPS overlay
                   },
@@ -159,8 +167,7 @@ class _LocationSettingsState extends State<LocationSettings> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
+                Navigator.of(context).pop();
               },
               icon: const Icon(Icons.arrow_back),
             ),

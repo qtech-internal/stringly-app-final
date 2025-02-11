@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stringly/Reuseable%20Widget/GradientWidget.dart';
 import 'package:stringly/constants/globals.dart';
 import 'package:stringly/intraction.dart';
 import 'package:stringly/models/image_field_url_to_update.dart';
@@ -27,6 +28,7 @@ class _FilterPreferencesState extends State<FilterPreferences> {
   String? initialSelectedState;
   String? alreadySetInitialPreference;
   String? userSelectedPreference;
+  final TextEditingController _selectedState = TextEditingController();
   final SingleValueDropDownController _preferenceController =
       SingleValueDropDownController();
   final List<String> _preferenceOptions = [
@@ -94,8 +96,9 @@ class _FilterPreferencesState extends State<FilterPreferences> {
           if (user.distanceBound != null) {
             _distance = user.distanceBound!.toDouble();
           }
-          if(user.preferredState != null) {
+          if (user.preferredState != null) {
             initialSelectedState = user.preferredState;
+            _selectedState.text = user.preferredState!;
           }
         });
       }
@@ -112,225 +115,238 @@ class _FilterPreferencesState extends State<FilterPreferences> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 50,
-            left: 20,
-            right: 20,
-          ),
-          child: FutureBuilder(
-            future: functionStatusData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return MessageScreenLoader.simpleLoader(
-                    text: 'Wait, Loading...');
-              } else if (snapshot.hasError) {
-                return const Center(
-                  child: Text(
-                    'Something went wrong! Please try again later.',
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                  ),
-                );
-              } else {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Select Your Preference',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    // Replace the DropdownButton with DropDownTextField
-                    GradientdropdownTextField(
-                      hintText: 'Select your preference',
-                      items: _preferenceOptions,
-                      initialValue: alreadySetInitialPreference ?? null,
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() {
-                            userSelectedPreference = value?.value;
-                          });
-                        }
-                      },
-                      label: const Text('Who would you prefer to date?'),
-                    ),
-
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Specify the age range',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Lower Value
-                        Text(
-                          '${_ageRangeStart.round()}',
-                          key: ValueKey(
-                              _ageRangeStart), // Unique key for animation
-                          style: GoogleFonts.roboto(
-                              fontSize: 16,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500),
-                        ),
-
-                        // Upper Value
-                        Text(
-                          '${_ageRangeEnd.round()}',
-                          key: ValueKey(
-                              _ageRangeEnd), // Unique key for animation
-                          style: GoogleFonts.roboto(
-                              fontSize: 16,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-
-                    // The GradientRangeSlider widget
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: GradientRangeSlider(
-                              lowerValue: _ageRangeStart,
-                              upperValue: _ageRangeEnd,
-                              minValue: 18,
-                              maxValue: 80,
-                              onChanged: (RangeValues values) {
-                                setState(() {
-                                  _ageRangeStart = values.start;
-                                  _ageRangeEnd = values.end;
-                                });
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Specify the distance bound',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(height: 20),
-
-                    const SizedBox(
-                      width: 260,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 50,
+                left: 20,
+                right: 20,
+              ),
+              child: FutureBuilder(
+                future: functionStatusData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return MessageScreenLoader.simpleLoader(
+                        text: 'Wait, Loading...');
+                  } else if (snapshot.hasError) {
+                    return const Center(
                       child: Text(
-                        '${_distance.round()} km', // Display value in km with brackets
-                        key: ValueKey(_distance), // Unique key for animation
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500),
+                        'Something went wrong! Please try again later.',
+                        style: TextStyle(fontSize: 16, color: Colors.red),
                       ),
-                    ), // End of Row for Distance Display
-
-                    // Distance Bound Slider
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Row(
-                        children: [
-                          // Gradient Slider
-                          Expanded(
-                            child: GradientSlider(
-                              value: _distance,
-                              onChanged: (double value) {
-                                setState(() {
-                                  _distance = value;
-                                  selectedState = null;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ), // End of Row for Distance Slider
-                    const SizedBox(height: 30),
-                    if (_distance >= 100)
-                      GradientdropdownTextField(
-                        hintText: 'Choose a State',
-                        items: states,
-                        initialValue: initialSelectedState,
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() {
-                              selectedState = value?.value;
-                            });
-                          }
-                        },
-                        label: const Text('Select Your State'),
-                      ),
-
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    );
+                  } else {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 50, // Adjust height as needed
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colors.black,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Select Your Preference',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        // Replace the DropdownButton with DropDownTextField
+                        GradientdropdownTextField(
+                          hintText: 'Select your preference',
+                          items: _preferenceOptions,
+                          initialValue: alreadySetInitialPreference ?? null,
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() {
+                                userSelectedPreference = value?.value;
+                              });
+                            }
+                          },
+                          label: const Text('Who would you prefer to date?'),
+                        ),
+
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Specify the age range',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Lower Value
+                            Text(
+                              '${_ageRangeStart.round()}',
+                              key: ValueKey(
+                                  _ageRangeStart), // Unique key for animation
+                              style: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                            ),
+
+                            // Upper Value
+                            Text(
+                              '${_ageRangeEnd.round()}',
+                              key: ValueKey(
+                                  _ageRangeEnd), // Unique key for animation
+                              style: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+
+                        // The GradientRangeSlider widget
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: GradientRangeSlider(
+                                  lowerValue: _ageRangeStart,
+                                  upperValue: _ageRangeEnd,
+                                  minValue: 18,
+                                  maxValue: 80,
+                                  onChanged: (RangeValues values) {
+                                    setState(() {
+                                      _ageRangeStart = values.start;
+                                      _ageRangeEnd = values.end;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+                        const Text(
+                          'Specify the distance bound',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 20),
+
+                        const SizedBox(
+                          width: 260,
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${_distance.round()} km', // Display value in km with brackets
+                            key:
+                                ValueKey(_distance), // Unique key for animation
+                            style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ), // End of Row for Distance Display
+
+                        // Distance Bound Slider
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Row(
+                            children: [
+                              // Gradient Slider
+                              Expanded(
+                                child: GradientSlider(
+                                  value: _distance,
+                                  onChanged: (double value) {
+                                    setState(() {
+                                      _distance = value;
+                                      selectedState = null;
+                                    });
+                                  },
                                 ),
                               ),
-                              onPressed: () async {
-                                RequestProcessLoader.openLoadingDialog();
-                                UpdateUserAccountModel updateUserModel =
-                                    UpdateUserAccountModel();
-                                updateUserModel.updateField(
-                                    'preferToDate', userSelectedPreference);
-                                updateUserModel.updateField(
-                                    'minPreferredAge', _ageRangeStart.round());
-                                updateUserModel.updateField(
-                                    'maxPreferredAge', _ageRangeEnd.round());
-                                updateUserModel.updateField(
-                                    'distanceBound', _distance.round());
-                                updateUserModel.updateField('preferredState', selectedState);
-                                await Intraction.updateLoggedUserAccount(
-                                    updateUserModel);
-                                RequestProcessLoader.stopLoading();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Mainscreennav(),
-                                  ),
-                                );
-                              },
-                              child: const Text('Done'),
-                            ),
+                            ],
                           ),
+                        ), // End of Row for Distance Slider
+                        const SizedBox(height: 30),
+                        if (_distance >= 100)
+                          GradientTextField(
+                              controller: _selectedState,
+                              label: const Text('Enter a State'),
+                              hintText: 'State'),
+                        // GradientdropdownTextField(
+                        //   hintText: 'Choose a State',
+                        //   items: states,
+                        //   initialValue: initialSelectedState,
+                        //   onChanged: (value) {
+                        //     if (value != null) {
+                        //       setState(() {
+                        //         selectedState = value?.value;
+                        //       });
+                        //     }
+                        //   },
+                        //   label: const Text('Select Your State'),
+                        // ),
+
+                        const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 50, // Adjust height as needed
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.black,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    RequestProcessLoader.openLoadingDialog();
+                                    UpdateUserAccountModel updateUserModel =
+                                        UpdateUserAccountModel();
+                                    updateUserModel.updateField(
+                                        'preferToDate', userSelectedPreference);
+                                    updateUserModel.updateField(
+                                        'minPreferredAge',
+                                        _ageRangeStart.round());
+                                    updateUserModel.updateField(
+                                        'maxPreferredAge',
+                                        _ageRangeEnd.round());
+                                    updateUserModel.updateField(
+                                        'distanceBound', _distance.round());
+                                    updateUserModel.updateField(
+                                        'preferredState', _selectedState.text);
+                                    await Intraction.updateLoggedUserAccount(
+                                        updateUserModel);
+                                    RequestProcessLoader.stopLoading();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Mainscreennav(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Done'),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(
+                          height: 20,
+                        )
                       ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    )
-                  ],
-                );
-              }
-            },
+                    );
+                  }
+                },
+              ),
+            ),
           ),
         ),
       ),

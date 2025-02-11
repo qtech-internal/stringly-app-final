@@ -127,7 +127,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                         site: widget.site,
                         senderId: widget.imageData['logged_user_id'],
                       );
-
+                      widget.onSwipeComplete();
                       if (isRight) {
                         // Intraction.rightSwipe(swipeInput);
 
@@ -135,8 +135,6 @@ class _AnimatedCardState extends State<AnimatedCard> {
                       } else {
                         Intraction.leftSwipe(swipeInput);
                       }
-
-                      widget.onSwipeComplete();
                     } else {
                       setState(() {
                         cardOffset = Offset.zero;
@@ -201,11 +199,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                errorWidget: (context, url, error) => Container(
-                                  color: Colors.grey,
-                                  child: const Icon(Icons.broken_image,
-                                      color: Colors.white, size: 50.0),
-                                ),
+                                errorWidget: (context, url, error) =>
+                                    const SizedBox.shrink(),
                               ),
                               Positioned.fill(
                                 child: Container(
@@ -316,6 +311,10 @@ class _AnimatedCardState extends State<AnimatedCard> {
                                 );
                               },
                             );
+                            Intraction.addSuperLike(
+                                userId: widget.imageData['logged_user_id']!,
+                                receiverId: widget
+                                    .imageData['current_profile_user_id']!);
                           },
                           child: Image.asset(
                             'assets/SUPERLIKE_new.png',

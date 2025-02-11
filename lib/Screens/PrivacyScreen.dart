@@ -15,7 +15,10 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   void initState() {
     super.initState();
     // Read the stored value and update the local state
-    _isProfileVisible = StorageService.read('profileVisibility') ?? false;
+    setState(() {
+      _isProfileVisible = StorageService.read('profileVisibility');
+      _isToggled = _isProfileVisible;
+    });
   }
 
   void _toggleProfileVisibility(bool value) {
@@ -31,6 +34,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
     setState(() {
       _isToggled = !_isToggled;
     });
+    StorageService.write('profileVisibility', _isToggled);
   }
 
   @override
@@ -47,7 +51,8 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                 'assets/priv.png',
                 width: 24,
                 height: 24,
-              fit: BoxFit.contain,),
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(width: 8),
             const Text(
@@ -68,7 +73,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 30,),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     Text(
                       'Profile Visibility',
                       style: TextStyle(
@@ -99,7 +106,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Align(
-                        alignment: _isToggled ? Alignment.centerRight : Alignment.centerLeft,
+                        alignment: _isToggled
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
                         child: Container(
                           width: 22,
                           height: 22,
@@ -125,7 +134,10 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               ],
             ),
           ),
-          const Divider(color: Color(0xfff1eeee), height: 0.1,)
+          const Divider(
+            color: Color(0xfff1eeee),
+            height: 0.1,
+          )
           // Additional content can be added here
         ],
       ),

@@ -658,40 +658,40 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                               height: 24),
                         ),
                         const SizedBox(width: 12),
-                        GestureDetector(
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Center(
-                                    child: Text('Coming soon...........')),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/coin2.png',
-                                height: 12,
-                                width: 12,
-                              ),
-                              const SizedBox(width: 2),
-                              const Flexible(
-                                // Use Flexible to prevent overflow
-                                child: Text(
-                                  '0',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow
-                                        .ellipsis, // Handle overflow
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //         content: Center(
+                        //             child: Text('Coming soon...........')),
+                        //         duration: Duration(seconds: 2),
+                        //       ),
+                        //     );
+                        //   },
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       Image.asset(
+                        //         'assets/coin2.png',
+                        //         height: 12,
+                        //         width: 12,
+                        //       ),
+                        //       const SizedBox(width: 2),
+                        //       const Flexible(
+                        //         // Use Flexible to prevent overflow
+                        //         child: Text(
+                        //           '0',
+                        //           style: TextStyle(
+                        //             fontSize: 18,
+                        //             fontWeight: FontWeight.bold,
+                        //             overflow: TextOverflow
+                        //                 .ellipsis, // Handle overflow
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
@@ -1128,15 +1128,15 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                         //                                   seconds:
                                         //                                       1),
                                         //                         ));
-                                        //                         // Intraction.addSuperLike(
-                                        //                         //     userId: imageData[
-                                        //                         //         'logged_user_id']!,
-                                        //                         //     receiverId: imageData[
-                                        //                         //         'current_profile_user_id']!);
-                                        //                         // showSuperLikeOverlay(
-                                        //                         //     imageData['name']!,
-                                        //                         //     details
-                                        //                         //         .globalPosition);
+                                        // Intraction.addSuperLike(
+                                        //     userId: imageData[
+                                        //         'logged_user_id']!,
+                                        //     receiverId: imageData[
+                                        //         'current_profile_user_id']!);
+                                        // showSuperLikeOverlay(
+                                        //     imageData['name']!,
+                                        //     details
+                                        //         .globalPosition);
                                         //                       },
                                         //                       child: Image.asset(
                                         //                         'assets/SUPERLIKE_new.png',

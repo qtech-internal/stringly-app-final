@@ -40,14 +40,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         imagePath: 'assets/svg/octicon_bell-24.svg',
         text: 'Notifications',
         route: NotificationScreen()),
-    SettingOptionData(
-        imagePath: 'assets/svg/fluent_payment-16-regular.svg',
-        text: 'Subscription & Payment',
-        route: SubscriptionScreen()),
-    SettingOptionData(
-        imagePath: 'assets/svg/fluent_reward-20-regular.svg',
-        text: 'Reward Points Management',
-        route: RewardPointsSettings()),
+    // SettingOptionData(
+    //     imagePath: 'assets/svg/fluent_payment-16-regular.svg',
+    //     text: 'Subscription & Payment',
+    //     route: SubscriptionScreen()),
+    // SettingOptionData(
+    //     imagePath: 'assets/svg/fluent_reward-20-regular.svg',
+    //     text: 'Reward Points Management',
+    //     route: RewardPointsSettings()),
     SettingOptionData(
         imagePath: 'assets/svg/material-symbols_help-outline.svg',
         text: 'Help & Support',
@@ -152,10 +152,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     // Navigator.of(context).push(MaterialPageRoute(
                     //     builder: (context) => Welcomepage()));
 
-                   Intraction.loggedUserAccount = null;
-                   Intraction.loggedUserId = null;
-                   Intraction.loggedUserPrincipal = null;
-                   Intraction.actor = null;
+                    Intraction.loggedUserAccount = null;
+                    Intraction.loggedUserId = null;
+                    Intraction.loggedUserPrincipal = null;
+                    Intraction.actor = null;
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) =>
