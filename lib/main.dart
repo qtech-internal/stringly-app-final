@@ -277,10 +277,6 @@ class _WelcomepageState extends State<Welcomepage>
 
   Future<void> _manualLogin(Uri uri) async {
     debugPrint("Manual login triggered with URI: ${uri.toString()}");
-
-    List<dynamic> result = await AuthLogIn.fetchAgent(
-        uri.queryParameters, isLocal, backendCanisterId, idlService);
-
     if (!StorageService.hasData('FirstTimeOpeningThisApp')) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         FirstLoader.openLoadingDialog();
@@ -288,6 +284,9 @@ class _WelcomepageState extends State<Welcomepage>
     } else {
       FirstLoader.openLoadingDialog();
     }
+    List<dynamic> result = await AuthLogIn.fetchAgent(
+        uri.queryParameters, isLocal, backendCanisterId, idlService);
+
     if (result.isNotEmpty) {
       // Ensure we are calling setState only after the build process
       // start loader
