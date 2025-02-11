@@ -6,6 +6,7 @@ import 'package:flutter_icp_auth/internal/url_listener.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:stringly/GetxControllerAndBindings/initialBindings.dart';
+import 'package:stringly/Reuseable%20Widget/snackbar/custom_snack_bar.dart';
 import 'package:stringly/Screens/error/technicalError.dart';
 import 'package:stringly/Screens/loaders/first_loader.dart';
 import 'package:stringly/StorageServices/get_storage_service.dart';
@@ -326,11 +327,13 @@ class _WelcomepageState extends State<Welcomepage>
             // stop loader
             FirstLoader.stopLoading();
             _principalId = "Log in to see your principal";
+            CustomSnackbar.errorSnackbar(message: 'Login failed, Please try again...');
           }
         });
       }
     } else {
       FirstLoader.stopLoading();
+      CustomSnackbar.errorSnackbar(message: 'Login failed, Please try again...');
     }
   }
 
