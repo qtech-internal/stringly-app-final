@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../GetxControllerAndBindings/controllers/whoLikeYouController/whoLikedYouController.dart';
 import '../Reward Settings/RewardsPage.dart';
+import '../error/tech_error_widget.dart';
+import '../loaders/message_screen_loader.dart';
 import 'RewardAcheivedOverlay.dart';
 
 class PremiumVariation1 extends StatelessWidget {
@@ -23,11 +25,43 @@ class PremiumVariation1 extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Obx(() {
           if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
+            return MessageScreenLoader.simpleLoader(text: 'Wait, Loading...');
           } else if (controller.errorMessage.value.isNotEmpty) {
-            return Center(child: Text(controller.errorMessage.value));
-          } else if (controller.allRightSwipeData.isEmpty && !controller.dataFetched.value) {
-            return const Center(child: Text('No Likes Just Yet!'));
+            return technicalErrorWidget();
+          } else if (controller.allRightSwipeData.isEmpty &&
+              !controller.dataFetched.value) {
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage('assets/no_likes.png'),
+                    height: 120,
+                    width: 120,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'No Likes Just Yet!',
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'SFProDisplay'),
+                  ),
+                  SizedBox(height: 8),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'Finding the right match takes time. Stay active—you never know who’s next!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'SFProDisplay'),
+                    ),
+                  )
+                ],
+              ),
+            );
           } else {
             return Column(
               children: [

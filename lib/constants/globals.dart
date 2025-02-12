@@ -8,7 +8,7 @@ class GlobalConstant {
   static String middlePageCanisterId = 'ehmai-2qaaa-aaaag-att2a-cai';
   static bool isLocal = false;
 
-  static bool isLoggedIn=false;
+  static bool isLoggedIn = false;
 
   static String googleMapApiKey = "AIzaSyBr2rLjHYyCQPf82mpqckqgFkfqRsEW8wo";
 
@@ -19,8 +19,7 @@ class GlobalConstant {
   // logged user principal and User id
   static String? principal;
   static String? userId;
-   // to navigate to different screen
+  // to navigate to different screen
   static bool checkUserProfileCreateOrNot = false;
-  static GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
