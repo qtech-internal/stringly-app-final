@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_icp_auth/authentication/login.dart';
 import 'package:flutter_icp_auth/internal/url_listener.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
   await FlutterLocalNotificationsPlugin()
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
@@ -34,12 +36,12 @@ void main() async {
   await GetStorage.init();
   await NotificationService.initialize();
   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCaLnXztz3oYyXT9RaY1PoVDkQ54bCoHeY",
-      appId: "1:46516214045:android:29d70492fae2d540aae9f4",
-      messagingSenderId: "46516214045",
-      projectId: "stringly-76c69",
-      storageBucket: "stringly-76c69.appspot.com",
+    options: FirebaseOptions(
+      apiKey: dotenv.env['FIREBASE_API_KEY']!,
+      appId: dotenv.env['FIREBASE_APP_ID']!,
+      messagingSenderId: dotenv.env['FIREBASE_MESSAGE_SENDER_ID']!,
+      projectId: dotenv.env['FIREBASE_PROJECT_ID']!,
+      storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET_ID']!,
     ),
   );
 

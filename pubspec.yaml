@@ -3,7 +3,7 @@ description: "stringly"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+9
+version: 1.0.0+13
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -50,6 +50,7 @@ dependencies:
   cached_network_image: ^3.3.0
   shimmer: ^3.0.0
   image_cropper: ^5.0.1
+  flutter_dotenv: ^5.2.1
 
 dependency_overrides:
   http: ^0.13.1
@@ -82,4 +83,5 @@ flutter:
     - assets/newNavBarIcon/
     - assets/hobbies/
     - assets/newImage/
+    - .env
 
