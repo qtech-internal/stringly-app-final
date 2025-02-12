@@ -1,22 +1,17 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import '../../GetxControllerAndBindings/controllers/whoLikeYouController/whoLikedYouController.dart';
 import '../Reward Settings/RewardsPage.dart';
 import 'RewardAcheivedOverlay.dart';
 
-class PremiumVariation1 extends StatefulWidget {
+class PremiumVariation1 extends StatelessWidget {
   const PremiumVariation1({Key? key}) : super(key: key);
 
   @override
-  _PremiumVariation1State createState() => _PremiumVariation1State();
-}
-
-class _PremiumVariation1State extends State<PremiumVariation1> {
-  bool isPremium = false; // Flag to track if the user has upgraded to premium
-  String profileText = '33 Liked Your Profile'; // Initial profile text
-
-  @override
   Widget build(BuildContext context) {
+    final WhoLikeYouPageController controller = Get.put(WhoLikeYouPageController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -26,86 +21,71 @@ class _PremiumVariation1State extends State<PremiumVariation1> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                profileText, // Use the state variable for text
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView(
-                children: [
-                  // Match Cards
-                  MatchCard(
-                    image: 'assets/img.png',
-                    isPremium: isPremium,
-                    sideColor: Color(0xFFC6C6EF),
-                    overlayIcon: 'assets/link2.png',
-                  ),
-                  MatchCard(
-                    image: 'assets/img_1.png',
-                    isPremium: isPremium,
-                    sideColor: Color(0xFFDC73B6),
-                    overlayIcon: 'assets/heart.png',
-                  ),
-                  MatchCard(
-                    image: 'assets/img_2.png',
-                    isPremium: isPremium,
-                    sideColor: Color(0xFFC6C6EF),
-                    overlayIcon: 'assets/link2.png',
-                  ),
-                  MatchCard(
-                    image: 'assets/img_3.png',
-                    isPremium: isPremium,
-                    sideColor: Color(0xFFDC73B6),
-                    overlayIcon: 'assets/heart.png',
-                  ),
-                  MatchCard(
-                    image: 'assets/img_4.png',
-                    isPremium: isPremium,
-                    sideColor: Color(0xFFC6C6EF),
-                    overlayIcon: 'assets/link2.png',
-                  ),
-                ],
-              ),
-            ),
-            // Update to Premium Button, only visible if not premium
-            if (!isPremium) // Show the button only if the user is not premium
-              SizedBox(
-                height: 50,
-                width: 300, // Set the width to 300 pixels
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Show the overlay dialog
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return RewardAchievedOverlay();
-                      },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // Button background color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(child: CircularProgressIndicator());
+          } else if (controller.errorMessage.value.isNotEmpty) {
+            return Center(child: Text(controller.errorMessage.value));
+          } else if (controller.allRightSwipeData.isEmpty && !controller.dataFetched.value) {
+            return const Center(child: Text('No Likes Just Yet!'));
+          } else {
+            return Column(
+              children: [
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '${controller.allRightSwipeData.length} Liked Your Profile',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
                   ),
-                  child: const Text(
-                    'Upgrade to Premium',
-                    style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 20),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: controller.allRightSwipeData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var data = controller.allRightSwipeData[index];
+                      return MatchCard(
+                        image: data['image'],
+                        sideColor: data['context'] == 'dating' ? Color(0xFFDC73B6) : Color(0xFFC6C6EF),
+                        overlayIcon: data['context'] == 'dating' ? 'assets/heart.png' : 'assets/link2.png',
+                      );
+                    },
                   ),
                 ),
-              ),
-          ],
-        ),
+                // Always show the Upgrade to Premium button
+                SizedBox(
+                  height: 50,
+                  width: 300, // Set the width to 300 pixels
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Show the overlay dialog
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return RewardAchievedOverlay();
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black, // Button background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // Rounded corners
+                      ),
+                    ),
+                    child: const Text(
+                      'Upgrade to Premium',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        }),
       ),
     );
   }
@@ -113,14 +93,12 @@ class _PremiumVariation1State extends State<PremiumVariation1> {
 
 class MatchCard extends StatelessWidget {
   final String image;
-  final bool isPremium;
   final Color sideColor;
   final String overlayIcon; // New parameter for overlay icon
 
   const MatchCard({
     Key? key,
     required this.image,
-    required this.isPremium,
     required this.sideColor,
     required this.overlayIcon, // Receive the overlay icon as a parameter
   }) : super(key: key);
@@ -137,7 +115,6 @@ class MatchCard extends StatelessWidget {
       child: Container(
         height: 100,
         child: ListTile(
-
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Stack(
@@ -155,41 +132,38 @@ class MatchCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                // Blur effect if not premium
-                if (!isPremium)
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                // Blur effect since the user is not premium
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                // Lock image overlay if not premium
-                if (!isPremium)
-                  const Icon(Icons.lock_outline, color: Colors.white),
+                ),
+                // Lock image overlay since the user is not premium
+                const Icon(Icons.lock_outline, color: Colors.white),
 
                 // Add the icon image in the corner (outside the blur area)
-                if (!isPremium)
-                  Positioned(
-                    bottom: 2,
-                    right: -3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white, // Add background color to make it stand out
-                      ),
-                      padding: const EdgeInsets.all(2), // Add padding inside the container
-                      child: Image.asset(
-                        overlayIcon, // Use the passed icon image
-                        width: 20,
-                        height: 20,
-                      ),
+                Positioned(
+                  bottom: 2,
+                  right: -3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white, // Add background color to make it stand out
+                    ),
+                    padding: const EdgeInsets.all(2), // Add padding inside the container
+                    child: Image.asset(
+                      overlayIcon, // Use the passed icon image
+                      width: 20,
+                      height: 20,
                     ),
                   ),
+                ),
               ],
             ),
           ),
