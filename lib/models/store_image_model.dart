@@ -27,21 +27,25 @@ class GetImageUrlOfUploadFile {
   static Future<void> imageUrlFiles() async {
     List<File> storeFile = StoreImageFile.getAllImages();
     List<String?> imageUrls = [];
-      imageUrls = await Future.wait(
-            storeFile
-            .where((image) => image?.path != null)
-            .map((image) async {
-          File profileImage = File(image!.path);
+    print('Upload Method Called ------------');
+    imageUrls = await Future.wait(
+      storeFile.where((image) => image?.path != null).map((image) async {
+        File profileImage = File(image!.path);
 
-          final imageUrl = await ImageUploadAndGetUrl.uploadImageAndGetUrl(pickedFile: profileImage);
+        final imageUrl = await ImageUploadAndGetUrl.uploadImageAndGetUrl(
+            pickedFile: profileImage);
 
-          if (imageUrl != null && imageUrl.containsKey('Ok') && imageUrl['Ok'] is String) {
-            return imageUrl['Ok'] as String;
-          } else {
-            return null;
-          }
-        }),
-      );
+        print("Image URL :$imageUrl");
+
+        if (imageUrl != null &&
+            imageUrl.containsKey('Ok') &&
+            imageUrl['Ok'] is String) {
+          return imageUrl['Ok'] as String;
+        } else {
+          return null;
+        }
+      }),
+    );
     imageUrls = imageUrls.whereType<String>().toList();
     final userInputParams = UserInputParams();
     userInputParams.updateField('images', imageUrls);
@@ -52,16 +56,19 @@ class GetImageUrlOfUploadFile {
 class UpdateProfileImageToGetUrl {
   static Future<List<String?>> imageUrlFiles() async {
     List<File> storeFile = StoreImageFile.getAllImages();
+    print('Image Upload Method Called -----------');
     List<String?> imageUrls = [];
     imageUrls = await Future.wait(
-      storeFile
-          .where((image) => image?.path != null)
-          .map((image) async {
+      storeFile.where((image) => image?.path != null).map((image) async {
         File profileImage = File(image!.path);
 
-        final imageUrl = await ImageUploadAndGetUrl.uploadImageAndGetUrl(pickedFile: profileImage);
+        final imageUrl = await ImageUploadAndGetUrl.uploadImageAndGetUrl(
+            pickedFile: profileImage);
+        print('Image URL:$imageUrl');
 
-        if (imageUrl != null && imageUrl.containsKey('Ok') && imageUrl['Ok'] is String) {
+        if (imageUrl != null &&
+            imageUrl.containsKey('Ok') &&
+            imageUrl['Ok'] is String) {
           return imageUrl['Ok'] as String;
         } else {
           return null;

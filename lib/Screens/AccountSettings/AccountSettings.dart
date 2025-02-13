@@ -626,54 +626,33 @@ class _AccountSettingState extends State<AccountSetting> {
                                       (i) => Padding(
                                         padding:
                                             const EdgeInsets.only(right: 15),
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              width: 90,
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.file(
-                                                  selectedImages[i],
-                                                  fit: BoxFit.cover,
+                                        child: Container(
+                                          width: 90,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image: FileImage(
+                                                    selectedImages[i],
+                                                  ),
+                                                  fit: BoxFit.cover)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                "Uploading...",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                            ),
-                                            Positioned.fill(
-                                              child: Container(
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black
-                                                      .withOpacity(0.3),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    const Text(
-                                                      "Uploading...",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 8),
-                                                    UploadProgressWidget(
-                                                        index: i),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 8),
+                                              UploadProgressWidget(index: i),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

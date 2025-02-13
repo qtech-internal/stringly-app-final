@@ -24,35 +24,33 @@ class _UploadProgressWidgetState extends State<UploadProgressWidget> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Positioned.fill(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    height: 6,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: LinearProgressIndicator(
-                      value: controller.progress[widget.index]!
-                          .value, // Bind the progress here
-                      backgroundColor: Colors.white,
-                      color: Colors.lightBlueAccent,
-                      // Progress color
-                    ),
+      () => Container(
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 3.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: 6,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: LinearProgressIndicator(
+                    value: controller.progress[widget.index]!
+                        .value, // Bind the progress here
+                    backgroundColor: Colors.white,
+                    color: Colors.lightBlueAccent,
+                    // Progress color
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
