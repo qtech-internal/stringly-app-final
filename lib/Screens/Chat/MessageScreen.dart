@@ -63,42 +63,43 @@ class _MessagesScreenState extends State<MessagesScreen> {
               padding: const EdgeInsets.only(right: 10),
               child: Stack(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xFFD83694),
-                          Color(0xFF0039C7),
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.bottomRight,
+                  InkWell(
+                    onTap: () {
+                      Get.put(ProfileController());
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const AccountSetting()));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFD83694),
+                            Color(0xFF0039C7),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: controller.loggedUserImage.value != null
-                          ? CachedNetworkImageProvider(
-                              controller.loggedUserImage.value!)
-                          : null,
-                      backgroundColor: Colors.grey[300],
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage:
+                            controller.loggedUserImage.value != null
+                                ? CachedNetworkImageProvider(
+                                    controller.loggedUserImage.value!)
+                                : null,
+                        backgroundColor: Colors.grey[300],
+                      ),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     bottom: -2,
                     right: -1,
-                    child: InkWell(
-                      onTap: () {
-                        Get.put(ProfileController());
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const AccountSetting()));
-                      },
-                      child: const Icon(
-                        Icons.edit_outlined,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+                    child: Icon(
+                      Icons.edit_outlined,
+                      color: Colors.white,
+                      size: 20,
                     ),
                   ),
                 ],

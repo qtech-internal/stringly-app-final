@@ -211,54 +211,57 @@ class _ImageBioScreenState extends State<ImageBioScreen> {
                                 ),
                               ),
                               if (iconState[i] == true)
-                              Positioned(
-                                  top: 30,
-                                  right: 35,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        allCombinedImages.removeAt(i);
-                                        iconState.remove(i);
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(5)
+                                Positioned(
+                                    top: 30,
+                                    right: 35,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          allCombinedImages.removeAt(i);
+                                          iconState.remove(i);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: const Center(
+                                            child: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                          size: 20,
+                                        )),
                                       ),
-                                      child: const Center(child: Icon(Icons.delete, color:  Colors.red, size: 20,)),
-                                    ),
-                                  )
-                              ),
+                                    )),
                               if (iconState[i] != true)
-                              Positioned(
-                                bottom: 0,
-                                  right: 20,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        iconState[i] = true; // Show the center icon
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 15,
-                                      width: 50,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(5),
-                                          topLeft: Radius.circular(5)
-                                        )
+                                Positioned(
+                                    bottom: 0,
+                                    right: 20,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          iconState[i] =
+                                              true; // Show the center icon
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 15,
+                                        width: 50,
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(5),
+                                                topLeft: Radius.circular(5))),
+                                        child: const Image(
+                                          image: AssetImage(
+                                              'assets/image_delete_action.png'),
+                                        ),
                                       ),
-                                      child: const Image(
-                                          image: AssetImage('assets/image_delete_action.png'),
-                                      ),
-                                    ),
-                                  )
-                              )
+                                    ))
                             ],
                           ),
                         )
@@ -355,13 +358,25 @@ class _ImageBioScreenState extends State<ImageBioScreen> {
               const SizedBox(
                 height: 20,
               ),
-              _buildBioField('Institute\'s name', userInputParams.instituteName ?? 'Institute\'s name'),
-              SizedBox(height: 20,),
-              _buildBioField('Graduation Year', userInputParams.graduationYear != null ? userInputParams.graduationYear.toString() : 'Graduation Year'),
-              SizedBox(height: 20,),
+              _buildBioField('Institute\'s name',
+                  userInputParams.instituteName ?? 'Institute\'s name'),
+              SizedBox(
+                height: 20,
+              ),
+              _buildBioField(
+                  'Graduation Year',
+                  userInputParams.graduationYear != null
+                      ? userInputParams.graduationYear.toString()
+                      : 'Graduation Year'),
+              SizedBox(
+                height: 20,
+              ),
               _buildBioField('Job Role', userInputParams.jobRole ?? 'Job Role'),
-              SizedBox(height: 20,),
-              _buildBioField('Company\'s name', userInputParams.company ?? 'Company\'s name'),
+              SizedBox(
+                height: 20,
+              ),
+              _buildBioField('Company\'s name',
+                  userInputParams.company ?? 'Company\'s name'),
               const SizedBox(height: 50),
 
               // Next Button
@@ -371,9 +386,11 @@ class _ImageBioScreenState extends State<ImageBioScreen> {
                   width: 350,
                   child: ElevatedButton(
                     onPressed: () async {
+                      RequestProcessLoader.openLoadingDialog();
                       await _processSelectedImages();
                       if (!GlobalConstant.checkUserProfileCreateOrNot) {
                         if (StoreImageFile.allSelectFile.length < 2) {
+                          RequestProcessLoader.stopLoading();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
@@ -389,11 +406,11 @@ class _ImageBioScreenState extends State<ImageBioScreen> {
                             ),
                           );
                         } else {
-                          RequestProcessLoader.openLoadingDialog();
                           await GetImageUrlOfUploadFile.imageUrlFiles();
                           await Intraction.createAnUser(userInputParams);
                           RequestProcessLoader.stopLoading();
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Mainscreennav()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Mainscreennav()));
                         }
                       } else {
                         // Navigator.of(context).push(MaterialPageRoute(
