@@ -113,28 +113,33 @@ class _DetailedDatingState extends State<DetailedDating> {
                   alignment: Alignment.center,
                   children: [
                     // The image with error handling and gradient
-                    Container(
+                    SizedBox(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Stack(
                           children: [
                             // Image with error handling
-                            Image.network(
-                              images[0],
-                              height: 400,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                // Show a broken image icon if there's an error
-                                return const Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    size: 50,
-                                    color: Colors.grey,
+                            images.isEmpty
+                                ? const SizedBox(
+                                    width: double.infinity,
+                                    height: 200,
+                                  )
+                                : Image.network(
+                                    images[0],
+                                    height: 400,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      // Show a broken image icon if there's an error
+                                      return const Center(
+                                        child: Icon(
+                                          Icons.broken_image,
+                                          size: 50,
+                                          color: Colors.grey,
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
                             // Gradient overlay with specific height
                             Positioned.fill(
                               child: Container(
@@ -181,15 +186,16 @@ class _DetailedDatingState extends State<DetailedDating> {
                                       FontWeight.bold, // Optional: make it bold
                                 ),
                               ),
-                              TextSpan(
-                                text:
-                                    ' ${_calculateAge(widget.data.dob!).toString()}, ', // Main name text
-                                style: const TextStyle(
-                                  fontSize: 24, // Size for the main text
-                                  fontWeight:
-                                      FontWeight.bold, // Optional: make it bold
+                              if (widget.data.dob != null)
+                                TextSpan(
+                                  text:
+                                      ' ${_calculateAge(widget.data.dob!).toString()}, ', // Main name text
+                                  style: const TextStyle(
+                                    fontSize: 24, // Size for the main text
+                                    fontWeight: FontWeight
+                                        .bold, // Optional: make it bold
+                                  ),
                                 ),
-                              ),
                               TextSpan(
                                 text: widget.data.gender == 'Male'
                                     ? " He/Him"
@@ -249,8 +255,9 @@ class _DetailedDatingState extends State<DetailedDating> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             // First item at the start
-                            buildInfoItem('assets/cakeiconDD.png',
-                                _calculateAge(widget.data.dob!).toString()),
+                            if (widget.data.dob != null)
+                              buildInfoItem('assets/cakeiconDD.png',
+                                  _calculateAge(widget.data.dob!).toString()),
 
                             Spacer(),
                             buildVerticalDivider(),
@@ -423,67 +430,67 @@ class _DetailedDatingState extends State<DetailedDating> {
                 ),
 
                 // New Image Container with View More Box
-
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Stack(
-                        children: [
-                          // Blurred Image
-                          Image.network(
-                            images.first,
-                            // Replace with your new image path
-                            height: 200,
-                            width: double.infinity,
-                            fit: BoxFit.fill,
-                          ),
-                          // Applying the blur effect
-                          BackdropFilter(
-                            filter:
-                                ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                            // Adjust blur intensity
-                            child: Container(
-                              color: Colors.black.withOpacity(
-                                  0), // Transparent container to enable the blur effect
+                if (images.isNotEmpty)
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Stack(
+                          children: [
+                            // Blurred Image
+                            Image.network(
+                              images.first,
+                              // Replace with your new image path
+                              height: 200,
+                              width: double.infinity,
+                              fit: BoxFit.fill,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // View More Box
-                    Positioned(
-                      bottom: 35,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.white, // Border color
-                            width: 2, // Border width
-                          ),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            showImageOverlay(context, images);
-                          },
-                          child: const Text(
-                            'View More',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                            // Applying the blur effect
+                            BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                              // Adjust blur intensity
+                              child: Container(
+                                color: Colors.black.withOpacity(
+                                    0), // Transparent container to enable the blur effect
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      // View More Box
+                      Positioned(
+                        bottom: 35,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.white, // Border color
+                              width: 2, // Border width
+                            ),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              showImageOverlay(context, images);
+                            },
+                            child: const Text(
+                              'View More',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
 
                 const SizedBox(height: 20), // Add some spacing below the image
               ],
