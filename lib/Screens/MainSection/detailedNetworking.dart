@@ -176,14 +176,15 @@ class _DetailednetworkingState extends State<Detailednetworking> {
                               fontSize: 24, // Base font size for the main text
                             ),
                             children: <TextSpan>[
-                              TextSpan(
-                                text: widget.data.name!, // Main name text
-                                style: const TextStyle(
-                                  fontSize: 24, // Size for the main text
-                                  fontWeight:
-                                      FontWeight.bold, // Optional: make it bold
+                              if (widget.data.name != null)
+                                TextSpan(
+                                  text: widget.data.name!, // Main name text
+                                  style: const TextStyle(
+                                    fontSize: 24, // Size for the main text
+                                    fontWeight: FontWeight
+                                        .bold, // Optional: make it bold
+                                  ),
                                 ),
-                              ),
                               TextSpan(
                                 text: widget.data.gender == 'Male'
                                     ? " He/Him"
@@ -310,11 +311,13 @@ class _DetailednetworkingState extends State<Detailednetworking> {
                           thickness: 0.29,
                         ),
                         // Third Row: Want Children
-                        buildDetailItem(
-                            'assets/DNaddress.png',
-                            widget.data.locationCountry != null
-                                ? "${widget.data.locationState!}, ${widget.data.locationCountry}"
-                                : ' '),
+                        if (widget.data.locationCountry != null &&
+                            widget.data.locationState != null)
+                          buildDetailItem(
+                              'assets/DNaddress.png',
+                              widget.data.locationCountry != null
+                                  ? "${widget.data.locationState!}, ${widget.data.locationCountry}"
+                                  : ' '),
                         const Divider(
                           color: Color(0xFF5355D0),
                           thickness: 0.29,

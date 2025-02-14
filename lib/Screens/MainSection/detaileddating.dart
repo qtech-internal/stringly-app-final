@@ -178,14 +178,15 @@ class _DetailedDatingState extends State<DetailedDating> {
                               fontSize: 24, // Base font size for the main text
                             ),
                             children: <TextSpan>[
-                              TextSpan(
-                                text: widget.data.name!, // Main name text
-                                style: const TextStyle(
-                                  fontSize: 24, // Size for the main text
-                                  fontWeight:
-                                      FontWeight.bold, // Optional: make it bold
+                              if (widget.data.name != null)
+                                TextSpan(
+                                  text: widget.data.name!, // Main name text
+                                  style: const TextStyle(
+                                    fontSize: 24, // Size for the main text
+                                    fontWeight: FontWeight
+                                        .bold, // Optional: make it bold
+                                  ),
                                 ),
-                              ),
                               if (widget.data.dob != null)
                                 TextSpan(
                                   text:
@@ -300,11 +301,13 @@ class _DetailedDatingState extends State<DetailedDating> {
                           thickness: 0.29,
                         ),
                         // Fourth Row: Location
-                        buildDetailItem(
-                            'assets/DDaddress.png',
-                            widget.data.locationCountry != null
-                                ? "${widget.data.locationState!}, ${widget.data.locationCountry}"
-                                : ' '),
+                        if (widget.data.locationCountry != null &&
+                            widget.data.locationState != null)
+                          buildDetailItem(
+                              'assets/DDaddress.png',
+                              widget.data.locationCountry != null
+                                  ? "${widget.data.locationState!}, ${widget.data.locationCountry}"
+                                  : ' '),
                       ],
                     ),
                   ),
