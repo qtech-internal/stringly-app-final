@@ -78,21 +78,24 @@ class PreviewchatImage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: isLocal == true
-            ? Image.file(
-                imagePath,
-              )
-            : Image.network(
-                imagePath,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return const Center(
-                    child:
-                        CircularProgressIndicator(), // Show loading indicator while the image is loading
-                  );
-                },
-              ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Center(
+          child: isLocal == true
+              ? Image.file(
+                  imagePath,
+                )
+              : Image.network(
+                  imagePath,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return const Center(
+                      child:
+                          CircularProgressIndicator(), // Show loading indicator while the image is loading
+                    );
+                  },
+                ),
+        ),
       ),
     );
   }

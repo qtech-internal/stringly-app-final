@@ -68,6 +68,8 @@ class _ChatBoxState extends State<ChatBox> {
                     InkWell(
                         onTap: () {
                           Navigator.of(context).pop();
+                          messageController
+                              .updateRead(widget.userInfo['chat_id']);
                         },
                         child: const Icon(
                           Icons.arrow_back_outlined,

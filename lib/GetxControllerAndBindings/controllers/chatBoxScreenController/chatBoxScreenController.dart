@@ -7,6 +7,7 @@ import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenController/messageScreenController.dart';
 import 'package:stringly/Reuseable%20Widget/SelectOneImageAtOneTime.dart';
 import 'package:stringly/Screens/Chat/AudioUpload.dart';
 import 'package:stringly/Screens/FAQ%20Qusetions/Repor.dart';
@@ -24,6 +25,7 @@ class ChatScreenController extends GetxController {
   var isLoading = false.obs;
   var isUserScrolling = true.obs;
   var profileLoading = false.obs;
+  var initialScrolling = true.obs;
 
   // Integers
 
@@ -44,6 +46,8 @@ class ChatScreenController extends GetxController {
   // Services
   final FlutterSoundRecorder audioRecorder = FlutterSoundRecorder();
 
+  final messageController = Get.find<MessageScreenController>();
+
   // ------------------ INITIALIZE CHAT METHOD --------------------
 
   Future<void> _requestPermissions() async {
@@ -53,6 +57,7 @@ class ChatScreenController extends GetxController {
   Future<void> initialize(String chatId, Map<String, dynamic> userInfo) async {
     try {
       isLoading.value = true;
+      initialScrolling.value = true;
       isLoading.refresh();
       print('ISLOADING VALUE ----------------------- ${isLoading.value}');
 
@@ -60,11 +65,12 @@ class ChatScreenController extends GetxController {
       await _loadIds(chatId);
       await idsCompleter.value.future; // Wait for IDs to be ready.
       await _fetchAllUserChatWithThisUser(userInfo);
-      await getResponseMessage(userInfo);
+      await getResponseMessage(userInfo, chatId);
       await _requestPermissions();
       await audioRecorder.openRecorder();
 
       isLoading.value = false;
+
       isLoading.refresh();
     } catch (e) {
       isLoading.value = false;
@@ -82,7 +88,8 @@ class ChatScreenController extends GetxController {
     }
   }
 
-  Future<void> getResponseMessage(Map<dynamic, dynamic> userInfo) async {
+  Future<void> getResponseMessage(
+      Map<dynamic, dynamic> userInfo, String chatId) async {
     InitializeSocket.socket.emit(
         'updateMessageStatus',
         json.encode({
@@ -110,10 +117,11 @@ class ChatScreenController extends GetxController {
 
       messages.value.add(newMessage);
       messages.refresh();
-      print('Message Received ------------------------------');
+
+      //  print('Message Received ------------------------------');
 
       bool todayKeyExists = sortedMessages.value.any(
-            (message) => message['type'] == 'date' && message['date'] == 'Today',
+        (message) => message['type'] == 'date' && message['date'] == 'Today',
       );
 
       if (todayKeyExists) {
@@ -269,6 +277,7 @@ class ChatScreenController extends GetxController {
 
           messages.refresh();
           sortedMessages.value = groupMessagesByDate(messages.value);
+          sortedMessages.refresh();
         }
       }
       isUserScrolling.value = false;
@@ -415,62 +424,40 @@ class ChatScreenController extends GetxController {
       } catch (e) {
         debugPrint('Error sending message: $e');
       }
-
-      // Clear the message input after sending
     }
   }
 
   String _formatWhatsAppDateOnChatHistory(String dateTimeString) {
-    // Parse the string into a DateTime object (assumed to be in UTC)
     DateTime dateTime = DateTime.parse(dateTimeString)
         .add(Duration(hours: 5, minutes: 30)); // Convert to IST
 
-    // Get the current date and time in IST
     DateTime now = DateTime.now()
         .toUtc()
         .add(Duration(hours: 5, minutes: 30)); // Convert now to IST
 
-    // Remove the time component for accurate day comparison
     DateTime today = DateTime(now.year, now.month, now.day);
     DateTime inputDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-
-    // Get the difference in days
-    // int daysDifference = today.difference(inputDate).inDays;
 
     // Format the time
     String timeString = DateFormat('hh:mm a').format(dateTime);
     return timeString;
-    // Determine the appropriate date format
-    // if (daysDifference == 0) {
-    //   // Today
-    //   return timeString;
-    // } else if (daysDifference == 1) {
-    //   // Yesterday
-    //   return "Yesterday, $timeString";
-    // } else if (daysDifference < 7) {
-    //   // Within the last week
-    //   return "${DateFormat('EEEE').format(dateTime)}, $timeString"; // Day of the week (e.g., Monday)
-    // } else if (dateTime.year == now.year) {
-    //   // Within the same year
-    //   return "${DateFormat('d MMM').format(dateTime)}, $timeString"; // Day and month (e.g., 16 Jan)
-    // } else {
-    //   // For dates in a different year
-    //   return "${DateFormat('d MMM yyyy').format(dateTime)}, $timeString"; // Full date (e.g., 16 Jan 2024)
-    // }
   }
 
-
-
   void imageScroll() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (scrollController.value.hasClients) {
-        scrollController.value.animateTo(
-          scrollController.value.position.maxScrollExtent + 200.0,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeOut,
-        );
-      }
-    });
+    if (initialScrolling.value) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (scrollController.value.hasClients) {
+          scrollController.value.animateTo(
+            scrollController.value.position.maxScrollExtent + 200.0,
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
+
+    initialScrolling.value = false;
+    initialScrolling.refresh();
   }
 
   void scrollToBottom() {

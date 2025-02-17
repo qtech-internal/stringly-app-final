@@ -60,8 +60,9 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
     }
   }
 
+
   Future<void> _cropImage(String imagePath) async {
-    File? croppedFile = (await ImageCropper().cropImage(
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: imagePath,
       aspectRatioPresets: [
         CropAspectRatioPreset.square,
@@ -81,14 +82,15 @@ class _CustomImagePickerOneAtATimeState extends State<CustomImagePickerOneAtATim
           minimumAspectRatio: 1.0,
         ),
       ],
-    )) as File?;
+    );
 
     if (croppedFile != null) {
+      File finalCroppedFile = File(croppedFile.path); // Convert CroppedFile to File
       setState(() {
-        croppedImagePath = croppedFile.path; // Store the cropped image path
+        croppedImagePath = finalCroppedFile.path; // Store the cropped image path
         selectedImage = null; // Reset selectedImage to null
       });
-      Navigator.pop(context, [croppedFile.path]);
+      Navigator.pop(context, [finalCroppedFile.path]);
     }
   }
 

@@ -81,7 +81,7 @@ class MessageScreenController extends GetxController {
 
   Future<void> getWebSocketUserChatHistory() async {
     String principal = await Intraction.getPrincipalOnChaBox();
-    debugPrint('---------------ok $principal');
+    //  debugPrint('---------------ok $principal');
     InitializeSocket.socket
         .emit('lastMessageRequest', json.encode({'principal': principal}));
     InitializeSocket.socket.on('lastMessageResponse', (data) {
@@ -89,10 +89,10 @@ class MessageScreenController extends GetxController {
       unreadMessage.value = data['unreadMessages'];
       getAddUserChatList();
 
-      debugPrint(
-          '--------klllllllll------history------------------------- ${lastMessage.value}');
-      debugPrint(
-          '--------klllllllll------history------------------------- ${unreadMessage.value}');
+      // debugPrint(
+      //     '--------klllllllll------history------------------------- ${lastMessage.value}');
+      // debugPrint(
+      //     '--------klllllllll------history------------------------- ${unreadMessage.value}');
     });
 
     debugPrint('check for end of on for chat history');
@@ -137,8 +137,8 @@ class MessageScreenController extends GetxController {
         return result;
       }
     } catch (e) {
-      debugPrint(
-          '########################################################## $e');
+      // debugPrint(
+      //     '########################################################## $e');
       return {'Err': e};
     }
   }
@@ -162,8 +162,8 @@ class MessageScreenController extends GetxController {
             singleUserChatList['chat_id']);
         final senderId = _userInds['sender_id'];
         final receiverId = _userInds['receiver_id'];
-        debugPrint('-------senderId-----------$senderId');
-        debugPrint('-------receiverId----------$receiverId');
+        // debugPrint('-------senderId-----------$senderId');
+        // debugPrint('-------receiverId----------$receiverId');
 
         String message = '';
         String time = '';
@@ -177,7 +177,7 @@ class MessageScreenController extends GetxController {
           if (userMessageAndTime.isNotEmpty) {
             final umread =
                 findUnReadMessageFromWebSocket(unreadMessage.value, senderId);
-            debugPrint('---------------unread Messages $umread');
+            //  debugPrint('---------------unread Messages $umread');
             if (umread.isNotEmpty) {
               unReadCount = int.parse('${umread['count']}');
               debugPrint(unReadCount.toString());
@@ -428,5 +428,25 @@ class MessageScreenController extends GetxController {
       filteredMessages.value.insert(0, item);
       filteredMessages.refresh();
     }
+  }
+
+  void updateRead(String chatId) {
+    for (var message in messages.value) {
+      if (message['chat_id'] == chatId) {
+        message['unreadCount'] = 0;
+        message['isRead'] = true;
+      }
+    }
+
+    for (var message in filteredMessages.value) {
+      if (message['chat_id'] == chatId) {
+        message['unreadCount'] = 0;
+        message['isRead'] = true;
+      }
+    }
+    messages.refresh();
+    filteredMessages.refresh();
+    print('Mesasges Refreshed #######################################');
+    print('#################################################');
   }
 }
