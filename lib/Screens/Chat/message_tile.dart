@@ -8,6 +8,7 @@ class MessageTile extends StatelessWidget {
   final bool isSender;
   final bool isLastMessage;
   final VoidCallback scrollToBottom;
+  final VoidCallback imageScrollController;
 
   const MessageTile({
     Key? key,
@@ -15,6 +16,7 @@ class MessageTile extends StatelessWidget {
     required this.isSender,
     required this.isLastMessage,
     required this.scrollToBottom,
+    required this.imageScrollController,
   }) : super(key: key);
 
   bool get isShortTextMessage {
@@ -247,7 +249,7 @@ class MessageTile extends StatelessWidget {
               },
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
-                  scrollToBottom();
+                  imageScrollController();
                   return child;
                 }
                 return Container(

@@ -94,7 +94,7 @@ class ChatScreenController extends GetxController {
       debugPrint('Message received----: $data');
       Map<String, dynamic> messageData = data['data'];
 
-      messages.value.add({
+      Map<String, dynamic> newMessage = {
         'sender': messageData['to_user_id'] == ids.value['receiver_id']
             ? ids.value['sender_id']
             : ids.value['receiver_id'],
@@ -106,7 +106,28 @@ class ChatScreenController extends GetxController {
         'audio': messageData['audio'],
         'text': messageData['message'], // Keep it dynamic
         'timestamp': convertCreateTimeAtFetchMessage(messageData['createdAt']),
-      });
+      };
+
+      messages.value.add(newMessage);
+      messages.refresh();
+      print('Message Received ------------------------------');
+
+      bool todayKeyExists = sortedMessages.value.any(
+            (message) => message['type'] == 'date' && message['date'] == 'Today',
+      );
+
+      if (todayKeyExists) {
+        int todayLength = sortedMessages.value
+            .map((today) => today['date'] == 'Today')
+            .length;
+
+        sortedMessages.value.insert(todayLength, newMessage);
+      } else {
+        sortedMessages.value.add({'type': 'date', 'date': 'Today'});
+        sortedMessages.value.add(newMessage);
+      }
+
+      sortedMessages.refresh();
       isUserScrolling.value = false;
       scrollToBottom();
     });
@@ -436,6 +457,20 @@ class ChatScreenController extends GetxController {
     //   // For dates in a different year
     //   return "${DateFormat('d MMM yyyy').format(dateTime)}, $timeString"; // Full date (e.g., 16 Jan 2024)
     // }
+  }
+
+
+
+  void imageScroll() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (scrollController.value.hasClients) {
+        scrollController.value.animateTo(
+          scrollController.value.position.maxScrollExtent + 200.0,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   void scrollToBottom() {

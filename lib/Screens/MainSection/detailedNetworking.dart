@@ -50,14 +50,18 @@ class _DetailednetworkingState extends State<Detailednetworking> {
   }
 
   int _calculateAge(String dob) {
-    final birthDate = DateTime.parse(dob);
-    final today = DateTime.now();
-    int age = today.year - birthDate.year;
-    if (today.month < birthDate.month ||
-        (today.month == birthDate.month && today.day < birthDate.day)) {
-      age--;
+    try {
+      final birthDate = DateTime.parse(dob);
+      final today = DateTime.now();
+      int age = today.year - birthDate.year;
+      if (today.month < birthDate.month ||
+          (today.month == birthDate.month && today.day < birthDate.day)) {
+        age--;
+      }
+      return age;
+    } catch (e) {
+      return 0;
     }
-    return age;
   }
 
   @override

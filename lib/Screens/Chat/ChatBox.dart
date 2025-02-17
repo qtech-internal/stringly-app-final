@@ -194,6 +194,7 @@ class _ChatBoxState extends State<ChatBox> {
                                 isSender: isSender,
                                 isLastMessage: isLastMessage,
                                 scrollToBottom: () => controller.scrollToBottom,
+                                imageScrollController: controller.imageScroll,
                               );
                             }
                           },
