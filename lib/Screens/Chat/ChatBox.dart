@@ -52,240 +52,248 @@ class _ChatBoxState extends State<ChatBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.black,
+    return WillPopScope(
+      onWillPop: () async {
+        messageController.updateRead(widget.userInfo['chat_id']);
+        return true;
+      },
+      child: Obx(() {
+        return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.black,
 
-            toolbarHeight: 66, // AppBar height increased by 10px
-            title: Row(
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          messageController
-                              .updateRead(widget.userInfo['chat_id']);
+              toolbarHeight: 66, // AppBar height increased by 10px
+              title: Row(
+                children: [
+                  Row(
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            messageController
+                                .updateRead(widget.userInfo['chat_id']);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_outlined,
+                            color: Colors.white,
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await controller.navigatoNextCode(context);
                         },
-                        child: const Icon(
-                          Icons.arrow_back_outlined,
+                        child: CircleAvatar(
+                            radius: 23, // Circular avatar size
+                            backgroundImage: NetworkImage(
+                                widget.userInfo['userProfileImage'])),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.userInfo['name'], // Replace with dynamic name
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
-                        )),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await controller.navigatoNextCode(context);
-                      },
-                      child: CircleAvatar(
-                          radius: 23, // Circular avatar size
-                          backgroundImage: NetworkImage(
-                              widget.userInfo['userProfileImage'])),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.userInfo['name'], // Replace with dynamic name
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        ),
+                      ),
+                      // const Text(
+                      //   'Active',
+                      //   style: TextStyle(
+                      //     fontSize: 12,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ],
+              ),
+              actions: [
+                PopupMenuButton<String>(
+                  key: UniqueKey(),
+                  onSelected: (value) =>
+                      controller.handleMenuItemClickc(context, value),
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  offset: const Offset(0, 40),
+                  itemBuilder: (BuildContext context) => [
+                    const PopupMenuItem(
+                      value: 'report',
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Report',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
                     ),
-                    // const Text(
-                    //   'Active',
-                    //   style: TextStyle(
-                    //     fontSize: 12,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
+                    const PopupMenuItem(
+                      value: 'hide',
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Hide',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
-            actions: [
-              PopupMenuButton<String>(
-                key: UniqueKey(),
-                onSelected: (value) =>
-                    controller.handleMenuItemClickc(context, value),
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                  size: 28,
-                ),
-                offset: const Offset(0, 40),
-                itemBuilder: (BuildContext context) => [
-                  const PopupMenuItem(
-                    value: 'report',
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Report',
-                        style: TextStyle(
-                          color: Colors.red,
+            body: controller.isLoading.value
+                ? MessageScreenLoader.simpleLoader(text: 'Wait, Loading...')
+                : Column(
+                    children: [
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Expanded(
+                        child: Obx(() {
+                          return ListView.builder(
+                            controller: controller.scrollController.value,
+                            itemCount: controller.sortedMessages.value.length,
+                            itemBuilder: (context, index) {
+                              var item = controller.sortedMessages.value[index];
+                              print('Item $item');
+
+                              if (item['type'] == 'date') {
+                                return Center(
+                                  child: Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Text(
+                                      controller.getFormattedDisplayDate(
+                                          item['date']),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                bool isSender = item['sender'] ==
+                                    controller.ids.value['sender_id'];
+                                bool isLastMessage = index ==
+                                    controller.sortedMessages.value.length - 1;
+
+                                return MessageTile(
+                                  message: item,
+                                  isSender: isSender,
+                                  isLastMessage: isLastMessage,
+                                  scrollToBottom: () =>
+                                      controller.scrollToBottom,
+                                  imageScrollController: controller.imageScroll,
+                                );
+                              }
+                            },
+                          );
+                        }),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 10, right: 10, bottom: 10, top: 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller:
+                                    controller.createMessageController.value,
+                                decoration: InputDecoration(
+                                  hintText: 'Type your message',
+                                  hintStyle:
+                                      const TextStyle(color: Colors.black45),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 15),
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  prefixIcon: IconButton(
+                                    onPressed: () {
+                                      controller.openImagePickerOnChatBox(
+                                          context, widget.userInfo);
+                                      messageController.moveToTop(
+                                          widget.userInfo['chat_id'], 'photo');
+                                    },
+                                    icon: const Icon(Icons.camera_alt,
+                                        color: Colors.black),
+                                    iconSize: 30,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            AudioRecordButton(
+                              onAudioComplete: (path) {
+                                if (path.isNotEmpty) {
+                                  controller.sendAudioMessage(
+                                      path, widget.userInfo);
+
+                                  messageController.moveToTop(
+                                      widget.userInfo['chat_id'], 'audio');
+                                }
+                                debugPrint('Audio Path --$path');
+                              },
+                            ),
+                            const SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () async {
+                                await controller
+                                    .sendMessage(widget.userInfo['chat_id']);
+                                messageController.moveToTop(
+                                    widget.userInfo['chat_id'],
+                                    controller
+                                        .createMessageController.value.text);
+                                controller.createMessageController.value
+                                    .clear();
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Image.asset(
+                                    'assets/send_icon.png',
+                                    width: 25,
+                                    height: 25,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'hide',
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Hide',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          body: controller.isLoading.value
-              ? MessageScreenLoader.simpleLoader(text: 'Wait, Loading...')
-              : Column(
-                  children: [
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Expanded(
-                      child: Obx(() {
-                        return ListView.builder(
-                          controller: controller.scrollController.value,
-                          itemCount: controller.sortedMessages.value.length,
-                          itemBuilder: (context, index) {
-                            var item = controller.sortedMessages.value[index];
-                            print('Item $item');
-
-                            if (item['type'] == 'date') {
-                              return Center(
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 8),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    controller
-                                        .getFormattedDisplayDate(item['date']),
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              bool isSender = item['sender'] ==
-                                  controller.ids.value['sender_id'];
-                              bool isLastMessage = index ==
-                                  controller.sortedMessages.value.length - 1;
-
-                              return MessageTile(
-                                message: item,
-                                isSender: isSender,
-                                isLastMessage: isLastMessage,
-                                scrollToBottom: () => controller.scrollToBottom,
-                                imageScrollController: controller.imageScroll,
-                              );
-                            }
-                          },
-                        );
-                      }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 10, top: 5),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller:
-                                  controller.createMessageController.value,
-                              decoration: InputDecoration(
-                                hintText: 'Type your message',
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                  borderSide: BorderSide.none,
-                                ),
-                                prefixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.openImagePickerOnChatBox(
-                                        context, widget.userInfo);
-                                    messageController.moveToTop(
-                                        widget.userInfo['chat_id'], 'photo');
-                                  },
-                                  icon: const Icon(Icons.camera_alt,
-                                      color: Colors.black),
-                                  iconSize: 30,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          AudioRecordButton(
-                            onAudioComplete: (path) {
-                              if (path.isNotEmpty) {
-                                controller.sendAudioMessage(
-                                    path, widget.userInfo);
-
-                                messageController.moveToTop(
-                                    widget.userInfo['chat_id'], 'audio');
-                              }
-                              debugPrint('Audio Path --$path');
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          GestureDetector(
-                            onTap: () async {
-                              await controller
-                                  .sendMessage(widget.userInfo['chat_id']);
-                              messageController.moveToTop(
-                                  widget.userInfo['chat_id'],
-                                  controller
-                                      .createMessageController.value.text);
-                              controller.createMessageController.value.clear();
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.black,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Image.asset(
-                                  'assets/send_icon.png',
-                                  width: 25,
-                                  height: 25,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    )
-                  ],
-                ));
-    });
+                      const SizedBox(
+                        height: 10,
+                      )
+                    ],
+                  ));
+      }),
+    );
   }
 }

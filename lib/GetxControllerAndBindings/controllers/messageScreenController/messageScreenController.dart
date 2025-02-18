@@ -433,15 +433,19 @@ class MessageScreenController extends GetxController {
   void updateRead(String chatId) {
     for (var message in messages.value) {
       if (message['chat_id'] == chatId) {
+        bool isMessagesAvailable = message['message'].isEmpty;
+
         message['unreadCount'] = 0;
-        message['isRead'] = true;
+        message['isRead'] = !isMessagesAvailable ? true : false;
       }
     }
 
     for (var message in filteredMessages.value) {
       if (message['chat_id'] == chatId) {
+        bool isMessagesAvailable = message['message'].isEmpty;
+
         message['unreadCount'] = 0;
-        message['isRead'] = true;
+        message['isRead'] = !isMessagesAvailable ? true : false;
       }
     }
     messages.refresh();
