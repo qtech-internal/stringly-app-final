@@ -90,12 +90,6 @@ class ChatScreenController extends GetxController {
 
   Future<void> getResponseMessage(
       Map<dynamic, dynamic> userInfo, String chatId) async {
-    InitializeSocket.socket.emit(
-        'updateMessageStatus',
-        json.encode({
-          'user_id': ids.value['sender_id'],
-          'to_user_id': ids.value['receiver_id'],
-        }));
 
     InitializeSocket.socket.on('receiveMessage', (data) {
       debugPrint('Message received----: $data');
@@ -138,6 +132,12 @@ class ChatScreenController extends GetxController {
       sortedMessages.refresh();
       isUserScrolling.value = false;
       scrollToBottom();
+      InitializeSocket.socket.emit(
+          'updateMessageStatus',
+          json.encode({
+            'user_id': ids.value['sender_id'],
+            'to_user_id': ids.value['receiver_id'],
+          }));
     });
   }
 
