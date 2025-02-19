@@ -87,12 +87,28 @@ class MessageScreenController extends GetxController {
     InitializeSocket.socket.on('lastMessageResponse', (data) {
       lastMessage.value = data['lastMessage'];
       unreadMessage.value = data['unreadMessages'];
-      getAddUserChatList();
+
+      if (filteredMessages.value != []) {
+        for (var unread in unreadMessage.value) {
+          final lastMessageFromSender = lastMessage.value.firstWhere(
+              (lastMsg) => lastMsg['from_user_id'] == unread['from_user_id']);
+          final message = filteredMessages.value.firstWhereOrNull(
+              (msg) => msg['sender_id'] == unread['from_user_id']);
+          if (message != null) {
+            message['message'] = lastMessageFromSender['message'];
+            message['unreadCount'] = int.parse(unread['count']);
+            message['rawTime'] = lastMessageFromSender['createdAt'];
+            message['isRead'] = false;
+          }
+
+          filteredMessages.refresh();
+        }
+      }
 
       // debugPrint(
-      //     '--------klllllllll------history------------------------- ${lastMessage.value}');
+      //     '--------klllllllll------last Message------------------------- ${lastMessage.value}');
       // debugPrint(
-      //     '--------klllllllll------history------------------------- ${unreadMessage.value}');
+      //     '--------klllllllll------Unread Message------------------------- ${unreadMessage.value}');
     });
 
     debugPrint('check for end of on for chat history');
@@ -180,8 +196,8 @@ class MessageScreenController extends GetxController {
             //  debugPrint('---------------unread Messages $umread');
             if (umread.isNotEmpty) {
               unReadCount = int.parse('${umread['count']}');
-              debugPrint(unReadCount.toString());
-              debugPrint('---------------unread count $unReadCount');
+              // debugPrint(unReadCount.toString());
+              // debugPrint('---------------unread count $unReadCount');
             } else {
               isRead = true;
             }
@@ -190,7 +206,7 @@ class MessageScreenController extends GetxController {
             time = formatWhatsAppDateOnMessageScreen(
                 userMessageAndTime['createdAt']);
             rawTime = userMessageAndTime['createdAt'];
-            debugPrint('--------------userMessageAndTime $message, $time');
+            //  debugPrint('--------------userMessageAndTime $message, $time');
           }
         }
 

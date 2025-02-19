@@ -178,7 +178,9 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HobbiesScreen()),
+                                  builder: (context) => HobbiesScreen(
+                                        initialHobbies: selectedHobbies,
+                                      )),
                             );
                             if (result != null &&
                                 result is Map<String, List<String>>) {

@@ -108,7 +108,9 @@ class _BioEditScreenState extends State<BioEditScreen> {
                       final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HobbiesScreen()),
+                            builder: (context) => HobbiesScreen(
+                                  initialHobbies: selectedHobbies,
+                                )),
                       );
                       if (result != null &&
                           result is Map<String, List<String>>) {
@@ -148,38 +150,40 @@ class _BioEditScreenState extends State<BioEditScreen> {
                     ),
                   ),
 
-                  if(selectedHobbies.isNotEmpty)  const SizedBox(
-                    height: 20,
-                  ),
-                  // Display selected hobbies
-                  if(selectedHobbies.isNotEmpty)   Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: selectedHobbies
-                          .map(
-                            (hobby) => Chip(
-                              label: Text(hobby),
-                              deleteIcon: Icon(Icons.close),
-                              onDeleted: () {
-                                setState(() {
-                                  selectedHobbies.remove(hobby);
-                                });
-                              },
-                              backgroundColor:
-                                  Colors.grey[300], // Grey fill color
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  side: const BorderSide(
-                                      color:
-                                          Colors.transparent) // Rounded corners
-                                  ),
-                            ),
-                          )
-                          .toList(),
+                  if (selectedHobbies.isNotEmpty)
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
+                  // Display selected hobbies
+                  if (selectedHobbies.isNotEmpty)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: selectedHobbies
+                            .map(
+                              (hobby) => Chip(
+                                label: Text(hobby),
+                                deleteIcon: Icon(Icons.close),
+                                onDeleted: () {
+                                  setState(() {
+                                    selectedHobbies.remove(hobby);
+                                  });
+                                },
+                                backgroundColor:
+                                    Colors.grey[300], // Grey fill color
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                    side: const BorderSide(
+                                        color: Colors
+                                            .transparent) // Rounded corners
+                                    ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
 
                   const SizedBox(height: 20),
 
@@ -271,8 +275,8 @@ class _BioEditScreenState extends State<BioEditScreen> {
                                   'profession', yourMainProfession.text);
                             }
                             if (educationControllerBio.text.trim().isNotEmpty) {
-                              userInputParams.updateField(
-                                  'education', educationControllerBio.text.trim());
+                              userInputParams.updateField('education',
+                                  educationControllerBio.text.trim());
                             }
                             userInputParams.updateField(
                                 'instituteName', _instituteNameController.text);

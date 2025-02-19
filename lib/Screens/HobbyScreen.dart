@@ -3,6 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HobbiesScreen extends StatefulWidget {
+  final List<String> initialHobbies;
+
+  const HobbiesScreen({super.key, required this.initialHobbies});
   @override
   _HobbiesScreenState createState() => _HobbiesScreenState();
 }
@@ -18,94 +21,6 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
     'assets/hobbies/social.png',
     'assets/hobbies/pets.png',
   ];
-
-  // final Map<String, List<String>> hobbies = {
-  //   "Active and Outdoor": [
-  //     "🤺 Fencing",
-  //     "🏸 Badminton",
-  //     "🏏 Cricket",
-  //     "🥾 Hiking",
-  //     "🧘‍♂ Yoga",
-  //     "💪 Gym",
-  //     "💪 Swimming",
-  //     "🏄 Surfing",
-  //     "🧗‍♀ Rock climbing",
-  //     "🏕 Camping",
-  //     "🎾 Tennis",
-  //     "⛹ Basketball",
-  //     "⚽ Soccer",
-  //     "🛹 Skateboarding",
-  //     " Sailing",
-  //     " Scuba Diving",
-  //     "🏃 Running",
-  //     "🚴‍♂️ Cycling",
-  //     "🏌 Golf",
-  //     "⛷ Skiing",
-  //   ],
-  //   "Creative and Arts": [
-  //     "📷 Photography",
-  //     "🎨 Painting",
-  //     "✏ Drawing",
-  //     "🎸 Playing a musical instrument (Guitar, Piano, etc.)",
-  //     "Singing",
-  //     "🍪 Cooking/Baking",
-  //     "👗 Fashion design",
-  //     "Interior design",
-  //     "Pottery",
-  //     "🎭 Acting",
-  //     "🖊 Writing",
-  //   ],
-  //   "Entertainment and Pop Culture": [
-  //     "🎬 Movies",
-  //     "🍿 TV Shows/Series",
-  //     "🎙 Podcasts",
-  //     "😆 Stand-up Comedy",
-  //     "🎤 Theater Concerts",
-  //     "🎮 Gaming",
-  //     "Collecting (Vinyls, Comics, etc.)"
-  //   ],
-  //   "Tech & Learning": [
-  //     "Coding/Programming",
-  //     "🖨️ 3D Printing",
-  //     "🕶 Virtual Reality (VR)",
-  //     "Cryptocurrency/Blockchain",
-  //     "🤖 AI/Machine Learning",
-  //     "🌠 Reading Astronomy",
-  //     "⚔ History",
-  //     "🧩 Puzzle Solving Languages",
-  //     "🤖 Robotics"
-  //   ],
-  //   "Food & Drink": [
-  //     "🍷 Wine Tasting",
-  //     "☕ Coffee Culture",
-  //     "🍺 Craft Beer",
-  //     "👨‍🍳 Cooking",
-  //     "Mixology/Cocktail Making",
-  //     "🥗 Food Blogging",
-  //     "🍜 Trying new restaurants",
-  //     "🥐 Baking"
-  //   ],
-  //   "Social & Leisure": [
-  //     "Travelling",
-  //     "Volunteering",
-  //     "Partying/Clubbing",
-  //     "🎉 Trivia Nights",
-  //     "🍻 Bar Hopping",
-  //     "🎤 Karaoke",
-  //     "🛜 Networking",
-  //     "📷 Photography",
-  //     "Meditation",
-  //     "🎇 Festivals"
-  //   ],
-  //   "Pets & Animals": [
-  //     "🐕 Dog Lover",
-  //     "🐈 Cat Lover",
-  //     "🦒 Animal Rescue",
-  //     "🕊 Bird Watching",
-  //     "🏇 Horseback Riding",
-  //     "🐶 Pet Photography"
-  //   ]
-  // };
 
   final Map<String, List<Map<String, dynamic>>> hobbies = {
     "Active and Outdoor": [
@@ -264,6 +179,13 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
     } else if (category == "Tech & Learning") {
       selected_filter_hobies.remove(hobby);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedHobbies.addAll(widget.initialHobbies);
+    selected_filter_hobies.addAll(widget.initialHobbies);
   }
 
   // Build each category with its hobbies
