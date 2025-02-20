@@ -94,8 +94,8 @@ class Intraction {
       await actor!.getFunc(FieldsMethod.verify_account_for_caller)?.call([]);
       bool value = result.containsKey('Ok') ? true : false;
       if (value) {
-        // await WebSocketRegisterForChat
-        //     .registerUserWithPrincipalPublicUserId();
+        await WebSocketRegisterForChat
+            .registerUserWithPrincipalPublicUserId();
         await WebSocketLoginForChat.loginUserWithPrincipalPublicUserId();
         await InitializeSocket.socketInitializationMethod();
       }
