@@ -664,6 +664,10 @@ class _AccountSettingBasicInfoEditState
                                         }
                                       },
                                       label: Container(
+                                        // margin: EdgeInsets.only(bottom: 6),
+                                        // padding:
+                                        //     EdgeInsets.symmetric(horizontal: 3),
+                                        // alignment: Alignment.centerLeft,
                                         decoration: const BoxDecoration(
                                           color: Colors.white,
                                         ),
