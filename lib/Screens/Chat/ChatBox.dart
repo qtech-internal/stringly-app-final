@@ -45,9 +45,10 @@ class _ChatBoxState extends State<ChatBox> {
       context,
       "/mainscreennav",
           (route) => false,
-      arguments: 2, // Pass index as an argument
+      arguments: {'initialIndex': 2},
     );
   }
+
 
   @override
   void dispose() {

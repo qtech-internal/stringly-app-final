@@ -29,7 +29,16 @@ class _MainscreennavState extends State<Mainscreennav> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.initialIndex; // Set initial index from constructor
+    Future.microtask(() {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Map<String, dynamic> && args.containsKey('initialIndex')) {
+        setState(() {
+          _selectedIndex = args['initialIndex'];
+        });
+      } else {
+        _selectedIndex = widget.initialIndex;
+      }
+    }); // Set initial index from constructor
   }
 
   int _selectedIndex = 0;
