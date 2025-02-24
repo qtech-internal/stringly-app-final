@@ -8,11 +8,11 @@ import 'MainSection/Premiumvariation1.dart';
 import 'MainSection/SwipeCardsPremium.dart';
 import 'profile.dart';
 
-final GlobalKey<_MainscreennavState> mainscreenKey = GlobalKey<_MainscreennavState>();
+
 
 class Mainscreennav extends StatefulWidget {
   final int initialIndex;
-  Mainscreennav({Key? key, this.initialIndex=0}) : super(key: mainscreenKey);
+  Mainscreennav({super.key, this.initialIndex=0});
 
   @override
   _MainscreennavState createState() => _MainscreennavState();

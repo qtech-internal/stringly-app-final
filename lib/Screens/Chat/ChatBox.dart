@@ -41,7 +41,12 @@ class _ChatBoxState extends State<ChatBox> {
   }
 
   Future<void> returnBackToPage() async {
-    AuxiliaryFunction.navigationIntoMainScreen(index: 2);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      "/mainscreennav",
+          (route) => false,
+      arguments: 2, // Pass index as an argument
+    );
   }
 
   @override
