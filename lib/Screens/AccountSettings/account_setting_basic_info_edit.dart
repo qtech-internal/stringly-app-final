@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:get/get.dart';
@@ -10,7 +12,6 @@ import '../../models/update_user_account_model.dart';
 import '../../models/user_input_params.dart';
 import '../loaders/message_screen_loader.dart';
 import '../loaders/request_process_loader.dart';
-
 
 class AccountSettingBasicInfoEdit extends StatefulWidget {
   @override
@@ -430,167 +431,167 @@ class _AccountSettingBasicInfoEditState
                               //   return null;
                               // },
                             ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: AbsorbPointer(
-                                child: TextField(
-                                  controller: TextEditingController(
-                                    text: selectedDate != null
-                                        ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                        : '',
-                                  ),
-                                  decoration: InputDecoration(
-                                      hintText: 'Date of Birth ',
-                                      hintStyle:
-                                          const TextStyle(color: Colors.grey),
-                                      enabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD6D6D6),
-                                              width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      disabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD6D6D6),
-                                              width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      focusedBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD6D6D6),
-                                              width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      border: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Color(0xffD6D6D6),
-                                              width: 2),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 16.0, horizontal: 14),
-                                      suffixIcon: const Icon(
-                                        Icons.calendar_month,
-                                        color: Colors.grey,
-                                      ),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.auto,
-                                      label: RichText(
-                                        text: const TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: 'Date of Birth ',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  backgroundColor: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                            TextSpan(
-                                              text: '*',
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize:
-                                                      14), // Red asterisk style
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            GradientdropdownTextField(
-                                hintText: 'Specify your gender',
-                                items: const ['Male', 'Female', 'Other'],
-                                initialValue: initial_gender ?? null,
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    setState(() {
-                                      selectedGender = value?.value;
-                                      debugPrint('$selectedGender');
-                                    });
-                                  }
-                                },
-                                label: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  child: RichText(
-                                    text: const TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'Gender ',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              backgroundColor: Colors.white,
-                                              fontSize: 14),
-                                        ),
-                                        TextSpan(
-                                          text: '*',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontSize:
-                                                  14), // Red asterisk style
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                            if (genderError != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  '$genderError',
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 12),
-                                ),
-                              ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () {
-                                // Call the dialog with the currently selected gender
-                                _showGenderInfoDialog(selectedGender);
-                              },
-                              child: Container(
-                                height: 56,
-                                width: double.infinity,
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffD6D6D6), width: 2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      additionalGenderInfo ??
-                                          'Add more about gender',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: selectedGender != null
-                                            ? Colors
-                                                .black // Selected gender in black
-                                            : Colors
-                                                .grey, // Placeholder in grey
-                                      ),
-                                    ),
-                                    const Icon(
-                                      Icons.keyboard_arrow_right,
-                                      color: Colors.black,
-                                      size:
-                                          27, // Adjust icon size to match the design
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            // const SizedBox(height: 20),
+                            // GestureDetector(
+                            //   onTap: () => _selectDate(context),
+                            //   child: AbsorbPointer(
+                            //     child: TextField(
+                            //       controller: TextEditingController(
+                            //         text: selectedDate != null
+                            //             ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                            //             : '',
+                            //       ),
+                            //       decoration: InputDecoration(
+                            //           hintText: 'Date of Birth ',
+                            //           hintStyle:
+                            //               const TextStyle(color: Colors.grey),
+                            //           enabledBorder: const OutlineInputBorder(
+                            //               borderSide: BorderSide(
+                            //                   color: Color(0xffD6D6D6),
+                            //                   width: 2),
+                            //               borderRadius: BorderRadius.all(
+                            //                   Radius.circular(10))),
+                            //           disabledBorder: const OutlineInputBorder(
+                            //               borderSide: BorderSide(
+                            //                   color: Color(0xffD6D6D6),
+                            //                   width: 2),
+                            //               borderRadius: BorderRadius.all(
+                            //                   Radius.circular(10))),
+                            //           focusedBorder: const OutlineInputBorder(
+                            //               borderSide: BorderSide(
+                            //                   color: Color(0xffD6D6D6),
+                            //                   width: 2),
+                            //               borderRadius: BorderRadius.all(
+                            //                   Radius.circular(10))),
+                            //           border: const OutlineInputBorder(
+                            //               borderSide: BorderSide(
+                            //                   color: Color(0xffD6D6D6),
+                            //                   width: 2),
+                            //               borderRadius: BorderRadius.all(
+                            //                   Radius.circular(10))),
+                            //           contentPadding:
+                            //               const EdgeInsets.symmetric(
+                            //                   vertical: 16.0, horizontal: 14),
+                            //           suffixIcon: const Icon(
+                            //             Icons.calendar_month,
+                            //             color: Colors.grey,
+                            //           ),
+                            //           floatingLabelBehavior:
+                            //               FloatingLabelBehavior.auto,
+                            //           label: RichText(
+                            //             text: const TextSpan(
+                            //               children: [
+                            //                 TextSpan(
+                            //                   text: 'Date of Birth ',
+                            //                   style: TextStyle(
+                            //                       color: Colors.black,
+                            //                       backgroundColor: Colors.white,
+                            //                       fontSize: 14),
+                            //                 ),
+                            //                 TextSpan(
+                            //                   text: '*',
+                            //                   style: TextStyle(
+                            //                       color: Colors.red,
+                            //                       fontSize:
+                            //                           14), // Red asterisk style
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           )),
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 20),
+                            // GradientdropdownTextField(
+                            //     hintText: 'Specify your gender',
+                            //     items: const ['Male', 'Female', 'Other'],
+                            //     initialValue: initial_gender ?? null,
+                            //     onChanged: (value) {
+                            //       if (value != null) {
+                            //         setState(() {
+                            //           selectedGender = value?.value;
+                            //           debugPrint('$selectedGender');
+                            //         });
+                            //       }
+                            //     },
+                            //     label: Container(
+                            //       decoration: const BoxDecoration(
+                            //         color: Colors.white,
+                            //       ),
+                            //       child: RichText(
+                            //         text: const TextSpan(
+                            //           children: [
+                            //             TextSpan(
+                            //               text: 'Gender ',
+                            //               style: TextStyle(
+                            //                   color: Colors.black,
+                            //                   backgroundColor: Colors.white,
+                            //                   fontSize: 14),
+                            //             ),
+                            //             TextSpan(
+                            //               text: '*',
+                            //               style: TextStyle(
+                            //                   color: Colors.red,
+                            //                   fontSize:
+                            //                       14), // Red asterisk style
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     )),
+                            // if (genderError != null)
+                            //   Padding(
+                            //     padding: const EdgeInsets.only(top: 4),
+                            //     child: Text(
+                            //       '$genderError',
+                            //       style: const TextStyle(
+                            //           color: Colors.red, fontSize: 12),
+                            //     ),
+                            //   ),
+                            // const SizedBox(height: 20),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     // Call the dialog with the currently selected gender
+                            //     _showGenderInfoDialog(selectedGender);
+                            //   },
+                            //   child: Container(
+                            //     height: 56,
+                            //     width: double.infinity,
+                            //     padding: const EdgeInsets.only(
+                            //       left: 10,
+                            //       right: 15,
+                            //     ),
+                            //     decoration: BoxDecoration(
+                            //       border: Border.all(
+                            //           color: const Color(0xffD6D6D6), width: 2),
+                            //       borderRadius: BorderRadius.circular(10),
+                            //     ),
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Text(
+                            //           additionalGenderInfo ??
+                            //               'Add more about gender',
+                            //           style: TextStyle(
+                            //             fontSize: 14,
+                            //             color: selectedGender != null
+                            //                 ? Colors
+                            //                     .black // Selected gender in black
+                            //                 : Colors
+                            //                     .grey, // Placeholder in grey
+                            //           ),
+                            //         ),
+                            //         const Icon(
+                            //           Icons.keyboard_arrow_right,
+                            //           color: Colors.black,
+                            //           size:
+                            //               27, // Adjust icon size to match the design
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                             SizedBox(height: 20),
                             Row(
                               children: [
@@ -639,6 +640,7 @@ class _AccountSettingBasicInfoEditState
                                   child: GradientdropdownTextField(
                                       hintText: 'Specify your height in inches',
                                       items: const [
+                                        '0',
                                         '1',
                                         '2',
                                         '3',

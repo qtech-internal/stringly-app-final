@@ -601,12 +601,14 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
         body: SafeArea(
           child: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ShaderMask(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: AppBar(
+                  leadingWidth: 100,
+                  centerTitle: true,
+                  leading: Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShaderMask(
                       shaderCallback: (bounds) => const LinearGradient(
                         colors: [Color(0xFFD83694), Color(0xFF0039C7)],
                         begin: Alignment.topLeft,
@@ -622,31 +624,26 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                         ),
                       ),
                     ),
-
-                    // Image.asset(
-                    //   'assets/newImage/COLOURED LOGO.png',
-                    //   height: 60,
-                    //   width: 90,
-                    //   fit: BoxFit.contain,
-                    // ),
-                    CustomToggleSwitch(
-                      isToggled: isToggled,
-                      onToggle: (value) {
-                        setState(() {
-                          isToggled = value;
-                          toggleStatus = true;
-                          if (GlobalConstantForSiteDatingNetworking
-                                  .toggleToNetwork ==
-                              'networking') {
-                            GlobalConstantForSiteDatingNetworking
-                                .toggleToNetwork = 'dating';
-                          } else {
-                            GlobalConstantForSiteDatingNetworking
-                                .toggleToNetwork = 'networking';
-                          }
-                        });
-                      },
-                    ),
+                  ),
+                  title: CustomToggleSwitch(
+                    isToggled: isToggled,
+                    onToggle: (value) {
+                      setState(() {
+                        isToggled = value;
+                        toggleStatus = true;
+                        if (GlobalConstantForSiteDatingNetworking
+                                .toggleToNetwork ==
+                            'networking') {
+                          GlobalConstantForSiteDatingNetworking
+                              .toggleToNetwork = 'dating';
+                        } else {
+                          GlobalConstantForSiteDatingNetworking
+                              .toggleToNetwork = 'networking';
+                        }
+                      });
+                    },
+                  ),
+                  actions: [
                     Row(
                       children: [
                         GestureDetector(
@@ -701,6 +698,104 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                   ],
                 ),
               ),
+              // Container(
+              //   padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              //   child: Row(
+              //     //   mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       ShaderMask(
+              //         shaderCallback: (bounds) => const LinearGradient(
+              //           colors: [Color(0xFFD83694), Color(0xFF0039C7)],
+              //           begin: Alignment.topLeft,
+              //           end: Alignment.bottomRight,
+              //         ).createShader(bounds),
+              //         child: const Text(
+              //           'Stringly',
+              //           style: TextStyle(
+              //             fontSize: 22,
+              //             fontWeight: FontWeight.w900,
+              //             letterSpacing: 1,
+              //             color: Colors.white,
+              //           ),
+              //         ),
+              //       ),
+              //       const Spacer(),
+              //       Align(
+              //         alignment: Alignment.center,
+              //         child: CustomToggleSwitch(
+              //           isToggled: isToggled,
+              //           onToggle: (value) {
+              //             setState(() {
+              //               isToggled = value;
+              //               toggleStatus = true;
+              //               if (GlobalConstantForSiteDatingNetworking
+              //                       .toggleToNetwork ==
+              //                   'networking') {
+              //                 GlobalConstantForSiteDatingNetworking
+              //                     .toggleToNetwork = 'dating';
+              //               } else {
+              //                 GlobalConstantForSiteDatingNetworking
+              //                     .toggleToNetwork = 'networking';
+              //               }
+              //             });
+              //           },
+              //         ),
+              //       ),
+              //       const Spacer(),
+              //       Row(
+              //         children: [
+              //           GestureDetector(
+              //             onTap: () {
+              //               Navigator.of(context).push(
+              //                 MaterialPageRoute(
+              //                     builder: (context) => FilterPreferences()),
+              //               );
+              //             },
+              //             child: SvgPicture.asset(
+              //                 'assets/svg/mage_filter-fill.svg',
+              //                 width: 24,
+              //                 height: 24),
+              //           ),
+
+              //           // GestureDetector(
+              //           //   onTap: () {
+              //           //     ScaffoldMessenger.of(context).showSnackBar(
+              //           //       const SnackBar(
+              //           //         content: Center(
+              //           //             child: Text('Coming soon...........')),
+              //           //         duration: Duration(seconds: 2),
+              //           //       ),
+              //           //     );
+              //           //   },
+              //           //   child: Row(
+              //           //     mainAxisSize: MainAxisSize.min,
+              //           //     children: [
+              //           //       Image.asset(
+              //           //         'assets/coin2.png',
+              //           //         height: 12,
+              //           //         width: 12,
+              //           //       ),
+              //           //       const SizedBox(width: 2),
+              //           //       const Flexible(
+              //           //         // Use Flexible to prevent overflow
+              //           //         child: Text(
+              //           //           '0',
+              //           //           style: TextStyle(
+              //           //             fontSize: 18,
+              //           //             fontWeight: FontWeight.bold,
+              //           //             overflow: TextOverflow
+              //           //                 .ellipsis, // Handle overflow
+              //           //           ),
+              //           //         ),
+              //           //       ),
+              //           //     ],
+              //           //   ),
+              //           // ),
+              //         ],
+              //       )
+              //     ],
+              //   ),
+              // ),
               // Remove padding/margin to close the gap between the row and card
               toggleStatus != null
                   ? FutureBuilder(
@@ -1281,41 +1376,6 @@ class CustomToggleSwitch extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Heart Icon - rises up from the bottom to its initial position
-            // AnimatedPositioned(
-            //   duration: Duration(milliseconds: 400),
-            //   left: 12, // Adjust left position when toggled off
-            //   bottom: isToggled
-            //       ? 6
-            //       : -10, // Adjust bottom position when toggled off
-            //   child: AnimatedOpacity(
-            //     opacity: isToggled ? 1 : 0,
-            //     duration: Duration(milliseconds: 300),
-            //     child: Image.asset(
-            //       'assets/Component 4.png',
-            //       width: 25,
-            //       height: 25,
-            //       color: Colors.red[400],
-            //     ),
-            //   ),
-            // ),
-            // Link Icon - rises up from the bottom when toggled off
-            // AnimatedPositioned(
-            //   duration: Duration(milliseconds: 400),
-            //   right: 10,
-            //   bottom:
-            //       isToggled ? -10 : 8, // Keep link icon down when toggled on
-            //   child: AnimatedOpacity(
-            //     opacity: isToggled ? 0 : 1,
-            //     duration: Duration(milliseconds: 300),
-            //     child: Image.asset(
-            //       'assets/go.png',
-            //       width: 25,
-            //       height: 25,
-            //       color: Colors.blueAccent,
-            //     ),
-            //   ),
-            // ),
             // Thumb Animation
             AnimatedPositioned(
               duration: const Duration(milliseconds: 500),

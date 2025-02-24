@@ -68,53 +68,54 @@ class _ChatBoxState extends State<ChatBox> {
               toolbarHeight: 66, // AppBar height increased by 10px
               title: Row(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                            messageController
-                                .updateRead(widget.userInfo['chat_id']);
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_outlined,
-                            color: Colors.white,
-                          )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          await controller.navigatoNextCode(context);
-                        },
-                        child: CircleAvatar(
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        messageController
+                            .updateRead(widget.userInfo['chat_id']);
+                      },
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        color: Colors.white,
+                      )),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      await controller.navigatoNextCode(context);
+                    },
+                    child: Row(
+                      children: [
+                        CircleAvatar(
                             radius: 23, // Circular avatar size
                             backgroundImage: NetworkImage(
                                 widget.userInfo['userProfileImage'])),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.userInfo['name'], // Replace with dynamic name
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.userInfo[
+                                  'name'], // Replace with dynamic name
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            // const Text(
+                            //   'Active',
+                            //   style: TextStyle(
+                            //     fontSize: 12,
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
+                          ],
                         ),
-                      ),
-                      // const Text(
-                      //   'Active',
-                      //   style: TextStyle(
-                      //     fontSize: 12,
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )
                 ],
               ),
               actions: [
