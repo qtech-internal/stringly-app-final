@@ -5,6 +5,7 @@ import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenCont
 import 'package:stringly/GetxControllerAndBindings/controllers/profile/profile_controller.dart';
 import 'package:stringly/Screens/Chat/message_widgets/chat_lists.dart';
 import 'package:stringly/Screens/loaders/message_screen_loader.dart';
+import 'package:stringly/auxilliary_function.dart';
 import '../../webSocketRegisterLogin/initialize_socket.dart';
 import '../AccountSettings/AccountSettings.dart';
 import '../mainScreenNav.dart';

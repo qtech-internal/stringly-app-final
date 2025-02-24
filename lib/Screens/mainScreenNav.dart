@@ -8,14 +8,30 @@ import 'MainSection/Premiumvariation1.dart';
 import 'MainSection/SwipeCardsPremium.dart';
 import 'profile.dart';
 
+final GlobalKey<_MainscreennavState> mainscreenKey = GlobalKey<_MainscreennavState>();
+
 class Mainscreennav extends StatefulWidget {
-  const Mainscreennav({super.key});
+  final int initialIndex;
+  Mainscreennav({Key? key, this.initialIndex=0}) : super(key: mainscreenKey);
 
   @override
   _MainscreennavState createState() => _MainscreennavState();
 }
 
 class _MainscreennavState extends State<Mainscreennav> {
+
+  void changeTab(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex; // Set initial index from constructor
+  }
+
   int _selectedIndex = 0;
 
 

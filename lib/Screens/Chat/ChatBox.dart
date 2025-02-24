@@ -12,6 +12,9 @@ import 'package:stringly/Screens/Chat/message_tile.dart';
 import 'package:stringly/Screens/loaders/message_screen_loader.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
 
+import '../../auxilliary_function.dart';
+import '../mainScreenNav.dart';
+
 class ChatBox extends StatefulWidget {
   ChatBox({super.key, required this.userInfo});
   Map<String, dynamic> userInfo;
@@ -37,6 +40,10 @@ class _ChatBoxState extends State<ChatBox> {
     });
   }
 
+  Future<void> returnBackToPage() async {
+    AuxiliaryFunction.navigationIntoMainScreen(index: 2);
+  }
+
   @override
   void dispose() {
     InitializeSocket.socket.off('updateMessageStatus');
@@ -55,7 +62,8 @@ class _ChatBoxState extends State<ChatBox> {
     return WillPopScope(
       onWillPop: () async {
         messageController.updateRead(widget.userInfo['chat_id']);
-        return true;
+        await returnBackToPage();
+        return false;
       },
       child: Obx(() {
         return Scaffold(
@@ -70,9 +78,9 @@ class _ChatBoxState extends State<ChatBox> {
                 children: [
                   InkWell(
                       onTap: () {
-                        Navigator.of(context).pop();
                         messageController
                             .updateRead(widget.userInfo['chat_id']);
+                        returnBackToPage();
                       },
                       child: const Icon(
                         Icons.arrow_back_outlined,

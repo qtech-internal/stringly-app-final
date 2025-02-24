@@ -586,6 +586,7 @@ class _Userinfo1State extends State<Userinfo1> {
                               child: GradientdropdownTextField(
                                   hintText: 'Specify your height in inches',
                                   items: const [
+                                    '0',
                                     '1',
                                     '2',
                                     '3',
