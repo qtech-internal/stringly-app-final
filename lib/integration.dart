@@ -306,6 +306,7 @@ abstract class FieldsMethod {
   static const hide_user = 'hide_user'; // used this function
   static const get_allrightswipes = 'get_allrightswipes';
   static const get_match_queue = 'get_match_queue';
+  static const delete_an_account = 'delete_an_account';
   static final ServiceClass idl = IDL.Service({
     FieldsMethod.add_user_to_chatlist : IDL.Func([IDL.Text], [result], []),
     FieldsMethod.check_user_match : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
@@ -327,6 +328,7 @@ abstract class FieldsMethod {
     FieldsMethod.hide_user : IDL.Func([IDL.Text, IDL.Text], [result_1], []),
     FieldsMethod.get_allrightswipes: IDL.Func([IDL.Text], [result_6], ['query']),
     FieldsMethod.get_match_queue: IDL.Func([IDL.Text], [result_6], ['query']),
+    FieldsMethod.delete_an_account: IDL.Func([IDL.Text], [result_1], []),
   });
 }
 

@@ -1,15 +1,27 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_icp_auth/authentication/login.dart';
 import 'package:flutter_icp_auth/authentication/logout.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stringly/intraction.dart';
 
+import '../Reuseable Widget/snackbar/custom_snack_bar.dart';
 import '../constants/globals.dart';
+import '../integration.dart';
 import '../main.dart';
+import '../webSocketRegisterLogin/delete_user.dart';
+import 'Reward Settings/RewardsPage.dart';
+import 'loaders/request_process_loader.dart';
+import 'mainScreenNav.dart';
 import 'AccountSettings/AccountSettings.dart';
 import 'FAQ Qusetions/Helpandsupport.dart';
 import 'Location/LocationSettings.dart';
 import 'NotificationScreen.dart';
 import 'PrivacyScreen.dart';
+import 'Reward Settings/Rewardspage last.dart';
+import 'SubscriptionSettings/SubscriptionandPaymentComponent20.1.dart';
+import 'WelcomePage.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -178,7 +190,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
-
   void _showDeleteAccountDialog() {
     showModalBottomSheet(
       context: context,
@@ -192,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: Color(0xFFE4E4E4),
@@ -231,7 +242,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: const Text(
                         'Cancel',
                         style:
-                            TextStyle(color: Color(0xFFE4626F), fontSize: 20),
+                        TextStyle(color: Color(0xFFE4626F), fontSize: 20),
                       ),
                     ),
                   ],
@@ -243,18 +254,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 child: ElevatedButton(
                   onPressed: () async {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const Welcomepage()), // Replace LoginScreen with your login page widget.
-                      (Route<dynamic> route) =>
-                          false, // Remove all the previous routes.
-                    );
+                    RequestProcessLoader.openLoadingDialog();
+                    var result = await  DeleteUserForChat.deleteUserWithPrincipal();
+                    if(result.containsKey('Ok')) {
+                      List<Object> logoutValidation = await AuthLogout.logout(
+                          GlobalConstant.isLocal,
+                          GlobalConstant.backendCanisterId);
+                      setState(() {
+                        GlobalConstant.isLoggedIn =
+                            logoutValidation.whereType<bool>().first;
+                      });
+                      Intraction.loggedUserAccount = null;
+                      Intraction.loggedUserId = null;
+                      Intraction.loggedUserPrincipal = null;
+                      Intraction.actor = null;
+                      RequestProcessLoader.stopLoading();
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                Welcomepage()), // Replace LoginScreen with your login page widget.
+                            (Route<dynamic> route) =>
+                        false, // Remove all the previous routes.
+                      );
+                    } else {
+                      RequestProcessLoader.stopLoading();
+                      Navigator.of(context).pop();
+                      CustomSnackbar.errorSnackbar(message: 'Something went wrong, Please try again...!', paddingAll: 12, horizontalMargin: 0);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -274,6 +305,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       },
     );
   }
+
 
   // Controller for the search bar
   TextEditingController searchController = TextEditingController();
@@ -399,12 +431,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
                         }
                       }).toList(),
-                      SettingOption(
-                        imagePath: 'assets/svg/remove-user.svg',
-                        text: 'Delete Account',
-                        onTap: _showDeleteAccountDialog,
-                      ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 10),
                       SettingOption(
                         imagePath: 'assets/svg/material-symbols_logout.svg',
                         text: 'Logout',

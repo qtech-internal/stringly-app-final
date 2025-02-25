@@ -13,7 +13,7 @@
 
     <application
 
-    android:label="stringly"
+    android:label="Stringly"
         android:enableOnBackInvokedCallback="true"
 
         android:name="${applicationName}"
@@ -21,7 +21,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBr2rLjHYyCQPf82mpqckqgFkfqRsEW8wo" />
+            android:value="AIzaSyA4znIvS94dqB7PeF8Ttj2BcZeNuu3zZXw" />
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -51,9 +51,14 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="stringly.net"/>
+                <data android:scheme="https" android:host="stringly.net"/>
+            </intent-filter>
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="example" android:host="exampleCallback" />
-                <data android:scheme="http" android:host="http://stringly.net/" />
-                <data android:scheme="https" android:host="https://stringly.net/"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

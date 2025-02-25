@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:agent_dart/agent_dart.dart';
 
-
 class Intraction {
   static Service idleService = FieldsMethod.idl;
   static String backendCanisterId = GlobalConstant.backendCanisterId;
@@ -33,7 +32,7 @@ class Intraction {
   static Future<void> getLoggedUserIdAndKeepItForAllFunction() async {
     try {
       Map<String, dynamic> userId =
-      await actor!.getFunc(FieldsMethod.get_user_id_by_principal)?.call([]);
+          await actor!.getFunc(FieldsMethod.get_user_id_by_principal)?.call([]);
       if (userId.containsKey('Ok')) {
         loggedUserId = userId['Ok'];
       }
@@ -46,7 +45,7 @@ class Intraction {
   // get Logged user account and keep it for all function
   static Future<void> getLoggedUserAccountAndKeepItForAllFunction() async {
     try {
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
       Map<String, dynamic> result = await actor!
@@ -69,7 +68,7 @@ class Intraction {
       final regex = RegExp(r'"([a-z0-9-]+)"');
       final match = regex.firstMatch(result);
       String principal = match?.group(1) ?? '';
-      if(principal.isNotEmpty) {
+      if (principal.isNotEmpty) {
         loggedUserPrincipal = principal;
       }
     } catch (e) {
@@ -78,9 +77,8 @@ class Intraction {
   }
   // end
 
-
   static Future<String> getUserIdByPrincipalId() async {
-    if(loggedUserId != null) {
+    if (loggedUserId != null) {
       return loggedUserId!;
     } else {
       await getLoggedUserIdAndKeepItForAllFunction();
@@ -90,18 +88,17 @@ class Intraction {
 
   static Future<Map<String, dynamic>> checkNewUser() async {
     try {
-      var result =
-      await actor!.getFunc(FieldsMethod.verify_account_for_caller)?.call([]);
+      var result = await actor!
+          .getFunc(FieldsMethod.verify_account_for_caller)
+          ?.call([]);
       bool value = result.containsKey('Ok') ? true : false;
       if (value) {
-        await WebSocketRegisterForChat
-            .registerUserWithPrincipalPublicUserId();
+        await WebSocketRegisterForChat.registerUserWithPrincipalPublicUserId();
         await WebSocketLoginForChat.loginUserWithPrincipalPublicUserId();
         await InitializeSocket.socketInitializationMethod();
       }
       debugPrint(
-          '=====================${result.containsKey(
-              'Ok')}  ${result['Err']} ${result['Ok']} ========================');
+          '=====================${result.containsKey('Ok')}  ${result['Err']} ${result['Ok']} ========================');
       return {'response': result};
     } catch (e) {
       return {'Err': e};
@@ -153,18 +150,16 @@ class Intraction {
 //   get logged user account
   static Future<Map<String, dynamic>> getLoggedUserAccount() async {
     try {
-
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
 
-      if(loggedUserAccount != null) {
+      if (loggedUserAccount != null) {
         return loggedUserAccount!;
       } else {
         await getLoggedUserAccountAndKeepItForAllFunction();
         return loggedUserAccount!;
       }
-
     } catch (e) {
       return {'Err': e};
     }
@@ -174,17 +169,15 @@ class Intraction {
   static Future<Map<String, dynamic>> updateLoggedUserAccount(
       UpdateUserAccountModel params) async {
     try {
-
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
-        String userid = loggedUserId!;
-        Map<String, dynamic> result = await actor!
-            .getFunc(FieldsMethod.update_an_account)
-            ?.call([userid, params.toMap()]);
-        loggedUserAccount = null;
-        return result;
-
+      String userid = loggedUserId!;
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.update_an_account)
+          ?.call([userid, params.toMap()]);
+      loggedUserAccount = null;
+      return result;
     } catch (e) {
       return {'Err': 'Something went wrong'};
     }
@@ -200,7 +193,7 @@ class Intraction {
 
   static Future<void> rightSwipe(SwipeInputModel params) async {
     var result =
-    await actor!.getFunc(FieldsMethod.rightswipe)?.call([params.toMap()]);
+        await actor!.getFunc(FieldsMethod.rightswipe)?.call([params.toMap()]);
     debugPrint('right swipe  like-- $result');
   }
 
@@ -249,16 +242,14 @@ class Intraction {
   // get add user chatList
   static Future<Map<String, dynamic>> getLoggedUserAddChatList() async {
     try {
-
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
 
-        Map<String, dynamic> result = await actor!
-            .getFunc(FieldsMethod.get_added_user_chatlist)
-            ?.call([loggedUserId]);
-        return result;
-
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.get_added_user_chatlist)
+          ?.call([loggedUserId]);
+      return result;
     } catch (e) {
       return {'Err': e};
     }
@@ -266,8 +257,7 @@ class Intraction {
 
 //   get principal for chat box
   static Future<String> getPrincipalOnChaBox() async {
-
-    if(loggedUserPrincipal != null) {
+    if (loggedUserPrincipal != null) {
       return loggedUserPrincipal!;
     } else {
       await getLoggedUserPrincipalAndKeepItForAllFunction();
@@ -293,78 +283,90 @@ class Intraction {
     }
   }
 
-
   // get an account
-  static Future<Map<String, dynamic>> getAnAccount({required String userId}) async {
+  static Future<Map<String, dynamic>> getAnAccount(
+      {required String userId}) async {
     try {
-      Map<String, dynamic> result = await actor!
-          .getFunc(FieldsMethod.get_an_account)
-          ?.call([userId]);
-        return result;
+      Map<String, dynamic> result =
+          await actor!.getFunc(FieldsMethod.get_an_account)?.call([userId]);
+      return result;
     } catch (e) {
       return {'Err': e};
     }
   }
 
-static Future<Map<String, dynamic>> getAllAccounts({required String userId}) async {
+  static Future<Map<String, dynamic>> getAllAccounts(
+      {required String userId}) async {
     try {
-      final result = await actor!.getFunc(FieldsMethod.get_all_accounts)?.call([userId, 1, 10]);
+      final result = await actor!
+          .getFunc(FieldsMethod.get_all_accounts)
+          ?.call([userId, 1, 10]);
       return result;
-    } catch(e) {
+    } catch (e) {
       return {'Err': e.toString()};
     }
-}
+  }
 
   static Future<void> hideUser({required String receiverId}) async {
-      try {
-
-        if(loggedUserId == null) {
-          await getLoggedUserIdAndKeepItForAllFunction();
-        }
-
-          String senderId = loggedUserId!;
-          Map<String, dynamic> result = await actor!
-              .getFunc(FieldsMethod.hide_user)
-              ?.call([senderId, receiverId]);
-          print('result: $result');
-
-      } catch(e) {
-        print('Err: $e');
+    try {
+      if (loggedUserId == null) {
+        await getLoggedUserIdAndKeepItForAllFunction();
       }
 
+      String senderId = loggedUserId!;
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.hide_user)
+          ?.call([senderId, receiverId]);
+      print('result: $result');
+    } catch (e) {
+      print('Err: $e');
+    }
   }
 
   static Future<Map<String, dynamic>> getAllRightSwipedNewWithContext() async {
     try {
-
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
-        Map<String, dynamic> result = await actor!
-            .getFunc(FieldsMethod.get_allrightswipes)
-            ?.call([loggedUserId]);
-        return result;
-
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.get_allrightswipes)
+          ?.call([loggedUserId]);
+      return result;
     } catch (e) {
       return {'Err': 'Something went wrong'};
     }
   }
 
-
   // get match queue with context
-  static Future<Map<String, dynamic>> getLoggedUserMatchQueueNewWithContext() async {
+  static Future<Map<String, dynamic>>
+      getLoggedUserMatchQueueNewWithContext() async {
     try {
-
-      if(loggedUserId == null) {
+      if (loggedUserId == null) {
         await getLoggedUserIdAndKeepItForAllFunction();
       }
-        Map<String, dynamic> result = await actor!
-            .getFunc(FieldsMethod.get_match_queue)
-            ?.call([loggedUserId]);
-        return result;
-
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.get_match_queue)
+          ?.call([loggedUserId]);
+      return result;
     } catch (e) {
       return {'Err': e};
     }
   }
+
+
+  // delete account function
+  static Future<Map<String, dynamic>> deleteUserAccount() async {
+    try {
+      if (loggedUserId == null) {
+        await getLoggedUserIdAndKeepItForAllFunction();
+      }
+      Map<String, dynamic> result = await actor!
+          .getFunc(FieldsMethod.delete_an_account)
+          ?.call([loggedUserId]);
+      return result;
+    } catch (e) {
+      return {'Err': e};
+    }
+  }
+
 }

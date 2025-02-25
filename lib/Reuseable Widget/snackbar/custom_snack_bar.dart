@@ -5,7 +5,7 @@ class CustomSnackbar {
   static final context = GlobalConstant.navigatorKey.currentContext!;
 
   // notice warning snackbar
-  static noticeSnackbar({required String message}) {
+  static noticeSnackbar({required String message, double paddingAll = 10, double horizontalMargin = 30}) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           margin: const EdgeInsets.only(bottom: 10),
@@ -13,8 +13,8 @@ class CustomSnackbar {
           elevation: 0,
           content:
           Container(
-            padding: const EdgeInsets.all(12),
-            margin: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.all(paddingAll),
+            margin: EdgeInsets.symmetric(horizontal: horizontalMargin),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               color: Colors.green,
@@ -77,15 +77,15 @@ class CustomSnackbar {
   }
 
   // error and failed snackbar
-  static errorSnackbar({required String message}) {
+  static errorSnackbar({required String message, double paddingAll = 10, double horizontalMargin = 30}) {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
           elevation: 0,
           content:
           Container(
-            padding: const EdgeInsets.all(12),
-            margin: const EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.all(paddingAll),
+            margin: EdgeInsets.symmetric(horizontal: horizontalMargin),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.red
