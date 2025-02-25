@@ -59,6 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         imagePath: 'assets/svg/basil_location-outline.svg',
         text: 'Location',
         route: LocationSettings()),
+
   ];
 
   // List to hold filtered search results
@@ -431,7 +432,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
                         }
                       }).toList(),
-                      const SizedBox(height: 10),
+                      SettingOption(
+                        imagePath: 'assets/svg/remove-user.svg',
+                        text: 'Delete Account',
+                        onTap: _showDeleteAccountDialog,
+                      ),
+                      const SizedBox(height: 50),
                       SettingOption(
                         imagePath: 'assets/svg/material-symbols_logout.svg',
                         text: 'Logout',
