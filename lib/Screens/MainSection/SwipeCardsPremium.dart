@@ -920,23 +920,33 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                               height: 150,
                                             ),
                                             SizedBox(height: 20),
-                                            Text(
-                                              'Take a Breath',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: 'SFProDisplay',
-                                                  fontSize: 22),
-                                            ),
-
-                                            SizedBox(height: 8),
-                                            Text(
-                                              'This is for now Come back later',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: 'SFProDisplay',
-                                                  fontSize: 16),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .center, // Center the column's children
+                                              children: [
+                                                Text(
+                                                  'Take a Breath',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: 'SFProDisplay',
+                                                    fontSize: 22,
+                                                  ),
+                                                  textAlign: TextAlign
+                                                      .center, // Center the text
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  'This is for now\nCome back later.', // Added newline character here
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: 'SFProDisplay',
+                                                    fontSize: 16,
+                                                  ),
+                                                  textAlign: TextAlign
+                                                      .center, // Center the text
+                                                ),
+                                              ],
                                             )
-
                                             // Spacer(),
                                             // Image(
                                             //     image: AssetImage('assets/no-swipe-left-more.png'),

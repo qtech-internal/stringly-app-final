@@ -188,8 +188,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
                               CachedNetworkImage(
                                 imageUrl: widget.imageData['path']!,
                                 fit: BoxFit.cover,
-                                maxWidthDiskCache: 300,
-                                maxHeightDiskCache: 300,
+                                maxWidthDiskCache: 500,
+                                maxHeightDiskCache: 500,
                                 placeholder: (context, url) =>
                                     Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
