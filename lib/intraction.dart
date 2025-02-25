@@ -308,7 +308,7 @@ class Intraction {
 
 static Future<Map<String, dynamic>> getAllAccounts({required String userId}) async {
     try {
-      final result = await actor!.getFunc(FieldsMethod.get_all_accounts)?.call([userId]);
+      final result = await actor!.getFunc(FieldsMethod.get_all_accounts)?.call([userId, 1, 10]);
       return result;
     } catch(e) {
       return {'Err': e.toString()};

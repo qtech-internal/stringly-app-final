@@ -537,35 +537,38 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
               ? loggedUserInfo.images![0]
               : '';
       if (result.containsKey('Ok')) {
-        var usersAllData = result['Ok'];
-        int? noOfUser = usersAllData.length;
-        images.clear();
-        for (int i = 0; i < noOfUser!; i++) {
-          var singleUserInfo =
-              userProfileParamsModel.fromMap(usersAllData[i]['params']);
-          String currentProfileUserId = usersAllData[i]['user_id'];
-          String imageBytesProfile = (singleUserInfo.images != null &&
-                  singleUserInfo.images!.isNotEmpty)
-              ? singleUserInfo.images![0]
-              : '';
-          images.add({
-            'path': imageBytesProfile,
-            'name': singleUserInfo.name ?? '',
-            'age': singleUserInfo.dob != null
-                ? _calculateAge(singleUserInfo.dob!).toString()
-                : '',
-            'location': singleUserInfo.locationCountry != null
-                ? '${singleUserInfo.locationCity}, ${singleUserInfo.locationState}, ${singleUserInfo.locationCountry}'
-                : '',
-            'distance':
-                '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
-            'info': singleUserInfo.about ?? 'No information available',
-            'logged_user_id': loggedUserId,
-            'current_profile_user_id': currentProfileUserId,
-            'forDetailNetworking': singleUserInfo,
-            'logged_user_info': loggedUserInfo,
-            'logged_user_image': loggedUserImage,
-          });
+        var usersAllDataRaw = result['Ok'];
+        var usersAllData = usersAllDataRaw['paginated_profiles'];
+        if(usersAllData.isNotEmpty) {
+          int? noOfUser = usersAllData.length;
+          images.clear();
+          for (int i = 0; i < noOfUser!; i++) {
+            var singleUserInfo =
+            userProfileParamsModel.fromMap(usersAllData[i]['params']);
+            String currentProfileUserId = usersAllData[i]['user_id'];
+            String imageBytesProfile = (singleUserInfo.images != null &&
+                singleUserInfo.images!.isNotEmpty)
+                ? singleUserInfo.images![0]
+                : '';
+            images.add({
+              'path': imageBytesProfile,
+              'name': singleUserInfo.name ?? '',
+              'age': singleUserInfo.dob != null
+                  ? _calculateAge(singleUserInfo.dob!).toString()
+                  : '',
+              'location': singleUserInfo.locationCountry != null
+                  ? '${singleUserInfo.locationCity}, ${singleUserInfo.locationState}, ${singleUserInfo.locationCountry}'
+                  : '',
+              'distance':
+              '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
+              'info': singleUserInfo.about ?? 'No information available',
+              'logged_user_id': loggedUserId,
+              'current_profile_user_id': currentProfileUserId,
+              'forDetailNetworking': singleUserInfo,
+              'logged_user_info': loggedUserInfo,
+              'logged_user_image': loggedUserImage,
+            });
+          }
         }
         return result;
       } else {
@@ -591,6 +594,65 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
       return 0;
     }
   }
+
+  void _fetchAnotherChunkOfUserData() async {
+    setState(() async {
+      try {
+        var result2 = await Intraction.getLoggedUserAccount();
+        UpdateUserAccountModel loggedUserInfo =
+        UpdateUserAccountModel.fromMap(result2['Ok']['params']);
+        String loggedUserId = result2['Ok']['user_id'];
+        Map<String, dynamic> result =
+            await Intraction.getAllAccounts(userId: loggedUserId);
+        String loggedUserImage =
+        (loggedUserInfo.images != null && loggedUserInfo.images!.isNotEmpty)
+            ? loggedUserInfo.images![0]
+            : '';
+        if (result.containsKey('Ok')) {
+          var usersAllDataRaw = result['Ok'];
+          var usersAllData = usersAllDataRaw['paginated_profiles'];
+          if(usersAllData.isNotEmpty) {
+            int? noOfUser = usersAllData.length;
+            images.clear();
+            for (int i = 0; i < noOfUser!; i++) {
+              var singleUserInfo =
+              userProfileParamsModel.fromMap(usersAllData[i]['params']);
+              String currentProfileUserId = usersAllData[i]['user_id'];
+              String imageBytesProfile = (singleUserInfo.images != null &&
+                  singleUserInfo.images!.isNotEmpty)
+                  ? singleUserInfo.images![0]
+                  : '';
+              images.add({
+                'path': imageBytesProfile,
+                'name': singleUserInfo.name ?? '',
+                'age': singleUserInfo.dob != null
+                    ? _calculateAge(singleUserInfo.dob!).toString()
+                    : '',
+                'location': singleUserInfo.locationCountry != null
+                    ? '${singleUserInfo.locationCity}, ${singleUserInfo.locationState}, ${singleUserInfo.locationCountry}'
+                    : '',
+                'distance':
+                '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
+                'info': singleUserInfo.about ?? 'No information available',
+                'logged_user_id': loggedUserId,
+                'current_profile_user_id': currentProfileUserId,
+                'forDetailNetworking': singleUserInfo,
+                'logged_user_info': loggedUserInfo,
+                'logged_user_image': loggedUserImage,
+              });
+            }
+          }
+          print('-------$result');
+        } else {
+          print('-------$result');
+        }
+      } catch (e) {
+        debugPrint('---------catch error--------------------$e');
+      }
+    });
+    _allUserData = _getAll();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -931,6 +993,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                                 cardRotation = 0.0;
                                                 isFirstSwipe = false;
                                                 currentIndex++;
+                                                if(currentIndex > images.length - 6) {
+                                                  _fetchAnotherChunkOfUserData();
+                                                }
                                               });
                                             });
                                           },

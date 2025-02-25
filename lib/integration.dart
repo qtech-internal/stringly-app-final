@@ -168,7 +168,15 @@ final result_2 = IDL.Variant({
   'Err' : IDL.Text,
 });
 
-final result_3 = IDL.Variant({
+final paginatedProfiles = IDL.Record({
+  'total_matches' : IDL.Nat64,
+  'error_message' : IDL.Opt(IDL.Text),
+  'paginated_profiles' : IDL.Vec(userProfileCreationInfo),
+});
+
+final result_3 = IDL.Variant({ 'Ok' : paginatedProfiles, 'Err' : IDL.Text });
+
+final result_4 = IDL.Variant({
   'Ok' : IDL.Vec(userProfileCreationInfo),
   'Err' : IDL.Text,
 });
@@ -178,7 +186,7 @@ final swipeRecord = IDL.Record({
   'swipe_type' : IDL.Text,
 });
 
-final result_4 = IDL.Variant({
+final result_5 = IDL.Variant({
   'Ok' : IDL.Vec(swipeRecord),
   'Err' : IDL.Text,
 });
@@ -188,25 +196,17 @@ final profileWithContext = IDL.Record({
   'profile' : userProfileCreationInfo,
 });
 
-final result_5 = IDL.Variant({
+final result_6 = IDL.Variant({
   'Ok' : IDL.Vec(profileWithContext),
   'Err' : IDL.Text,
 });
 
-final result_6 = IDL.Variant({
+final result_7 = IDL.Variant({
   'Ok' : userProfileCreationInfo,
   'Err' : IDL.Text,
 });
 
 final pagination = IDL.Record({ 'page' : IDL.Nat64, 'size' : IDL.Nat64 });
-
-final matchResult = IDL.Record({
-  'total_matches' : IDL.Nat64,
-  'error_message' : IDL.Opt(IDL.Text),
-  'paginated_profiles' : IDL.Vec(userProfileCreationInfo),
-});
-
-final result_7 = IDL.Variant({ 'Ok' : matchResult, 'Err' : IDL.Text });
 
 final result_8 = IDL.Variant({ 'Ok' : IDL.Nat64, 'Err' : IDL.Text });
 
@@ -312,8 +312,8 @@ abstract class FieldsMethod {
     FieldsMethod.create_an_account : IDL.Func([userInputParams], [result_1], []),
     FieldsMethod.get_added_user_chatlist : IDL.Func([IDL.Text], [result], ['query']),
     FieldsMethod.get_all : IDL.Func([], [result_2], ['query']),
-    FieldsMethod.get_all_accounts : IDL.Func([IDL.Text], [result_3], ['query']),
-    FieldsMethod.get_an_account : IDL.Func([IDL.Text], [result_6], ['query']),
+    FieldsMethod.get_all_accounts : IDL.Func([IDL.Text, IDL.Nat64, IDL.Nat64], [result_3], ['query']),
+    FieldsMethod.get_an_account : IDL.Func([IDL.Text], [result_7], ['query']),
     FieldsMethod.get_user_id_by_principal : IDL.Func([], [result_1], ['query']),
     FieldsMethod.leftswipe : IDL.Func([swipeInput], [IDL.Text], []),
     FieldsMethod.rightswipe : IDL.Func([swipeInput], [IDL.Text], []),
@@ -325,8 +325,8 @@ abstract class FieldsMethod {
     FieldsMethod.whoAmI : IDL.Func([], [IDL.Text], ['query']),
     FieldsMethod.unmatch_user : IDL.Func([IDL.Text, IDL.Text], [result_1], []),
     FieldsMethod.hide_user : IDL.Func([IDL.Text, IDL.Text], [result_1], []),
-    FieldsMethod.get_allrightswipes: IDL.Func([IDL.Text], [result_5], ['query']),
-    FieldsMethod.get_match_queue: IDL.Func([IDL.Text], [result_5], ['query']),
+    FieldsMethod.get_allrightswipes: IDL.Func([IDL.Text], [result_6], ['query']),
+    FieldsMethod.get_match_queue: IDL.Func([IDL.Text], [result_6], ['query']),
   });
 }
 
