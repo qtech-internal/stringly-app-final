@@ -78,6 +78,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
 
   int currentIndex = 0;
   int newDataIndex = 0;
+  bool fetchingNewData = false;
   Offset cardOffset = Offset.zero;
   double cardRotation = 0.0;
   bool isToggled =
@@ -648,6 +649,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
         setState(() {
           currentIndex = 0;
           newDataIndex = 0;
+          fetchingNewData = false;
         });
         print('-------$result');
       } else {
@@ -964,6 +966,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                         )),
                                       ]
                                     : images.reversed.map((imageData) {
+                                        if (newDataIndex >= 8) {
+                                          _fetchAnotherChunkOfUserData();
+                                        }
                                         int index = images.indexOf(imageData);
                                         if (index < currentIndex)
                                           return Container();
@@ -992,16 +997,13 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                           onSwipeComplete: () {
                                             Future.delayed(
                                                 const Duration(
-                                                    milliseconds: 200), () {
+                                                    milliseconds: 100), () {
                                               setState(() {
                                                 cardOffset = Offset.zero;
                                                 cardRotation = 0.0;
                                                 isFirstSwipe = false;
                                                 currentIndex++;
                                                 newDataIndex++;
-                                                if (newDataIndex >= 8) {
-                                                  _fetchAnotherChunkOfUserData();
-                                                }
                                               });
                                             });
                                           },

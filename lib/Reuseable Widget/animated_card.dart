@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stringly/Screens/MainSection/detailedNetworking.dart';
 import 'package:stringly/Screens/MainSection/detaileddating.dart';
@@ -59,7 +60,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
     if (result ==
         GlobalConstantForSiteDatingNetworking.matchFoundConditionStatement) {
       showDialog(
-        context: context,
+        context: Get.context!,
         builder: (BuildContext context) {
           return PremiumVariation2Matched(
             usersInfo: matchPopParams,
@@ -100,7 +101,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                     if (cardOffset.dx.abs() > 100 ||
                         velocity.abs() > velocityThreshold) {
                       final bool isRight = cardOffset.dx > 0 || velocity > 0;
-
+                      widget.onSwipeComplete();
                       setState(() {
                         cardOffset = Offset(
                           isRight
@@ -127,7 +128,7 @@ class _AnimatedCardState extends State<AnimatedCard> {
                         site: widget.site,
                         senderId: widget.imageData['logged_user_id'],
                       );
-                      widget.onSwipeComplete();
+
                       if (isRight) {
                         // Intraction.rightSwipe(swipeInput);
 

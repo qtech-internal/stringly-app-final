@@ -1,24 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_icp_auth/authentication/login.dart';
 import 'package:flutter_icp_auth/authentication/logout.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stringly/intraction.dart';
 
 import '../constants/globals.dart';
-import '../integration.dart';
 import '../main.dart';
-import 'Reward Settings/RewardsPage.dart';
-import 'mainScreenNav.dart';
 import 'AccountSettings/AccountSettings.dart';
 import 'FAQ Qusetions/Helpandsupport.dart';
 import 'Location/LocationSettings.dart';
 import 'NotificationScreen.dart';
 import 'PrivacyScreen.dart';
-import 'Reward Settings/Rewardspage last.dart';
-import 'SubscriptionSettings/SubscriptionandPaymentComponent20.1.dart';
-import 'WelcomePage.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -188,6 +179,102 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _showDeleteAccountDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Color(0xFFE4E4E4),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Are you sure you want to Delete Account?',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFE4E4E4),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style:
+                            TextStyle(color: Color(0xFFE4626F), fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const Welcomepage()), // Replace LoginScreen with your login page widget.
+                      (Route<dynamic> route) =>
+                          false, // Remove all the previous routes.
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Delete Account',
+                    style: TextStyle(color: Color(0xFF5355D0), fontSize: 20),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   // Controller for the search bar
   TextEditingController searchController = TextEditingController();
 
@@ -312,7 +399,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           );
                         }
                       }).toList(),
-                      const SizedBox(height: 10),
+                      SettingOption(
+                        imagePath: 'assets/svg/remove-user.svg',
+                        text: 'Delete Account',
+                        onTap: _showDeleteAccountDialog,
+                      ),
+                      const SizedBox(height: 50),
                       SettingOption(
                         imagePath: 'assets/svg/material-symbols_logout.svg',
                         text: 'Logout',
