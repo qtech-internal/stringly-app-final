@@ -77,6 +77,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
   TextEditingController skillsController = TextEditingController();
 
   int currentIndex = 0;
+  int newDataIndex = 0;
   Offset cardOffset = Offset.zero;
   double cardRotation = 0.0;
   bool isToggled =
@@ -539,15 +540,15 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
       if (result.containsKey('Ok')) {
         var usersAllDataRaw = result['Ok'];
         var usersAllData = usersAllDataRaw['paginated_profiles'];
-        if(usersAllData.isNotEmpty) {
+        if (usersAllData.isNotEmpty) {
           int? noOfUser = usersAllData.length;
           images.clear();
           for (int i = 0; i < noOfUser!; i++) {
             var singleUserInfo =
-            userProfileParamsModel.fromMap(usersAllData[i]['params']);
+                userProfileParamsModel.fromMap(usersAllData[i]['params']);
             String currentProfileUserId = usersAllData[i]['user_id'];
             String imageBytesProfile = (singleUserInfo.images != null &&
-                singleUserInfo.images!.isNotEmpty)
+                    singleUserInfo.images!.isNotEmpty)
                 ? singleUserInfo.images![0]
                 : '';
             images.add({
@@ -560,7 +561,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                   ? '${singleUserInfo.locationCity}, ${singleUserInfo.locationState}, ${singleUserInfo.locationCountry}'
                   : '',
               'distance':
-              '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
+                  '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
               'info': singleUserInfo.about ?? 'No information available',
               'logged_user_id': loggedUserId,
               'current_profile_user_id': currentProfileUserId,
@@ -596,32 +597,33 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
   }
 
   void _fetchAnotherChunkOfUserData() async {
-    setState(() async {
-      try {
-        var result2 = await Intraction.getLoggedUserAccount();
-        UpdateUserAccountModel loggedUserInfo =
-        UpdateUserAccountModel.fromMap(result2['Ok']['params']);
-        String loggedUserId = result2['Ok']['user_id'];
-        Map<String, dynamic> result =
-            await Intraction.getAllAccounts(userId: loggedUserId);
-        String loggedUserImage =
-        (loggedUserInfo.images != null && loggedUserInfo.images!.isNotEmpty)
-            ? loggedUserInfo.images![0]
-            : '';
-        if (result.containsKey('Ok')) {
-          var usersAllDataRaw = result['Ok'];
-          var usersAllData = usersAllDataRaw['paginated_profiles'];
-          if(usersAllData.isNotEmpty) {
-            int? noOfUser = usersAllData.length;
-            images.clear();
-            for (int i = 0; i < noOfUser!; i++) {
-              var singleUserInfo =
-              userProfileParamsModel.fromMap(usersAllData[i]['params']);
-              String currentProfileUserId = usersAllData[i]['user_id'];
-              String imageBytesProfile = (singleUserInfo.images != null &&
-                  singleUserInfo.images!.isNotEmpty)
-                  ? singleUserInfo.images![0]
-                  : '';
+    print("Fetching New Data -----------------------");
+    try {
+      var result2 = await Intraction.getLoggedUserAccount();
+      UpdateUserAccountModel loggedUserInfo =
+          UpdateUserAccountModel.fromMap(result2['Ok']['params']);
+      String loggedUserId = result2['Ok']['user_id'];
+      Map<String, dynamic> result =
+          await Intraction.getAllAccounts(userId: loggedUserId);
+      String loggedUserImage =
+          (loggedUserInfo.images != null && loggedUserInfo.images!.isNotEmpty)
+              ? loggedUserInfo.images![0]
+              : '';
+      if (result.containsKey('Ok')) {
+        var usersAllDataRaw = result['Ok'];
+        var usersAllData = usersAllDataRaw['paginated_profiles'];
+        if (usersAllData.isNotEmpty) {
+          int? noOfUser = usersAllData.length;
+          images.clear();
+          for (int i = 0; i < noOfUser!; i++) {
+            var singleUserInfo =
+                userProfileParamsModel.fromMap(usersAllData[i]['params']);
+            String currentProfileUserId = usersAllData[i]['user_id'];
+            String imageBytesProfile = (singleUserInfo.images != null &&
+                    singleUserInfo.images!.isNotEmpty)
+                ? singleUserInfo.images![0]
+                : '';
+            setState(() {
               images.add({
                 'path': imageBytesProfile,
                 'name': singleUserInfo.name ?? '',
@@ -632,7 +634,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                     ? '${singleUserInfo.locationCity}, ${singleUserInfo.locationState}, ${singleUserInfo.locationCountry}'
                     : '',
                 'distance':
-                '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
+                    '${singleUserInfo.distanceBound ?? 'Unknown'} miles away',
                 'info': singleUserInfo.about ?? 'No information available',
                 'logged_user_id': loggedUserId,
                 'current_profile_user_id': currentProfileUserId,
@@ -640,19 +642,22 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                 'logged_user_info': loggedUserInfo,
                 'logged_user_image': loggedUserImage,
               });
-            }
+            });
           }
-          print('-------$result');
-        } else {
-          print('-------$result');
         }
-      } catch (e) {
-        debugPrint('---------catch error--------------------$e');
+        setState(() {
+          currentIndex = 0;
+          newDataIndex = 0;
+        });
+        print('-------$result');
+      } else {
+        print('-------$result');
       }
-    });
+    } catch (e) {
+      debugPrint('---------catch error--------------------$e');
+    }
     _allUserData = _getAll();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -663,109 +668,14 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
         body: SafeArea(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: AppBar(
-                  leadingWidth: 100,
-                  centerTitle: true,
-                  leading: Align(
-                    alignment: Alignment.centerLeft,
-                    child: ShaderMask(
-                      shaderCallback: (bounds) => const LinearGradient(
-                        colors: [Color(0xFFD83694), Color(0xFF0039C7)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(bounds),
-                      child: const Text(
-                        'Stringly',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  title: CustomToggleSwitch(
-                    isToggled: isToggled,
-                    onToggle: (value) {
-                      setState(() {
-                        isToggled = value;
-                        toggleStatus = true;
-                        if (GlobalConstantForSiteDatingNetworking
-                                .toggleToNetwork ==
-                            'networking') {
-                          GlobalConstantForSiteDatingNetworking
-                              .toggleToNetwork = 'dating';
-                        } else {
-                          GlobalConstantForSiteDatingNetworking
-                              .toggleToNetwork = 'networking';
-                        }
-                      });
-                    },
-                  ),
-                  actions: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => FilterPreferences()),
-                            );
-                          },
-                          child: SvgPicture.asset(
-                              'assets/svg/mage_filter-fill.svg',
-                              width: 24,
-                              height: 24),
-                        ),
-
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     ScaffoldMessenger.of(context).showSnackBar(
-                        //       const SnackBar(
-                        //         content: Center(
-                        //             child: Text('Coming soon...........')),
-                        //         duration: Duration(seconds: 2),
-                        //       ),
-                        //     );
-                        //   },
-                        //   child: Row(
-                        //     mainAxisSize: MainAxisSize.min,
-                        //     children: [
-                        //       Image.asset(
-                        //         'assets/coin2.png',
-                        //         height: 12,
-                        //         width: 12,
-                        //       ),
-                        //       const SizedBox(width: 2),
-                        //       const Flexible(
-                        //         // Use Flexible to prevent overflow
-                        //         child: Text(
-                        //           '0',
-                        //           style: TextStyle(
-                        //             fontSize: 18,
-                        //             fontWeight: FontWeight.bold,
-                        //             overflow: TextOverflow
-                        //                 .ellipsis, // Handle overflow
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              // Container(
-              //   padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-              //   child: Row(
-              //     //   mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       ShaderMask(
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              //   child: AppBar(
+              //     leadingWidth: 100,
+              //     centerTitle: true,
+              //     leading: Align(
+              //       alignment: Alignment.centerLeft,
+              //       child: ShaderMask(
               //         shaderCallback: (bounds) => const LinearGradient(
               //           colors: [Color(0xFFD83694), Color(0xFF0039C7)],
               //           begin: Alignment.topLeft,
@@ -781,29 +691,26 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
               //           ),
               //         ),
               //       ),
-              //       const Spacer(),
-              //       Align(
-              //         alignment: Alignment.center,
-              //         child: CustomToggleSwitch(
-              //           isToggled: isToggled,
-              //           onToggle: (value) {
-              //             setState(() {
-              //               isToggled = value;
-              //               toggleStatus = true;
-              //               if (GlobalConstantForSiteDatingNetworking
-              //                       .toggleToNetwork ==
-              //                   'networking') {
-              //                 GlobalConstantForSiteDatingNetworking
-              //                     .toggleToNetwork = 'dating';
-              //               } else {
-              //                 GlobalConstantForSiteDatingNetworking
-              //                     .toggleToNetwork = 'networking';
-              //               }
-              //             });
-              //           },
-              //         ),
-              //       ),
-              //       const Spacer(),
+              //     ),
+              //     title: CustomToggleSwitch(
+              //       isToggled: isToggled,
+              //       onToggle: (value) {
+              //         setState(() {
+              //           isToggled = value;
+              //           toggleStatus = true;
+              //           if (GlobalConstantForSiteDatingNetworking
+              //                   .toggleToNetwork ==
+              //               'networking') {
+              //             GlobalConstantForSiteDatingNetworking
+              //                 .toggleToNetwork = 'dating';
+              //           } else {
+              //             GlobalConstantForSiteDatingNetworking
+              //                 .toggleToNetwork = 'networking';
+              //           }
+              //         });
+              //       },
+              //     ),
+              //     actions: [
               //       Row(
               //         children: [
               //           GestureDetector(
@@ -858,6 +765,104 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
               //     ],
               //   ),
               // ),
+              Container(
+                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                child: Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [Color(0xFFD83694), Color(0xFF0039C7)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(bounds),
+                      child: const Text(
+                        'Stringly',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: CustomToggleSwitch(
+                        isToggled: isToggled,
+                        onToggle: (value) {
+                          setState(() {
+                            isToggled = value;
+                            toggleStatus = true;
+                            if (GlobalConstantForSiteDatingNetworking
+                                    .toggleToNetwork ==
+                                'networking') {
+                              GlobalConstantForSiteDatingNetworking
+                                  .toggleToNetwork = 'dating';
+                            } else {
+                              GlobalConstantForSiteDatingNetworking
+                                  .toggleToNetwork = 'networking';
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => FilterPreferences()),
+                            );
+                          },
+                          child: SvgPicture.asset(
+                              'assets/svg/mage_filter-fill.svg',
+                              width: 24,
+                              height: 24),
+                        ),
+
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     ScaffoldMessenger.of(context).showSnackBar(
+                        //       const SnackBar(
+                        //         content: Center(
+                        //             child: Text('Coming soon...........')),
+                        //         duration: Duration(seconds: 2),
+                        //       ),
+                        //     );
+                        //   },
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.min,
+                        //     children: [
+                        //       Image.asset(
+                        //         'assets/coin2.png',
+                        //         height: 12,
+                        //         width: 12,
+                        //       ),
+                        //       const SizedBox(width: 2),
+                        //       const Flexible(
+                        //         // Use Flexible to prevent overflow
+                        //         child: Text(
+                        //           '0',
+                        //           style: TextStyle(
+                        //             fontSize: 18,
+                        //             fontWeight: FontWeight.bold,
+                        //             overflow: TextOverflow
+                        //                 .ellipsis, // Handle overflow
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
               // Remove padding/margin to close the gap between the row and card
               toggleStatus != null
                   ? FutureBuilder(
@@ -993,7 +998,8 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                                 cardRotation = 0.0;
                                                 isFirstSwipe = false;
                                                 currentIndex++;
-                                                if(currentIndex > images.length - 6) {
+                                                newDataIndex++;
+                                                if (newDataIndex >= 8) {
                                                   _fetchAnotherChunkOfUserData();
                                                 }
                                               });
