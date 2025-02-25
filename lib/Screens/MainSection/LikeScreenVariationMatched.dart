@@ -8,7 +8,8 @@ class PremiumVariation2Matched extends StatefulWidget {
 
   Map<String, String> usersInfo;
   @override
-  State<PremiumVariation2Matched> createState() => _PremiumVariation2MatchedState();
+  State<PremiumVariation2Matched> createState() =>
+      _PremiumVariation2MatchedState();
 }
 
 class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
@@ -37,7 +38,8 @@ class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
           Center(
             child: Container(
               height: 500, // Set container height to 500
-              width: MediaQuery.of(context).size.width - 40, // Optional: set width
+              width:
+                  MediaQuery.of(context).size.width - 40, // Optional: set width
               decoration: BoxDecoration(
                 color: Colors.black, // Background color of the inner container
                 borderRadius: BorderRadius.circular(12), // Match dialog corners
@@ -59,7 +61,8 @@ class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
                       const Text(
                         'It\'s a Match!',
                         style: TextStyle(
-                          fontFamily: 'SFProDisplay', // Specify the font family here
+                          fontFamily:
+                              'SFProDisplay', // Specify the font family here
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                           fontSize: 22,
@@ -92,7 +95,7 @@ class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
                                     ),
                                     child: ClipOval(
                                       child: Image.network(
-                                         widget.usersInfo['loggedUserImage']!,
+                                        widget.usersInfo['loggedUserImage']!,
                                         width: 110,
                                         height: 110,
                                         fit: BoxFit.cover,
@@ -126,7 +129,8 @@ class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
                                     ),
                                     child: ClipOval(
                                       child: Image.network(
-                                        widget.usersInfo['currentUserProfileImage']!,
+                                        widget.usersInfo[
+                                            'currentUserProfileImage']!,
                                         width: 110,
                                         height: 110,
                                         fit: BoxFit.cover,
@@ -143,12 +147,15 @@ class _PremiumVariation2MatchedState extends State<PremiumVariation2Matched> {
                       ElevatedButton(
                         onPressed: () {
                           Map<String, dynamic> userInfo = {
-                            'userProfileImage': widget.usersInfo['currentUserProfileImage']!,
+                            'userProfileImage':
+                                widget.usersInfo['currentUserProfileImage']!,
                             'name': widget.usersInfo['profileUserName']!,
-                            'chat_id': 'chat-${widget.usersInfo['loggedUserId']}-${widget.usersInfo['ProfileUserId']}'
+                            'chat_id':
+                                'chat-${widget.usersInfo['loggedUserId']}-${widget.usersInfo['ProfileUserId']}'
                           };
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChatBox(userInfo: userInfo)));
+                              builder: (context) => ChatBox(
+                                  userInfo: userInfo, isFromMessages: false)));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

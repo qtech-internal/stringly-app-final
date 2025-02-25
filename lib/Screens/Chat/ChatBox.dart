@@ -16,7 +16,9 @@ import '../../auxilliary_function.dart';
 import '../mainScreenNav.dart';
 
 class ChatBox extends StatefulWidget {
-  ChatBox({super.key, required this.userInfo});
+  ChatBox({super.key, required this.userInfo, this.isFromMessages = true});
+
+  bool isFromMessages;
   Map<String, dynamic> userInfo;
   @override
   State<ChatBox> createState() => _ChatBoxState();
@@ -41,12 +43,16 @@ class _ChatBoxState extends State<ChatBox> {
   }
 
   Future<void> returnBackToPage() async {
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      "/mainscreennav",
-      (route) => false,
-      arguments: {'initialIndex': 2},
-    );
+    if (widget.isFromMessages) {
+      Navigator.pop(context);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        "/mainscreennav",
+        (route) => false,
+        arguments: {'initialIndex': 2},
+      );
+    }
   }
 
   @override
