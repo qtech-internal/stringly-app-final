@@ -225,10 +225,11 @@ class _UserInfo3State extends State<UserInfo3> {
                     Row(
                       children: [
                         SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: Image.asset('assets/reward.png'),
+                          height: 17,
+                          width: 17,
+                          child: Image.asset('assets/coin2.png'),
                         ),
+                        const SizedBox(width: 2),
                         const Text(
                           '+1',
                           style: TextStyle(fontSize: 14),

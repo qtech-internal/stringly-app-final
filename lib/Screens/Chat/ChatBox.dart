@@ -44,11 +44,10 @@ class _ChatBoxState extends State<ChatBox> {
     Navigator.pushNamedAndRemoveUntil(
       context,
       "/mainscreennav",
-          (route) => false,
+      (route) => false,
       arguments: {'initialIndex': 2},
     );
   }
-
 
   @override
   void dispose() {

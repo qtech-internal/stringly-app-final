@@ -180,10 +180,11 @@ class _UserInfo2State extends State<UserInfo2> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: Image.asset('assets/reward.png'),
+                                  height: 17,
+                                  width: 17,
+                                  child: Image.asset('assets/coin2.png'),
                                 ),
+                                const SizedBox(width: 2),
                                 const Text(
                                   '+1',
                                   style: TextStyle(

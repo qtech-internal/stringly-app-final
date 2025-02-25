@@ -39,15 +39,32 @@ class _ProfileSet0State extends State<ProfileSet0> {
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
       setState(() {
         if (tappedIndex != null && pickedFiles.length == 1) {
-          // Replace the tapped placeholder with the selected image
-          _selectedImages[tappedIndex] = File(pickedFiles[0]);
+          // Check for duplicates
+          if (!_selectedImages.any((image) => image?.path == pickedFiles[0])) {
+            // Replace the tapped placeholder with the selected image
+            _selectedImages[tappedIndex] = File(pickedFiles[0]);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text('You cannot select the same image twice.')),
+            );
+          }
         } else {
           // Fill the placeholders sequentially with selected images
           int imageIndex = 0;
           for (int i = 0; i < _selectedImages.length; i++) {
             if (_selectedImages[i] == null && imageIndex < pickedFiles.length) {
-              _selectedImages[i] = File(pickedFiles[imageIndex]);
-              imageIndex++;
+              // Check for duplicates
+              if (!_selectedImages
+                  .any((image) => image?.path == pickedFiles[imageIndex])) {
+                _selectedImages[i] = File(pickedFiles[imageIndex]);
+                imageIndex++;
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('You cannot select the same image twice.')),
+                );
+              }
             }
           }
         }
@@ -142,10 +159,11 @@ class _ProfileSet0State extends State<ProfileSet0> {
                         ),
                         const Spacer(),
                         SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: Image.asset('assets/reward.png'),
+                          height: 17,
+                          width: 17,
+                          child: Image.asset('assets/coin2.png'),
                         ),
+                        const SizedBox(width: 2),
                         const Text('+1', style: TextStyle(fontSize: 14)),
                       ],
                     ),
@@ -251,6 +269,7 @@ class _ProfileSet0State extends State<ProfileSet0> {
                             children: [
                               _selectedImages[index] != null
                                   ? DottedBorder(
+                                      //  padding: EdgeInsets.zero,
                                       borderType: BorderType.RRect,
                                       radius: const Radius.circular(10),
                                       dashPattern: const [4, 3],
@@ -259,17 +278,15 @@ class _ProfileSet0State extends State<ProfileSet0> {
                                       child: Container(
                                         height: 250,
                                         width: 250,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(
-                                              5.0), // Add padding here
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                                10), // Match the border radius
-                                            child: Image.file(
-                                              _selectedImages[index]!,
-                                              fit: BoxFit
-                                                  .cover, // Ensure the image fits the box
-                                            ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Match the border radius
+                                          child: Image.file(
+                                            _selectedImages[index]!,
+                                            height: 250,
+                                            width: 250,
+                                            fit: BoxFit
+                                                .cover, // Ensure the image fits the box
                                           ),
                                         ),
                                       ),

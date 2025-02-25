@@ -8,18 +8,15 @@ import 'MainSection/Premiumvariation1.dart';
 import 'MainSection/SwipeCardsPremium.dart';
 import 'profile.dart';
 
-
-
 class Mainscreennav extends StatefulWidget {
   final int initialIndex;
-  Mainscreennav({super.key, this.initialIndex=0});
+  Mainscreennav({super.key, this.initialIndex = 0});
 
   @override
   _MainscreennavState createState() => _MainscreennavState();
 }
 
 class _MainscreennavState extends State<Mainscreennav> {
-
   void changeTab(int index) {
     setState(() {
       _selectedIndex = index;
@@ -43,16 +40,15 @@ class _MainscreennavState extends State<Mainscreennav> {
 
   int _selectedIndex = 0;
 
-
   Widget _getScreen(int index) {
     switch (index) {
       case 0:
         return SwipingScreenPremium();
       case 1:
-        if(!GlobalConstant.isPremiumUser){
-        // Check if the user is a premium user
-          return const PremiumVariation1();}
-        else{
+        if (!GlobalConstant.isPremiumUser) {
+          // Check if the user is a premium user
+          return const PremiumVariation1();
+        } else {
           return const PremiumVariation2();
         }
 
