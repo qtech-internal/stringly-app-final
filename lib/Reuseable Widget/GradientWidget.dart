@@ -85,10 +85,10 @@ class _GradientTextFieldState extends State<GradientTextField> {
               keyboardType: widget.textInputType,
               onChanged: widget.onChanged,
               decoration: InputDecoration(
-                label: Container(
+                label: _hasFocus || widget.controller!.text.trim().isNotEmpty ?  Container(
                     margin: const EdgeInsets.only(bottom: 6),
                     padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: widget.label),
+                    child: widget.label) : widget.label,
                 hintText: widget.hintText,
                 hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                 // labelText: widget.label == null ? widget.hintText : null,

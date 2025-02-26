@@ -39,10 +39,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         imagePath: 'assets/svg/ic_outline-privacy-tip.svg',
         text: 'Privacy',
         route: PrivacyScreen()),
-    SettingOptionData(
-        imagePath: 'assets/svg/octicon_bell-24.svg',
-        text: 'Notifications',
-        route: NotificationScreen()),
+    // SettingOptionData(
+    //     imagePath: 'assets/svg/octicon_bell-24.svg',
+    //     text: 'Notifications',
+    //     route: NotificationScreen()),
     // SettingOptionData(
     //     imagePath: 'assets/svg/fluent_payment-16-regular.svg',
     //     text: 'Subscription & Payment',
@@ -395,7 +395,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 40),
                       // Dynamically generated list of settings options based on search query
                       ...filteredSettingOptions.map((setting) {
-                        if (setting.text == 'Notifications' ||
+                        if (setting.text == 'Privacy' ||
                             setting.text == 'Reward Points Management' ||
                             setting.text == 'Location') {
                           return Column(

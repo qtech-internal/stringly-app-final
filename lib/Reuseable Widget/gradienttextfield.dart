@@ -103,10 +103,10 @@ class _GradientdropdownTextFieldState extends State<GradientdropdownTextField> {
                         : null,
                     clearOption: false,
                     textFieldDecoration: InputDecoration(
-                      label: Container(
+                      label: _hasFocus || widget.initialValue != null || _dropDownController.dropDownValue != null ?  Container(
                           margin: const EdgeInsets.only(bottom: 6),
                           padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: widget.label),
+                          child: widget.label) : widget.label,
                       hintText: widget.hintText,
                       hintStyle:
                           const TextStyle(color: Colors.grey, fontSize: 14),
@@ -147,7 +147,10 @@ class _GradientdropdownTextFieldState extends State<GradientdropdownTextField> {
                   focusNode: _focusNode,
                   validator: widget.validator,
                   decoration: InputDecoration(
-                    label: widget.label,
+                    label: _hasFocus || widget.controller!.text.trim().isNotEmpty ?  Container(
+                        margin: const EdgeInsets.only(bottom: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: widget.label) : widget.label,
                     hintText: widget.hintText,
                     hintStyle:
                         const TextStyle(color: Colors.grey, fontSize: 14),
