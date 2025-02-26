@@ -132,7 +132,12 @@ class _GradientdropdownTextFieldState extends State<GradientdropdownTextField> {
                               value: item,
                             ))
                         .toList(),
-                    onChanged: widget.onChanged,
+                    onChanged: (value) {
+                      widget.onChanged;
+                      setState(() {
+                        _dropDownController.setDropDown(value);
+                      });
+                    },
                     dropDownIconProperty: IconProperty(
                       icon: _hasFocus
                           ? Icons.keyboard_arrow_up
