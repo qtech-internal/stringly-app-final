@@ -77,7 +77,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
       left: 20.0,
       right: 20.0,
       child: Opacity(
-        opacity: widget.index - widget.currentIndex == 1 ? 0.9 : 1.0,
+        // opacity: widget.index - widget.currentIndex == 1 ? 0.9 : 1.0,
+        opacity: 1.0,
         child: Transform.scale(
           scale: widget.index - widget.currentIndex == 1 ? 0.98 : 1.0,
           child: GestureDetector(
@@ -188,8 +189,8 @@ class _AnimatedCardState extends State<AnimatedCard> {
                               CachedNetworkImage(
                                 imageUrl: widget.imageData['path']!,
                                 fit: BoxFit.cover,
-                                maxWidthDiskCache: 500,
-                                maxHeightDiskCache: 500,
+                                maxWidthDiskCache: 600,
+                                maxHeightDiskCache: 600,
                                 placeholder: (context, url) =>
                                     Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,

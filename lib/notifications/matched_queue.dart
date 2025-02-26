@@ -73,7 +73,7 @@ class MatchedQueue {
 
       for (var message in unreadMessages) {
         var userData = getUserDataById(message['from_user_id']);
-        String senderName = userData?['name'] ?? 'Unknown Sender';
+        String senderName = userData?['name'] ?? '';
 
         final userMessageInfo = _findMessageByUserIdOnLastMessageHistory(
             _lastMessage, message['from_user_id']);

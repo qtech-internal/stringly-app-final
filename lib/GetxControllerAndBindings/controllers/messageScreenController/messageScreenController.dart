@@ -87,28 +87,31 @@ class MessageScreenController extends GetxController {
     InitializeSocket.socket.on('lastMessageResponse', (data) {
       lastMessage.value = data['lastMessage'];
       unreadMessage.value = data['unreadMessages'];
+      print(unreadMessage.value);
 
-      if (filteredMessages.value != []) {
+      if (filteredMessages.value.isNotEmpty) {
         for (var unread in unreadMessage.value) {
           final lastMessageFromSender = lastMessage.value.firstWhere(
-              (lastMsg) => lastMsg['from_user_id'] == unread['from_user_id']);
-          final message = filteredMessages.value.firstWhereOrNull(
-              (msg) => msg['sender_id'] == unread['from_user_id']);
-          if (message != null) {
-            message['message'] = lastMessageFromSender['message'];
-            message['unreadCount'] = int.parse(unread['count']);
-            message['rawTime'] = lastMessageFromSender['createdAt'];
-            message['isRead'] = false;
-          }
+            (lastMsg) => lastMsg['from_user_id'] == unread['from_user_id'],
+            orElse: () => null, // Return null if not found
+          );
 
-          filteredMessages.refresh();
+          if (lastMessageFromSender != null) {
+            final message = filteredMessages.value.firstWhereOrNull(
+              (msg) => msg['sender_id'] == unread['from_user_id'],
+            );
+
+            if (message != null) {
+              message['message'] = lastMessageFromSender['message'];
+              message['unreadCount'] = int.parse(unread['count']);
+              message['rawTime'] = lastMessageFromSender['createdAt'];
+              message['isRead'] = false;
+            }
+
+            filteredMessages.refresh();
+          }
         }
       }
-
-      // debugPrint(
-      //     '--------klllllllll------last Message------------------------- ${lastMessage.value}');
-      // debugPrint(
-      //     '--------klllllllll------Unread Message------------------------- ${unreadMessage.value}');
     });
 
     debugPrint('check for end of on for chat history');

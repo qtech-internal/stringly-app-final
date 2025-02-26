@@ -262,6 +262,92 @@ class _AccountSettingState extends State<AccountSetting> {
     );
   }
 
+  void _showDeleteDialog(Function onDelete) {
+    showModalBottomSheet(
+      context: Get.context!,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Color(0xFFE4E4E4),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Are you sure you want to delete this picture',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 4),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1.0,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFE4E4E4),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        'Cancel',
+                        style:
+                            TextStyle(color: Color(0xFFE4626F), fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: ElevatedButton(
+                  onPressed: () {
+                    onDelete();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Delete',
+                    style: TextStyle(color: Color(0xFF5355D0), fontSize: 20),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     controller = Get.put(AccountSettingsController());
@@ -560,21 +646,27 @@ class _AccountSettingState extends State<AccountSetting> {
                                                   onTap: () {
                                                     if (networkImages.length >
                                                         1) {
-                                                      final imageToRemove =
-                                                          networkImages[i];
-                                                      networkImages.remove(
-                                                          imageToRemove);
-                                                      controller.iconState.value
-                                                          .remove(
-                                                              imageToRemove);
-                                                      controller.deleteImage();
-                                                      if (networkImages
-                                                          .isNotEmpty) {
+                                                      _showDeleteDialog(() {
+                                                        Navigator.pop(context);
+                                                        final imageToRemove =
+                                                            networkImages[i];
+                                                        networkImages.remove(
+                                                            imageToRemove);
                                                         controller
-                                                                .networkImageOfProfile
-                                                                .value =
-                                                            networkImages.first;
-                                                      }
+                                                            .iconState.value
+                                                            .remove(
+                                                                imageToRemove);
+                                                        controller
+                                                            .deleteImage();
+                                                        if (networkImages
+                                                            .isNotEmpty) {
+                                                          controller
+                                                                  .networkImageOfProfile
+                                                                  .value =
+                                                              networkImages
+                                                                  .first;
+                                                        }
+                                                      });
                                                     } else {
                                                       ScaffoldMessenger.of(
                                                               context)
