@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:stringly/main.dart';
 
 class GradientdropdownTextField extends StatefulWidget {
   final String hintText;
@@ -133,10 +134,10 @@ class _GradientdropdownTextFieldState extends State<GradientdropdownTextField> {
                             ))
                         .toList(),
                     onChanged: (value) {
-                      widget.onChanged;
                       setState(() {
                         _dropDownController.setDropDown(value);
                       });
+                      widget.onChanged!(value);
                     },
                     dropDownIconProperty: IconProperty(
                       icon: _hasFocus
