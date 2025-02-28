@@ -175,7 +175,7 @@ class _ChatBoxState extends State<ChatBox> {
                 ),
               ],
             ),
-            body: controller.isLoading.value
+            body: controller.isLoading.value || controller.profileLoading.value
                 ? MessageScreenLoader.simpleLoader(text: 'Wait, Loading...')
                 : Column(
                     children: [
