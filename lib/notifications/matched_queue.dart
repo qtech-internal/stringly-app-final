@@ -114,7 +114,7 @@ class MatchedQueue {
         print("Triggering notification for $senderName: $messageContent");
         await NotificationService.showBasicNotification(
           id: DateTime.now().millisecondsSinceEpoch % 2147483647,
-          title: "Message from $senderName",
+          title: senderName != '' ? "Message from $senderName" : "New Message",
           body: messageContent,
         );
 
