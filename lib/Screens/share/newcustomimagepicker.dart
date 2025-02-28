@@ -45,7 +45,7 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
 
   Future<void> _fetchImagesFromAlbum(AssetPathEntity album) async {
     final List<AssetEntity> images =
-        await album.getAssetListPaged(page: 0, size: 50);
+        await album.getAssetListPaged(page: 0, size: 5000);
     setState(() {
       recentImages = images;
     });
@@ -144,19 +144,19 @@ class _CustomImagePickerState extends State<CustomImagePicker> {
                         snapshot.data != null) {
                       return Image.file(
                         snapshot.data!,
-                        height: 350,
+                        height: 250,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       );
                     }
                     return const SizedBox(
-                      height: 350,
+                      height: 250,
                       child: Center(child: CircularProgressIndicator()),
                     );
                   },
                 )
               : const SizedBox(
-                  height: 350,
+                  height: 250,
                   child: Center(
                       child: Text('No image selected',
                           style: TextStyle(color: Colors.white))),

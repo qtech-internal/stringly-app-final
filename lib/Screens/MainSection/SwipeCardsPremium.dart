@@ -810,7 +810,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                         },
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.07,),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.08,),
                     const Spacer(),
                     Row(
                       children: [

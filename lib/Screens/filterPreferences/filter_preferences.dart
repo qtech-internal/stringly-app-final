@@ -339,7 +339,7 @@ class _FilterPreferencesState extends State<FilterPreferences> {
                           ],
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 40,
                         )
                       ],
                     );
