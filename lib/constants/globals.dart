@@ -23,4 +23,6 @@ class GlobalConstant {
   // to navigate to different screen
   static bool checkUserProfileCreateOrNot = false;
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
 }

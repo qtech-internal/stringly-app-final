@@ -372,6 +372,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none,
                     ),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
                     contentPadding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   ),
