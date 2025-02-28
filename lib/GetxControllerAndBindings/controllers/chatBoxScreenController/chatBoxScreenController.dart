@@ -90,7 +90,6 @@ class ChatScreenController extends GetxController {
 
   Future<void> getResponseMessage(
       Map<dynamic, dynamic> userInfo, String chatId) async {
-
     InitializeSocket.socket.on('receiveMessage', (data) {
       debugPrint('Message received----: $data');
       Map<String, dynamic> messageData = data['data'];
@@ -580,9 +579,8 @@ class ChatScreenController extends GetxController {
           builder: (context) => DetailedDating(data: singleUserInfo),
         ),
       );
-    } catch (e) {
       profileLoading.value = false;
-    } finally {
+    } catch (e) {
       profileLoading.value = false;
     }
   }
