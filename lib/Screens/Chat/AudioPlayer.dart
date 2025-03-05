@@ -28,6 +28,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   double _currentPosition = 0.0;
   double _duration = 0.0;
   bool _isPlayerReady = false;
+  double _totalTime = 0.0;
 
   @override
   void initState() {
@@ -38,8 +39,22 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Future<void> _initializePlayer() async {
     try {
       await _audioPlayer.openPlayer();
-      await _audioPlayer
-          .setSubscriptionDuration(const Duration(milliseconds: 100));
+      await _audioPlayer.setSubscriptionDuration(const Duration(milliseconds: 100));
+
+      // Fetch audio duration
+      Duration? duration = await _audioPlayer.startPlayer(
+        fromURI: widget.audioPath,
+        codec: Codec.aacADTS,
+        whenFinished: () {},
+      );
+      await _audioPlayer.stopPlayer(); // Stop immediately after getting duration
+
+      if (duration != null) {
+        setState(() {
+          _totalTime = duration.inMilliseconds / 1000.0; // Convert to seconds
+        });
+      }
+
       setState(() {
         _isPlayerReady = true;
       });
@@ -219,7 +234,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _formatDuration(_currentPosition),
+                          _formatDuration(_totalTime),
                           style: TextStyle(
                             fontSize: 12,
                             color: widget.isSender
@@ -228,7 +243,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                           ),
                         ),
                         Text(
-                          _formatDuration(_duration),
+                          _formatDuration(_currentPosition),
                           style: TextStyle(
                             fontSize: 12,
                             color: widget.isSender
