@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final String audioPath;
@@ -27,8 +28,8 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   bool _isLoading = false;
   double _currentPosition = 0.0;
   double _duration = 0.0;
-  bool _isPlayerReady = false;
   double _totalTime = 0.0;
+  bool _isPlayerReady = false;
 
   @override
   void initState() {
@@ -41,27 +42,32 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       await _audioPlayer.openPlayer();
       await _audioPlayer.setSubscriptionDuration(const Duration(milliseconds: 100));
 
-      // Fetch audio duration
-      Duration? duration = await _audioPlayer.startPlayer(
-        fromURI: widget.audioPath,
-        codec: Codec.aacADTS,
-        whenFinished: () {},
-      );
-      await _audioPlayer.stopPlayer(); // Stop immediately after getting duration
+      // Get media info using ff probe
+      FFprobeKit.getMediaInformation(widget.audioPath).then((session) async {
+        final info = await session.getMediaInformation();
+        String? durationString = info?.getDuration();
 
-      if (duration != null) {
+        if (durationString != null) {
+          double? durationInSeconds = double.tryParse(durationString);
+          if (durationInSeconds != null) {
+            setState(() {
+              _totalTime = durationInSeconds;
+            });
+          }
+        }
+
         setState(() {
-          _totalTime = duration.inMilliseconds / 1000.0; // Convert to seconds
+          _isPlayerReady = true;
         });
-      }
-
-      setState(() {
-        _isPlayerReady = true;
       });
     } catch (e) {
       print('Error initializing audio player: $e');
     }
   }
+
+
+
+
 
   void _updatePosition(Duration position, Duration duration) {
     setState(() {
