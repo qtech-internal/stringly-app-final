@@ -114,6 +114,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return MessageScreenLoader.simpleLoader(text: 'Wait, Loading...');
+            // loader
           } else if (snapshot.connectionState == ConnectionState.done) {
             return const ChatLists();
           }
