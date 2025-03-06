@@ -314,6 +314,7 @@ class Intraction {
       }
 
       String senderId = loggedUserId!;
+      print(senderId);
       Map<String, dynamic> result = await actor!
           .getFunc(FieldsMethod.hide_user)
           ?.call([senderId, receiverId]);
@@ -333,6 +334,7 @@ class Intraction {
           ?.call([loggedUserId]);
       return result;
     } catch (e) {
+      print(e.toString());
       return {'Err': 'Something went wrong'};
     }
   }
@@ -353,7 +355,6 @@ class Intraction {
     }
   }
 
-
   // delete account function
   static Future<Map<String, dynamic>> deleteUserAccount() async {
     try {
@@ -368,5 +369,4 @@ class Intraction {
       return {'Err': e};
     }
   }
-
 }

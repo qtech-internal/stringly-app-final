@@ -40,34 +40,32 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Future<void> _initializePlayer() async {
     try {
       await _audioPlayer.openPlayer();
-      await _audioPlayer.setSubscriptionDuration(const Duration(milliseconds: 100));
+      await _audioPlayer
+          .setSubscriptionDuration(const Duration(milliseconds: 100));
 
-      // Get media info using ff probe
       FFprobeKit.getMediaInformation(widget.audioPath).then((session) async {
-        final info = await session.getMediaInformation();
+        final info = session.getMediaInformation();
         String? durationString = info?.getDuration();
 
         if (durationString != null) {
           double? durationInSeconds = double.tryParse(durationString);
-          if (durationInSeconds != null) {
+          if (durationInSeconds != null && mounted) {
             setState(() {
               _totalTime = durationInSeconds;
             });
           }
         }
 
-        setState(() {
-          _isPlayerReady = true;
-        });
+        if (mounted) {
+          setState(() {
+            _isPlayerReady = true;
+          });
+        }
       });
     } catch (e) {
       print('Error initializing audio player: $e');
     }
   }
-
-
-
-
 
   void _updatePosition(Duration position, Duration duration) {
     setState(() {

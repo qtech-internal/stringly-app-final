@@ -21,15 +21,19 @@ class _DetailedDatingState extends State<DetailedDating> {
   final List<String> images = [];
 
   Future<void> _hideUserFunctionDating() async {
-    RequestProcessLoader.openLoadingDialog();
-    await Intraction.hideUser(receiverId: widget.data.userId!);
-    RequestProcessLoader.stopLoading();
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-          builder: (context) =>
-              Mainscreennav()), // Replace LoginScreen with your login page widget.
-      (Route<dynamic> route) => false, // Remove all the previous routes.
-    );
+    try {
+      RequestProcessLoader.openLoadingDialog();
+      await Intraction.hideUser(receiverId: widget.data.userId!);
+      RequestProcessLoader.stopLoading();
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (context) =>
+                Mainscreennav()), // Replace LoginScreen with your login page widget.
+        (Route<dynamic> route) => false, // Remove all the previous routes.
+      );
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> _handleMenuItemClick(BuildContext context, String value) async {
