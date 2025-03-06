@@ -11,8 +11,9 @@ import '../loaders/request_process_loader.dart';
 import '../mainScreenNav.dart';
 
 class Detailednetworking extends StatefulWidget {
-  Detailednetworking({Key? key, required this.data}) : super(key: key);
+  Detailednetworking({Key? key, required this.data, required this.userId}) : super(key: key);
   userProfileParamsModel data;
+  String userId;
 
   @override
   State<Detailednetworking> createState() => _DetailednetworkingState();
@@ -30,7 +31,7 @@ class _DetailednetworkingState extends State<Detailednetworking> {
 
   Future<void> _hideUserFunctionNetworking() async {
     RequestProcessLoader.openLoadingDialog();
-    await Intraction.hideUser(receiverId: widget.data.userId!);
+    await Intraction.hideUser(receiverId: widget.userId);
     RequestProcessLoader.stopLoading();
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(

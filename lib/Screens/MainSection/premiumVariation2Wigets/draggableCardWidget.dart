@@ -198,12 +198,16 @@ class _DraggableCardWidgetState extends State<DraggableCardWidget> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 DetailedDating(
-                                                    data: widget.userDetail)))
+                                                    data: widget.userDetail,
+                                                    userId: widget.userId,
+                                                )))
                                     : Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 Detailednetworking(
-                                                    data: widget.userDetail)));
+                                                    data: widget.userDetail,
+                                                    userId: widget.userId,
+                                                )));
                               },
                               child: const Text(
                                 'Click to view details',

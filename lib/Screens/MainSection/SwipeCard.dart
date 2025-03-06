@@ -18,6 +18,7 @@ class SwipingScreen extends StatefulWidget {
 
 class _SwipingScreenState extends State<SwipingScreen> with SingleTickerProviderStateMixin {
   var userProfile = userProfileParamsModel();
+  var userId = 'triei';
   final List<Map<String, String>> images = [
     {
       'path': 'assets/img.png',
@@ -241,14 +242,14 @@ class _SwipingScreenState extends State<SwipingScreen> with SingleTickerProvider
                                     if (isToggled) {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => DetailedDating(data:  userProfile),
+                                          builder: (context) => DetailedDating(data:  userProfile, userId: userId,),
                                         ),
                                       );
                                     } else {
 
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => Detailednetworking(data:  userProfile,),
+                                          builder: (context) => Detailednetworking(data:  userProfile, userId: userId,),
                                         ),
                                       );
                                     }

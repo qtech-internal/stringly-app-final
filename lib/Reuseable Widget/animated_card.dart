@@ -151,14 +151,18 @@ class _AnimatedCardState extends State<AnimatedCard> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => Detailednetworking(
-                              data: widget.imageData['forDetailNetworking']),
+                              data: widget.imageData['forDetailNetworking'],
+                            userId: widget.imageData['current_profile_user_id'],
+                          ),
                         ),
                       );
                     } else {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => DetailedDating(
-                              data: widget.imageData['forDetailNetworking']),
+                              data: widget.imageData['forDetailNetworking'],
+                              userId: widget.imageData['current_profile_user_id'],
+                          ),
                         ),
                       );
                     }

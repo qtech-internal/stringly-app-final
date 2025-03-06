@@ -576,7 +576,7 @@ class ChatScreenController extends GetxController {
       debugPrint('------------${singleUserInfo.toMap()}');
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => DetailedDating(data: singleUserInfo),
+          builder: (context) => DetailedDating(data: singleUserInfo, userId: ids.value['receiver_id']!,),
         ),
       );
       profileLoading.value = false;

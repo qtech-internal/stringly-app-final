@@ -10,8 +10,9 @@ import '../../models/user_profile_params_model.dart';
 import '../mainScreenNav.dart';
 
 class DetailedDating extends StatefulWidget {
-  DetailedDating({Key? key, required this.data}) : super(key: key);
+  DetailedDating({Key? key, required this.data, required this.userId}) : super(key: key);
   userProfileParamsModel data;
+  String userId;
 
   @override
   State<DetailedDating> createState() => _DetailedDatingState();
@@ -23,7 +24,7 @@ class _DetailedDatingState extends State<DetailedDating> {
   Future<void> _hideUserFunctionDating() async {
     try {
       RequestProcessLoader.openLoadingDialog();
-      await Intraction.hideUser(receiverId: widget.data.userId!);
+      await Intraction.hideUser(receiverId: widget.userId);
       RequestProcessLoader.stopLoading();
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
