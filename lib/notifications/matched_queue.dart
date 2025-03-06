@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:stringly/intraction.dart';
 import 'package:stringly/models/user_profile_params_model.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
@@ -66,6 +68,7 @@ class MatchedQueue {
   }
 
   void getNewMessagesFromUser() async {
+    String? loggedUserId = Intraction.loggedUserId;
     print("Running");
     InitializeSocket.socket.on('lastMessageResponse', (data) async {
       final _lastMessage = data['lastMessage'];
@@ -73,29 +76,24 @@ class MatchedQueue {
 
       for (var message in unreadMessages) {
         var userData = getUserDataById(message['from_user_id']);
+
+        print("User Data $userData");
+        print("Message $message");
         String senderName = userData?['name'] ?? '';
 
         final userMessageInfo = _findMessageByUserIdOnLastMessageHistory(
             _lastMessage, message['from_user_id']);
 
-        print('New Message ############################ --$userMessageInfo');
-
         String messageContent = userMessageInfo['message'] ?? '';
-        if (messageContent.isEmpty) {
-          print(
-              "Message from $senderName has no content. Debug message: $message");
-        }
+        if (messageContent.isEmpty) {}
 
         bool isRead = message['isRead'] ?? false;
         if (isRead) {
-          print(
-              "Skipping message from $senderName because it is marked as read.");
           continue;
         }
 
         String createdAt = userMessageInfo['createdAt'] ?? '';
         if (createdAt.isEmpty) {
-          print("Skipping notification due to missing createdAt timestamp.");
           continue;
         }
 
@@ -106,17 +104,26 @@ class MatchedQueue {
             .cast<String>();
 
         if (shownNotifications.contains(createdAt)) {
-          print(
-              "Skipping notification for $senderName as it was already shown.");
           continue;
         }
+        String? payload;
+        print("Chat Id #########################");
+        print('chat-$loggedUserId-${userData!['from_user_id']}');
+        if (userData?['name'] != "" || userData?['path'] != "") {
+          payload = jsonEncode({
+            'type': 'message',
+            'userProfileImage': userData!['path'] ?? '',
+            'name': userData['name'] ?? '',
+            'chat_id': 'chat-$loggedUserId-${message['from_user_id']}'
+          });
+        }
 
-        print("Triggering notification for $senderName: $messageContent");
         await NotificationService.showBasicNotification(
-          id: DateTime.now().millisecondsSinceEpoch % 2147483647,
-          title: senderName != '' ? "Message from $senderName" : "New Message",
-          body: messageContent,
-        );
+            id: DateTime.now().millisecondsSinceEpoch % 2147483647,
+            title:
+                senderName != '' ? "Message from $senderName" : "New Message",
+            body: messageContent,
+            payload: payload);
 
         // Save createdAt to prevent duplicate notifications
         shownNotifications.add(createdAt);

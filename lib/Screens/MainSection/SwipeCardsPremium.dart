@@ -810,7 +810,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                         },
                       ),
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.08,),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.08,
+                    ),
                     const Spacer(),
                     Row(
                       children: [
@@ -922,29 +924,27 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                             ),
                                             SizedBox(height: 20),
                                             Column(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .center, // Center the column's children
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'Take a Breath',
+                                                  "No Matches Yet? Let’s Change That!",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontFamily: 'SFProDisplay',
                                                     fontSize: 22,
                                                   ),
-                                                  textAlign: TextAlign
-                                                      .center, // Center the text
+                                                  textAlign: TextAlign.center,
                                                 ),
                                                 SizedBox(height: 8),
                                                 Text(
-                                                  'This is for now\nCome back later.', // Added newline character here
+                                                  "Real connections take time—keep swiping\n to find your vibe.",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontFamily: 'SFProDisplay',
                                                     fontSize: 16,
                                                   ),
-                                                  textAlign: TextAlign
-                                                      .center, // Center the text
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ],
                                             )
