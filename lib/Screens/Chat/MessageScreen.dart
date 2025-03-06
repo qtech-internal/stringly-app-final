@@ -5,7 +5,6 @@ import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenCont
 import 'package:stringly/GetxControllerAndBindings/controllers/profile/profile_controller.dart';
 import 'package:stringly/Screens/Chat/message_widgets/chat_lists.dart';
 import 'package:stringly/Screens/loaders/message_screen_loader.dart';
-import 'package:stringly/auxilliary_function.dart';
 import '../../webSocketRegisterLogin/initialize_socket.dart';
 import '../AccountSettings/AccountSettings.dart';
 import '../mainScreenNav.dart';
@@ -114,9 +113,67 @@ class _MessagesScreenState extends State<MessagesScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return MessageScreenLoader.simpleLoader(text: 'Wait, Loading...');
-            // loader
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return const ChatLists();
+            return controller.matchQueueData.value.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/no_chat.png',
+                          height: 200,
+                          width: 200,
+                        ),
+                        const Text(
+                          "No Matches Yet? Let’s Change That!",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'SFProDisplay',
+                            fontSize: 18,
+                          ),
+                        ),
+                        const Text(
+                          "Real connections take time—keep swiping to\nfind your vibe.",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'SFProDisplay',
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: SizedBox(
+                            width: 250,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                backgroundColor: Colors.black,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (_) => Mainscreennav()));
+                              },
+                              child: const Text(
+                                'Find your person',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'SFProDisplay',
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : ChatLists();
           }
           return MessageScreenLoader.simpleLoader(text: 'Wait, Loading...');
         },

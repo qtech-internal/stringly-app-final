@@ -912,23 +912,23 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                 children: currentIndex >= images.length
                                     ? [
                                         // Fallback container when no images are left
-                                        const Center(
+                                        Center(
                                             child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Image(
+                                            const Image(
                                               image: AssetImage(
                                                   'assets/noswipeleft.png'),
                                               height: 150,
                                             ),
-                                            SizedBox(height: 20),
+                                            const SizedBox(height: 20),
                                             Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  "No Matches Yet? Let’s Change That!",
+                                                const Text(
+                                                  "You’re all caught up!",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontFamily: 'SFProDisplay',
@@ -936,9 +936,9 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                                   ),
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                SizedBox(height: 8),
-                                                Text(
-                                                  "Real connections take time—keep swiping\n to find your vibe.",
+                                                const SizedBox(height: 8),
+                                                const Text(
+                                                  "No more profiles left for now. Tweak your filters or check back soon",
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontFamily: 'SFProDisplay',
@@ -946,6 +946,40 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                                   ),
                                                   textAlign: TextAlign.center,
                                                 ),
+                                                const SizedBox(height: 20),
+                                                SizedBox(
+                                                  width: 250,
+                                                  child: ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      elevation: 0,
+                                                      backgroundColor:
+                                                          Colors.black,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 12),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                FilterPreferences()),
+                                                      );
+                                                    },
+                                                    child: const Text(
+                                                      'Change my filters',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontFamily:
+                                                            'SFProDisplay',
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
                                               ],
                                             )
                                             // Spacer(),
