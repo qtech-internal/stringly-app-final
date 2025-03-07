@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
+import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final String audioPath;
@@ -42,28 +42,30 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       await _audioPlayer.openPlayer();
       await _audioPlayer
           .setSubscriptionDuration(const Duration(milliseconds: 100));
-
-      FFprobeKit.getMediaInformation(widget.audioPath).then((session) async {
-        final info = session.getMediaInformation();
-        String? durationString = info?.getDuration();
-
-        if (durationString != null) {
-          double? durationInSeconds = double.tryParse(durationString);
-          if (durationInSeconds != null && mounted) {
-            setState(() {
-              _totalTime = durationInSeconds;
-            });
-          }
-        }
-
+      await _getAudioLength();
         if (mounted) {
           setState(() {
             _isPlayerReady = true;
           });
         }
-      });
+
     } catch (e) {
       print('Error initializing audio player: $e');
+    }
+  }
+
+  Future<void> _getAudioLength() async {
+    try {
+      final player = AudioPlayer();
+      await player.setUrl(widget.audioPath);  // Load the audio file
+
+      setState(() {
+        _totalTime = player.duration?.inSeconds.toDouble() ?? 0.0;
+      });
+
+      await player.dispose();  // Clean up
+    } catch (e) {
+      print('Error getting audio duration: $e');
     }
   }
 
