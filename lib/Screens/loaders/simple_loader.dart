@@ -8,9 +8,9 @@ class SimpleLoaderClass {
       children: [
         const Spacer(),
         const Image(
-          image: AssetImage('assets/loading_animation.gif'),
-          height: 100,
-          width: 100,
+          image: AssetImage('assets/loader_s.gif'),
+          height: 70,
+          width: 70,
         ),
         const SizedBox(
           height: 10,

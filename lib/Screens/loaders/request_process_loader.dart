@@ -23,14 +23,16 @@ class RequestProcessLoader {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image(
-                        image: AssetImage('assets/loading_animation.gif'),
-                        height: 100,
-                        width: 100,
+                        image: AssetImage('assets/loader_s.gif'),
+                        height: 70,
+                        width: 70,
                       ),
                       SizedBox(height: 5),
                       Text(
                         'Processing',
-                        style: TextStyle(color: Color(0xff26288B), fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: Color(0xff26288B),
+                            fontWeight: FontWeight.w600),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -118,4 +120,3 @@ class GradualRevealClipper extends CustomClipper<Rect> {
     return true; // Reclip on every frame
   }
 }
-

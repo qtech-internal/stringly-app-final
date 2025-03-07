@@ -8,9 +8,9 @@ class MessageScreenLoader {
         children: [
           const Spacer(),
           const Image(
-            image: AssetImage('assets/loading_animation.gif'),
-            height: 100,
-            width: 100,
+            image: AssetImage('assets/loader_s.gif'),
+            height: 70,
+            width: 70,
           ),
           const SizedBox(
             height: 10,
@@ -18,7 +18,8 @@ class MessageScreenLoader {
           Text(
             text,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xff26288B), fontWeight: FontWeight.w600),
+            style: const TextStyle(
+                color: Color(0xff26288B), fontWeight: FontWeight.w600),
           ),
           const Spacer(),
         ],
