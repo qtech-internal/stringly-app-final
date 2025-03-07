@@ -216,7 +216,9 @@ class _AccountSettingBasicInfoEditState
 
             final height = separateHeight(user.height!);
             initialHeight_feet = height['mainPart'];
+            height_in_feet = height['mainPart'];
             initialHeight_inches = height['fractionalPart'];
+            height_in_inche = height['fractionalPart'];
           }
         });
       }
@@ -653,9 +655,9 @@ class _AccountSettingBasicInfoEditState
                                         '10',
                                         '11'
                                       ],
-                                      initialValue:
-                                          initialHeight_inches ?? null,
+                                      initialValue: initialHeight_inches,
                                       onChanged: (value) {
+                                        print(value);
                                         if (value != null) {
                                           setState(() {
                                             height_in_inche = value?.value;
@@ -722,6 +724,7 @@ class _AccountSettingBasicInfoEditState
                                   if (height_in_feet != null) {
                                     String height =
                                         '$height_in_feet.$height_in_inche';
+                                    print("Updated Height: $height");
                                     userInputParams.updateField(
                                         'height', height);
                                   }
