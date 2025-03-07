@@ -77,16 +77,13 @@ class Overlay25 extends StatelessWidget {
                   ),
                   child: Align(
                     alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Container(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          // color: Colors.red, // Background color for the close button
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.grey,
-                          size: 14,
+                    child: TextButton(
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                       onPressed: () {
@@ -112,7 +109,7 @@ class Overlay25 extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Text(
-                        'You have not submitted your Proof of Humanity. Please do so now.',
+                        'Optional verification to confirm you’re real and build trust.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14,
