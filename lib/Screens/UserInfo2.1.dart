@@ -46,6 +46,7 @@ class Overlay25 extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+      elevation: 0,
       backgroundColor:
           Colors.transparent, // Set to transparent for gradient border
       child: Container(

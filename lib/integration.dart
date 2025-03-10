@@ -138,8 +138,6 @@ final userProfileCreationInfo = IDL.Record({
   'daily_checkin_count' : IDL.Nat64,
   'profile_completed' : IDL.Bool,
   'status' : IDL.Bool,
-  'notifications' : IDL.Vec(notification),
-  'matched_profiles' : IDL.Vec(IDL.Text),
   'referrals' : IDL.Nat64,
   'successful_matches' : IDL.Nat64,
   'created_at' : IDL.Nat64,

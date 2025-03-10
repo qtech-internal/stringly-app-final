@@ -256,7 +256,7 @@ class _UserInfo2State extends State<UserInfo2> {
                         const SizedBox(height: 20),
                         GradientdropdownTextField(
                           hintText: 'Specify your preference',
-                          items: const ['Men', 'Women', 'Other'],
+                          items: const ['Men', 'Women', 'Non Binary'],
                           onChanged: (value) {
                             if (value != null) {
                               setState(() {

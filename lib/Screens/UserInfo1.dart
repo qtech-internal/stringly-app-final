@@ -85,9 +85,9 @@ class _Userinfo1State extends State<Userinfo1> {
           ),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
               children: [
                 ...options.map((option) {
                   return GestureDetector(
