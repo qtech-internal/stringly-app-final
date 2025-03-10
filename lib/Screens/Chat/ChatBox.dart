@@ -8,7 +8,9 @@ import 'package:stringly/GetxControllerAndBindings/controllers/chatBoxScreenCont
 import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenController/messageScreenController.dart';
 import 'package:stringly/Screens/Chat/audio_record_button.dart';
 import 'package:stringly/Screens/Chat/message_tile.dart';
+import 'package:stringly/Screens/NotificationScreen.dart';
 import 'package:stringly/Screens/loaders/message_screen_loader.dart';
+import 'package:stringly/StorageServices/get_storage_service.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
 
 class ChatBox extends StatefulWidget {
@@ -22,6 +24,7 @@ class ChatBox extends StatefulWidget {
 
 class _ChatBoxState extends State<ChatBox> {
   late ChatScreenController controller;
+  bool _intentions = false;
 
   final messageController = Get.find<MessageScreenController>();
 
@@ -36,6 +39,9 @@ class _ChatBoxState extends State<ChatBox> {
         controller.isUserScrolling.value = true;
       }
     });
+    setState(() {
+      _intentions = StorageService.read('showIntentions') ?? false;
+    });
   }
 
   Future<void> returnBackToPage() async {
@@ -49,6 +55,14 @@ class _ChatBoxState extends State<ChatBox> {
         arguments: {'initialIndex': 2},
       );
     }
+  }
+
+  void _toggleIntentions(bool value) {
+    setState(() {
+      _intentions = value; // Update local state
+      // Save to storage
+    });
+    StorageService.write('showIntentions', value);
   }
 
   @override
@@ -180,6 +194,45 @@ class _ChatBoxState extends State<ChatBox> {
                     ? MessageScreenLoader.simpleLoader(text: 'Wait, Loading...')
                     : Column(
                         children: [
+                          Container(
+                            height: 50,
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                  Color(0xFFD83694),
+                                  Color(0xFFD83694),
+                                  Color(0xFF0039C7)
+                                ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 22),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'Do you wish to reveal your intentions?',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  CustomToggleButton(
+                                    initialValue: _intentions,
+                                    onToggle: (value) {
+                                      _toggleIntentions(value);
+                                      // setState(() {
+                                      //   switchValue = value;
+                                      // });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           const SizedBox(
                             height: 2,
                           ),
