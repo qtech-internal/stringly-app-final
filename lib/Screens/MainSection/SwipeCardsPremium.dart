@@ -811,7 +811,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.08,
+                      width: MediaQuery.of(context).size.width * 0.1,
                     ),
                     const Spacer(),
                     Row(
@@ -937,14 +937,17 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
                                                   textAlign: TextAlign.center,
                                                 ),
                                                 const SizedBox(height: 8),
-                                                const Text(
-                                                  "No more profiles left for now. Tweak your filters or check back soon",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: 'SFProDisplay',
-                                                    fontSize: 16,
+                                                Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .056),
+                                                  child: const Text(
+                                                    "No more profiles left for now. Tweak your filters or check back soon",
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w400,
+                                                      fontFamily: 'SFProDisplay',
+                                                      fontSize: 16,
+                                                    ),
+                                                    textAlign: TextAlign.center,
                                                   ),
-                                                  textAlign: TextAlign.center,
                                                 ),
                                                 const SizedBox(height: 20),
                                                 SizedBox(
