@@ -40,12 +40,6 @@ class MessageScreenController extends GetxController {
     searchController.value = TextEditingController();
   }
 
-  @override
-  void onClose() {
-    searchController.value.dispose();
-    super.onClose();
-  }
-
   // ---------------------------- METHODS ------------------------------
 
   Future<void> initializeData() async {
