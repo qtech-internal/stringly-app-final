@@ -34,7 +34,7 @@ class _FilterPreferencesState extends State<FilterPreferences> {
   final List<String> _preferenceOptions = [
     'Male',
     'Female',
-    'Other',
+    'Non Binary',
     'I am open to dating everyone'
   ];
   List<String> states = [
@@ -166,7 +166,7 @@ class _FilterPreferencesState extends State<FilterPreferences> {
                               });
                             }
                           },
-                          label: const Text('Who would you prefer to date?'),
+                          label: const Text('Who would you prefer to connect?'),
                         ),
 
                         const SizedBox(height: 20),

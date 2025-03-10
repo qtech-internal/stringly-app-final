@@ -30,7 +30,7 @@ class _UserPreferenceScreenState extends State<UserPreferenceScreen> {
   final List<String> _preferenceOptions = [
     'Male',
     'Female',
-    'Other',
+    'Non Binary',
     'I am open to dating everyone'
   ];
   UserInputParams userInputParams = UserInputParams();
@@ -198,7 +198,7 @@ class _UserPreferenceScreenState extends State<UserPreferenceScreen> {
                     });
                   }
                 },
-                label: const Text('Who would you prefer to date?'),
+                label: const Text('Who would you prefer to connect?'),
               ),
 
               const SizedBox(height: 20),

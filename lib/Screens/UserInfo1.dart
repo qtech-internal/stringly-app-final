@@ -40,23 +40,33 @@ class _Userinfo1State extends State<Userinfo1> {
     List<String> options = [];
     if (selectedGender == 'Male') {
       options = [
-        'Cis Male',
-        'Trans Male',
-        'Demiboy',
-        'Genderfluid',
-        'Two-Spirit'
+        'Intersex man',
+        'Trans man',
+        'Transmasculine',
+        'Man and Nonbinary',
+        'Cis man',
       ];
     } else if (selectedGender == 'Female') {
       options = [
-        'Cis Female',
-        'Trans Female',
-        'Demigirl',
-        'Genderfluid',
-        'Two-Spirit'
+        'Intersex woman',
+        'Trans woman',
+        'Transfeminine',
+        'Woman and Nonbinary',
+        'Cis woman',
       ];
     } else {
       // If 'Other' is selected, you might want to handle it differently
-      options = ['Non-Binary', 'Genderqueer', 'Agender', 'Pangender'];
+      options = [
+        'Agender',
+        'Bigender',
+        'Genderfluid',
+        'Genderqueer',
+        'Gender nonconforming',
+        'Gender questioning',
+        'Gender variant',
+        'Intersex',
+        'Neutrois'
+      ];
     }
 
     showDialog(
@@ -459,7 +469,7 @@ class _Userinfo1State extends State<Userinfo1> {
                         const SizedBox(height: 20),
                         GradientdropdownTextField(
                           hintText: 'Specify your gender',
-                          items: const ['Male', 'Female', 'Other'],
+                          items: const ['Male', 'Female', 'Non Binary'],
                           onChanged: (value) {
                             if (value != null) {
                               setState(() {
