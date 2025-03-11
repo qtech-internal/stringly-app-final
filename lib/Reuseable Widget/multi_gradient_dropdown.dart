@@ -120,6 +120,7 @@ class _MultiSelectGradientDropdownState
                 child: DropDownTextField.multiSelection(
                   controller: _dropDownController,
                   clearOption: false,
+                  checkBoxProperty: CheckBoxProperty(activeColor: Colors.black),
                   textFieldDecoration: InputDecoration(
                     hintText: "What are you looking for?",
                     hintStyle:
