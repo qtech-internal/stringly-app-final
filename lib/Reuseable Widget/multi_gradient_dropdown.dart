@@ -21,9 +21,9 @@ class _MultiSelectGradientDropdownState
   final List<String> _selectedValues = [];
   final List<String> _options = [
     "A long-term relationship",
-    "Fun, casual dates",
+    "Fun & casual dates",
     "Marriage",
-    "Intimacy, without commitment",
+    "Intimacy & without commitment",
     "A life partner",
     "Ethical non-monogamy"
   ];
