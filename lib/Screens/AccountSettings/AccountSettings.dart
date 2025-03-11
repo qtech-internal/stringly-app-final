@@ -981,7 +981,7 @@ class _AccountSettingState extends State<AccountSetting> {
                                       const SizedBox(height: 20),
                                       // what are you looking exatly
                                       const Text(
-                                        'What you are looking for exactly?',
+                                        'What are you looking for?',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,

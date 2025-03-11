@@ -130,7 +130,10 @@ class _MultiSelectGradientDropdownState
                       backgroundColor: Colors.white,
                       fontSize: 14,
                     ),
-                    label: const Text("What are you looking for?"),
+                    label: _hasFocus || widget.initialValue != null || _dropDownController.dropDownValue != null ?  Container(
+                        margin: const EdgeInsets.only(bottom: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: const Text("What are you looking for?")) : const Text("What are you looking for?"),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
