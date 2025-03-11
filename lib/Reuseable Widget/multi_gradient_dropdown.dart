@@ -5,8 +5,10 @@ import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 class MultiSelectGradientDropdown extends StatefulWidget {
   final ValueChanged<List<String>>? onChanged;
+  final String? initialValue;
 
-  const MultiSelectGradientDropdown({super.key, this.onChanged});
+  const MultiSelectGradientDropdown(
+      {super.key, this.onChanged, this.initialValue});
 
   @override
   _MultiSelectGradientDropdownState createState() =>
@@ -26,10 +28,18 @@ class _MultiSelectGradientDropdownState
     "Ethical non-monogamy"
   ];
 
+  bool _hasFocus = false;
+
   @override
   void initState() {
     super.initState();
     _dropDownController = SingleValueDropDownController();
+
+    if (widget.initialValue != null && widget.initialValue!.isNotEmpty) {
+      _selectedValues
+          .addAll(widget.initialValue!.split(", ").map((e) => e.trim()));
+      _updateDropDownText();
+    }
   }
 
   void _onItemSelected(dynamic value) {
@@ -82,10 +92,16 @@ class _MultiSelectGradientDropdownState
           height: 56,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            gradient: const LinearGradient(
-              colors: [Color(0xFFD83694), Color(0xFF0039C7)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            gradient: _hasFocus
+                ? const LinearGradient(
+                    colors: [Color(0xFFD83694), Color(0xFF0039C7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : null,
+            border: Border.all(
+              color: _hasFocus ? Colors.transparent : const Color(0xffD6D6D6),
+              width: 2,
             ),
           ),
           padding: const EdgeInsets.all(1),
@@ -94,42 +110,48 @@ class _MultiSelectGradientDropdownState
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: DropDownTextField(
-                controller: _dropDownController,
-                clearOption: false,
-                textFieldDecoration: InputDecoration(
-                  hintText: "What are you looking for?",
-                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                  labelStyle: const TextStyle(
+            child: Focus(
+              onFocusChange: (hasFocus) {
+                setState(() {
+                  _hasFocus = hasFocus;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: DropDownTextField(
+                  controller: _dropDownController,
+                  clearOption: false,
+                  textFieldDecoration: InputDecoration(
+                    hintText: "What are you looking for?",
+                    hintStyle:
+                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    labelStyle: const TextStyle(
+                      color: Colors.black,
+                      backgroundColor: Colors.white,
+                      fontSize: 14,
+                    ),
+                    label: const Text("What are you looking for?"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    suffixIcon:
+                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                  ),
+                  dropDownList: _options
+                      .map((item) => DropDownValueModel(
+                            name: item,
+                            value: item,
+                          ))
+                      .toList(),
+                  onChanged: _onItemSelected,
+                  dropDownIconProperty: IconProperty(
+                    icon: Icons.keyboard_arrow_down,
+                    size: 28,
                     color: Colors.black,
-                    backgroundColor: Colors.white,
-                    fontSize: 14,
                   ),
-                  label: const Text("What are you looking for?"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon:
-                      const Icon(Icons.arrow_drop_down, color: Colors.black),
-                ),
-                dropDownList: _options
-                    .map((item) => DropDownValueModel(
-                          name: _selectedValues.contains(item)
-                              ? "$item  ✅"
-                              : item,
-                          value: item,
-                        ))
-                    .toList(),
-                onChanged: _onItemSelected,
-                dropDownIconProperty: IconProperty(
-                  icon: Icons.keyboard_arrow_down,
-                  size: 28,
-                  color: Colors.black,
                 ),
               ),
             ),

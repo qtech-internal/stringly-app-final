@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stringly/Reuseable%20Widget/multi_gradient_dropdown.dart';
 import 'package:stringly/Screens/AccountSettings/AccountSettings.dart';
 import 'package:stringly/Screens/loaders/request_process_loader.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/profile/profile_controller.dart';
@@ -323,22 +324,16 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                      'Add What you are looking for exactly?',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
+
+                    MultiSelectGradientDropdown(
+                      initialValue: what_you_looking_exactly.text,
+                      onChanged: (values) {
+                        setState(() {
+                          what_you_looking_exactly.text = values.join(", ");
+                        });
+                      },
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GradientTextField(
-                      controller: what_you_looking_exactly,
-                      height: 100,
-                      maxLines: null,
-                      hintText: 'Write, what you are looking for exactly',
-                    ),
+
                     const SizedBox(height: 100),
                     // Next Button
                     Center(
