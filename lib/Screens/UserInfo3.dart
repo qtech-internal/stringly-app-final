@@ -247,6 +247,7 @@ class _UserInfo3State extends State<UserInfo3> {
                   onChanged: (values) {
                     setState(() {
                       _lookingForItems = values;
+                      what_you_looking_exactly.text = values.join(", ");
                     });
                     print(_lookingForItems);
                   },
