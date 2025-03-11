@@ -7,6 +7,7 @@ import 'package:stringly/models/user_input_params.dart';
 
 import '../Reuseable Widget/GradientWidget.dart';
 import '../Reuseable Widget/gradienttextfield.dart';
+import '../Reuseable Widget/what_are_you_looking.dart';
 import '../googleMap/get_location.dart';
 import 'MapScreen.dart';
 import 'ProfilerSet/ProfileSet0.dart';
@@ -30,6 +31,7 @@ class _UserInfo3State extends State<UserInfo3> {
   List<String>? _lookingForItems;
   TextEditingController locationController = TextEditingController();
   TextEditingController what_you_looking_exactly = TextEditingController();
+  List<String> selectedValue = [];
   UserInputParams userInputParams = UserInputParams();
 
   // Dropdown values for each question
@@ -91,6 +93,12 @@ class _UserInfo3State extends State<UserInfo3> {
               name: userInputParams.smoking!, value: userInputParams.smoking),
         );
       }
+    });
+  }
+
+  void _removeSelectedItem(String value) {
+    setState(() {
+      selectedValue.remove(value);
     });
   }
 
@@ -243,14 +251,61 @@ class _UserInfo3State extends State<UserInfo3> {
 
                 const SizedBox(height: 35),
 
-                MultiSelectGradientDropdown(
-                  onChanged: (values) {
+                GestureDetector(
+                  onTap: () async {
+                    final GlobalKey dialog76Key = GlobalKey();
+                    final result = await  WhatAreYouLookingWidgets.showScrollablePopupFormProfession(context, dialog76Key, selectedValue);
                     setState(() {
-                      _lookingForItems = values;
-                      what_you_looking_exactly.text = values.join(", ");
+                      selectedValue = result;
                     });
-                    print(_lookingForItems);
                   },
+                  child: Container(
+                    height: 56,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                      border: Border.all(
+                          color: const Color(0xffD6D6D6), width: 2),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding:
+                          EdgeInsets.only(left: 9.0, right: 10),
+                          child: Text(
+                            'What are you looking for?',
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 14),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: Icon(Icons.keyboard_arrow_down, size: 27,
+                              color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                if (selectedValue.isNotEmpty) const SizedBox(height: 10),
+                if (selectedValue.isNotEmpty) Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: selectedValue.map((item) {
+                    return Chip(
+                      label: Text(item, style: const TextStyle(fontSize: 12)),
+                      backgroundColor: Colors.grey[300],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: const BorderSide(color: Colors.transparent),
+                      ),
+                      deleteIcon: const Icon(Icons.close, size: 16),
+                      onDeleted: () => _removeSelectedItem(item),
+                    );
+                  }).toList(),
                 ),
 
                 const SizedBox(height: 20),
@@ -343,7 +398,8 @@ class _UserInfo3State extends State<UserInfo3> {
                       userInputParams.updateField('smoking', smokePreference);
                     }
 
-                    if (what_you_looking_exactly.text.isNotEmpty) {
+                    if (selectedValue.isNotEmpty) {
+                      what_you_looking_exactly.text = selectedValue.join(", ");
                       userInputParams.updateField(
                           'lookingFor', what_you_looking_exactly.text);
                     }
@@ -447,9 +503,10 @@ class _UserInfo3State extends State<UserInfo3> {
                                   'smoking', smokePreference);
                             }
 
-                            if (what_you_looking_exactly.text.isNotEmpty) {
+                            if (selectedValue.isNotEmpty) {
+                              // what_you_looking_exactly.text = selectedValue.join(", ");
                               userInputParams.updateField(
-                                  'lookingFor', what_you_looking_exactly.text);
+                                  'lookingFor', selectedValue.join(", "));
                             }
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ProfileSet0()));

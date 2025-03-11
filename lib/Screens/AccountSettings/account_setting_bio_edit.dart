@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stringly/Reuseable%20Widget/multi_gradient_dropdown.dart';
+import 'package:stringly/Reuseable%20Widget/what_are_you_looking.dart';
 import 'package:stringly/Screens/AccountSettings/AccountSettings.dart';
 import 'package:stringly/Screens/loaders/request_process_loader.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/profile/profile_controller.dart';
@@ -35,6 +36,7 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
   TextEditingController yourMainProfession = TextEditingController();
   TextEditingController educationControllerBioEdit = TextEditingController();
   TextEditingController what_you_looking_exactly = TextEditingController();
+  List<String> selectedValue = [];
 
   List<String> selectedHobbies = [];
 
@@ -76,7 +78,8 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                 userInputParams.graduationYear.toString();
           }
           if (userInputParams.lookingFor != null) {
-            what_you_looking_exactly.text = userInputParams.lookingFor!;
+            // what_you_looking_exactly.text = userInputParams.lookingFor!;
+            selectedValue = userInputParams.lookingFor!.split(',').map((item) => item.trim()).toList();
           }
           _jobTitleOccupationController.text = userInputParams.jobTitle ?? '';
           _companyNameController.text = userInputParams.company ?? '';
@@ -88,6 +91,12 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
       debugPrint('Error ---------- $e');
       return {'Err': e};
     }
+  }
+
+  void _removeSelectedItem(String value) {
+    setState(() {
+      selectedValue.remove(value);
+    });
   }
 
   List<String> getYearList() {
@@ -325,14 +334,62 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                       height: 20,
                     ),
 
-                    MultiSelectGradientDropdown(
-                      initialValues: what_you_looking_exactly.text.split(', '),
-                      onChanged: (values) {
+                    GestureDetector(
+                      onTap: () async {
+                        final GlobalKey dialog76Key = GlobalKey();
+                        final result = await  WhatAreYouLookingWidgets.showScrollablePopupFormProfession(context, dialog76Key, selectedValue);
                         setState(() {
-                          what_you_looking_exactly.text = values.join(", ");
+                          selectedValue = result;
                         });
                       },
+                      child: Container(
+                        height: 56,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                          border: Border.all(
+                              color: const Color(0xffD6D6D6), width: 2),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding:
+                              EdgeInsets.only(left: 9.0, right: 10),
+                              child: Text(
+                                'What are you looking for?',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 14),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 16.0),
+                              child: Icon(Icons.keyboard_arrow_down, size: 27,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
+
+                    if (selectedValue.isNotEmpty) const SizedBox(height: 10),
+                    if (selectedValue.isNotEmpty) Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: selectedValue.map((item) {
+                          return Chip(
+                            label: Text(item, style: const TextStyle(fontSize: 12)),
+                            backgroundColor: Colors.grey[300],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              side: const BorderSide(color: Colors.transparent),
+                            ),
+                            deleteIcon: const Icon(Icons.close, size: 16),
+                            onDeleted: () => _removeSelectedItem(item),
+                          );
+                        }).toList(),
+                      ),
 
                     const SizedBox(height: 100),
                     // Next Button
@@ -350,6 +407,7 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                                     });
                                   } else {
                                     setState(() {
+                                      what_you_looking_exactly.text = selectedValue.join(", ");
                                       isProcessing = true;
                                       aboutError = null;
                                     });

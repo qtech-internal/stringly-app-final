@@ -93,10 +93,10 @@ class _MultiSelectGradientDropdownState
             borderRadius: BorderRadius.circular(10),
             gradient: _hasFocus
                 ? const LinearGradient(
-                    colors: [Color(0xFFD83694), Color(0xFF0039C7)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
+              colors: [Color(0xFFD83694), Color(0xFF0039C7)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
                 : null,
             border: Border.all(
               color: _hasFocus ? Colors.transparent : const Color(0xffD6D6D6),
@@ -124,7 +124,7 @@ class _MultiSelectGradientDropdownState
                   textFieldDecoration: InputDecoration(
                     hintText: "What are you looking for?",
                     hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    const TextStyle(color: Colors.grey, fontSize: 14),
                     labelStyle: const TextStyle(
                       color: Colors.black,
                       backgroundColor: Colors.white,
@@ -132,9 +132,9 @@ class _MultiSelectGradientDropdownState
                     ),
                     label: _hasFocus
                         ? Container(
-                            margin: const EdgeInsets.only(bottom: 6),
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: const Text("What are you looking for?"))
+                        margin: const EdgeInsets.only(bottom: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: const Text("What are you looking for?"))
                         : const Text("What are you looking for?"),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -143,13 +143,13 @@ class _MultiSelectGradientDropdownState
                     filled: true,
                     fillColor: Colors.white,
                     suffixIcon:
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                    const Icon(Icons.arrow_drop_down, color: Colors.black),
                   ),
                   dropDownList: _options
                       .map((item) => DropDownValueModel(
-                            name: item,
-                            value: item,
-                          ))
+                    name: item,
+                    value: item,
+                  ))
                       .toList(),
                   onChanged: (dynamic value) {
                     _onItemSelected(value);
