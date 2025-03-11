@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:dropdown_textfield/dropdown_textfield.dart'; // Import the dropdown_textfield package
+import 'package:stringly/Reuseable%20Widget/multi_gradient_dropdown.dart';
 import 'package:stringly/models/user_input_params.dart';
 
 import '../Reuseable Widget/GradientWidget.dart';
@@ -26,6 +27,7 @@ class _UserInfo3State extends State<UserInfo3> {
   String? familyPlans;
   String? drinkPreference;
   String? smokePreference;
+  List<String>? _lookingForItems;
   TextEditingController locationController = TextEditingController();
   TextEditingController what_you_looking_exactly = TextEditingController();
   UserInputParams userInputParams = UserInputParams();
@@ -241,9 +243,20 @@ class _UserInfo3State extends State<UserInfo3> {
 
                 const SizedBox(height: 35),
 
+                MultiSelectGradientDropdown(
+                  onChanged: (values) {
+                    setState(() {
+                      _lookingForItems = values;
+                    });
+                    print(_lookingForItems);
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
                 // Political Views question with DropDownTextField
                 GradientdropdownTextField(
-                  key: Key('select your political '),
+                  key: const Key('select your political '),
                   hintText: 'Select your political views',
                   initialValue: initialPoliticalViewValue ?? null,
                   items: politicalViewsItems,
@@ -377,25 +390,7 @@ class _UserInfo3State extends State<UserInfo3> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text('$address'),
                   ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Add What you are looking for exactly?',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                GradientTextField(
-                  controller: what_you_looking_exactly,
-                  height: 100,
-                  maxLines: null,
-                  hintText: 'Write, what you are looking for exactly',
-                ),
+
                 const SizedBox(height: 50), // Add space for buttons
 
                 // "Next" button
