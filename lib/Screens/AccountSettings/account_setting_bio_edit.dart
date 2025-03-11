@@ -326,7 +326,7 @@ class _AccountSettingBioEditState extends State<AccountSettingBioEdit> {
                     ),
 
                     MultiSelectGradientDropdown(
-                      // initialValue: what_you_looking_exactly.text,
+                      initialValues: what_you_looking_exactly.text.split(', '),
                       onChanged: (values) {
                         setState(() {
                           what_you_looking_exactly.text = values.join(", ");
