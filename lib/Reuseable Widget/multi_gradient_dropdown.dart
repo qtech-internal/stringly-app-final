@@ -1,24 +1,21 @@
-// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 class MultiSelectGradientDropdown extends StatefulWidget {
   final ValueChanged<List<String>>? onChanged;
-  final String? initialValue;
+  final List<String>? initialValues;
 
-  const MultiSelectGradientDropdown(
-      {super.key, this.onChanged, this.initialValue});
+  const MultiSelectGradientDropdown({super.key, this.onChanged, this.initialValues});
 
   @override
   _MultiSelectGradientDropdownState createState() =>
       _MultiSelectGradientDropdownState();
 }
 
-class _MultiSelectGradientDropdownState
-    extends State<MultiSelectGradientDropdown> {
-  late SingleValueDropDownController _dropDownController;
-  final List<String> _selectedValues = [];
+class _MultiSelectGradientDropdownState extends State<MultiSelectGradientDropdown> {
+  late MultiValueDropDownController _dropDownController;
+  List<String> _selectedValues = [];
   final List<String> _options = [
     "A long-term relationship",
     "Fun & casual dates",
@@ -33,51 +30,46 @@ class _MultiSelectGradientDropdownState
   @override
   void initState() {
     super.initState();
-    _dropDownController = SingleValueDropDownController();
 
-    if (widget.initialValue != null && widget.initialValue!.isNotEmpty) {
-      _selectedValues
-          .addAll(widget.initialValue!.split(", ").map((e) => e.trim()));
-      _updateDropDownText();
+    _dropDownController = MultiValueDropDownController();
+
+    if (widget.initialValues != null && widget.initialValues!.isNotEmpty) {
+      _selectedValues.addAll(widget.initialValues!);
+      _dropDownController.setDropDown(
+        _selectedValues.map((e) => DropDownValueModel(name: e, value: e)).toList(),
+      );
     }
   }
 
-  void _onItemSelected(dynamic value) {
-    if (value == null || value is! DropDownValueModel) return;
-    String selectedValue = value.value;
+  void _onItemSelected(List<DropDownValueModel> values) {
+    List<String> selectedList = values.map((e) => e.value.toString()).toList();
 
     setState(() {
-      if (_selectedValues.contains(selectedValue)) {
-        _selectedValues.remove(selectedValue);
-      } else {
-        if (_selectedValues.length < 3) {
-          _selectedValues.add(selectedValue);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("You can select up to 3 options."),
-              duration: Duration(seconds: 2),
-            ),
-          );
-        }
+      if (selectedList.length > 3) {
+        selectedList.removeLast(); // Prevent selecting more than 3 items
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("You can select up to 3 options."),
+            duration: Duration(seconds: 2),
+          ),
+        );
       }
-      _updateDropDownText();
+      _selectedValues = selectedList;
+      _dropDownController.setDropDown(
+        _selectedValues.map((e) => DropDownValueModel(name: e, value: e)).toList(),
+      );
     });
 
     widget.onChanged?.call(_selectedValues);
   }
 
-  void _updateDropDownText() {
-    _dropDownController.setDropDown(DropDownValueModel(
-      name: _selectedValues.join(", "),
-      value: _selectedValues.join(", "),
-    ));
-  }
 
   void _removeSelectedItem(String value) {
     setState(() {
       _selectedValues.remove(value);
-      _updateDropDownText();
+      _dropDownController.setDropDown(
+        _selectedValues.map((e) => DropDownValueModel(name: e, value: e)).toList(),
+      );
     });
 
     widget.onChanged?.call(_selectedValues);
@@ -94,10 +86,10 @@ class _MultiSelectGradientDropdownState
             borderRadius: BorderRadius.circular(10),
             gradient: _hasFocus
                 ? const LinearGradient(
-                    colors: [Color(0xFFD83694), Color(0xFF0039C7)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
+              colors: [Color(0xFFD83694), Color(0xFF0039C7)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
                 : null,
             border: Border.all(
               color: _hasFocus ? Colors.transparent : const Color(0xffD6D6D6),
@@ -118,38 +110,42 @@ class _MultiSelectGradientDropdownState
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DropDownTextField(
+                child: DropDownTextField.multiSelection(
                   controller: _dropDownController,
                   clearOption: false,
                   textFieldDecoration: InputDecoration(
                     hintText: "What are you looking for?",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     labelStyle: const TextStyle(
                       color: Colors.black,
                       backgroundColor: Colors.white,
                       fontSize: 14,
                     ),
-                    label: _hasFocus || widget.initialValue != null || _dropDownController.dropDownValue != null ?  Container(
+                    label: _hasFocus //|| widget.initialValues != null || _dropDownController.dropDownValueList!.isNotEmpty
+                        ? Container(
                         margin: const EdgeInsets.only(bottom: 6),
                         padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: const Text("What are you looking for?")) : const Text("What are you looking for?"),
+                        child: const Text("What are you looking for?"))
+                        : const Text("What are you looking for?"),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    suffixIcon:
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
+                    suffixIcon: const Icon(Icons.arrow_drop_down, color: Colors.black),
                   ),
                   dropDownList: _options
                       .map((item) => DropDownValueModel(
-                            name: item,
-                            value: item,
-                          ))
+                    name: item,
+                    value: item,
+                  ))
                       .toList(),
-                  onChanged: _onItemSelected,
+                  onChanged: (dynamic value) {
+                    if (value is List<DropDownValueModel>) {
+                      _onItemSelected(value);
+                    }
+                  },
                   dropDownIconProperty: IconProperty(
                     icon: Icons.keyboard_arrow_down,
                     size: 28,
