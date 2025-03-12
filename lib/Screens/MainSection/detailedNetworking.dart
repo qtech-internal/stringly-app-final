@@ -45,7 +45,7 @@ class _DetailednetworkingState extends State<Detailednetworking> {
 
   Future<void> _handleMenuItemClickn(BuildContext context, String value) async {
     if (value == 'report') {
-      showReportBottomSheet(context);
+      showReportBottomSheet(context, userId: widget.userId);
     } else if (value == 'hide') {
       await _hideUserFunctionNetworking();
     }

@@ -558,7 +558,7 @@ class ChatScreenController extends GetxController {
 
   Future<void> handleMenuItemClickc(BuildContext context, String value) async {
     if (value == 'report') {
-      showReportBottomSheet(context);
+      showReportBottomSheet(context, userId: ids.value['receiver_id']!);
     } else if (value == 'hide') {
       debugPrint('functon is called-------------------');
       await hideUserFunction(context);

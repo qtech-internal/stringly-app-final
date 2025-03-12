@@ -42,7 +42,7 @@ class _DetailedDatingState extends State<DetailedDating> {
     if (value == 'report') {
       // Navigator.of(context)
       //     .push(MaterialPageRoute(builder: (_) => ReportIssueScreen()));
-      showReportBottomSheet(context);
+      showReportBottomSheet(context, userId:  widget.userId);
     } else if (value == 'hide') {
       await _hideUserFunctionDating();
     }
