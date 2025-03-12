@@ -14,7 +14,7 @@ class PremiumVariation2 extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.delete<WhoLikeYouPageController>();
     final WhoLikeYouPageController controller =
-    Get.put(WhoLikeYouPageController());
+        Get.put(WhoLikeYouPageController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -126,12 +126,12 @@ class PremiumVariation2 extends StatelessWidget {
                               return PremiumVariation2Matched(
                                 usersInfo: {
                                   'loggedUserImage':
-                                  controller.loggedUserInfo['image'],
+                                      controller.loggedUserInfo['image'],
                                   'currentUserProfileImage': data['image'],
                                   'profileUserName': data['name'],
                                   'ProfileUserId': data['userId'],
                                   'loggedUserId':
-                                  controller.loggedUserInfo['userId'],
+                                      controller.loggedUserInfo['userId'],
                                 },
                               );
                             },
@@ -148,12 +148,12 @@ class PremiumVariation2 extends StatelessWidget {
                               return PremiumVariation2Matched(
                                 usersInfo: {
                                   'loggedUserImage':
-                                  controller.loggedUserInfo['image'],
+                                      controller.loggedUserInfo['image'],
                                   'currentUserProfileImage': data['image'],
                                   'profileUserName': data['name'],
                                   'ProfileUserId': data['userId'],
                                   'loggedUserId':
-                                  controller.loggedUserInfo['userId'],
+                                      controller.loggedUserInfo['userId'],
                                 },
                               );
                             },

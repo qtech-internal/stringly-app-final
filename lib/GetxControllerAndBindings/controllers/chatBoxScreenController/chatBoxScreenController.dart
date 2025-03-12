@@ -13,6 +13,7 @@ import 'package:stringly/Screens/Chat/AudioUpload.dart';
 import 'package:stringly/Screens/FAQ%20Qusetions/Repor.dart';
 import 'package:stringly/Screens/MainSection/detaileddating.dart';
 import 'package:stringly/Screens/mainScreenNav.dart';
+import 'package:stringly/Screens/report/new-report-style-in-bottom-sheet.dart';
 import 'package:stringly/StorageServices/google_bucket_storage.dart';
 import 'package:stringly/intraction.dart';
 import 'package:stringly/models/user_profile_params_model.dart';
@@ -557,8 +558,7 @@ class ChatScreenController extends GetxController {
 
   Future<void> handleMenuItemClickc(BuildContext context, String value) async {
     if (value == 'report') {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ReportIssueScreen()));
+      showReportBottomSheet(context);
     } else if (value == 'hide') {
       debugPrint('functon is called-------------------');
       await hideUserFunction(context);
@@ -576,7 +576,10 @@ class ChatScreenController extends GetxController {
       debugPrint('------------${singleUserInfo.toMap()}');
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => DetailedDating(data: singleUserInfo, userId: ids.value['receiver_id']!,),
+          builder: (context) => DetailedDating(
+            data: singleUserInfo,
+            userId: ids.value['receiver_id']!,
+          ),
         ),
       );
       profileLoading.value = false;

@@ -10,6 +10,7 @@ import 'package:stringly/Screens/Chat/audio_record_button.dart';
 import 'package:stringly/Screens/Chat/message_tile.dart';
 import 'package:stringly/Screens/NotificationScreen.dart';
 import 'package:stringly/Screens/loaders/message_screen_loader.dart';
+import 'package:stringly/Screens/report/new-report-style-in-bottom-sheet.dart';
 import 'package:stringly/StorageServices/get_storage_service.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
 
@@ -164,9 +165,9 @@ class _ChatBoxState extends State<ChatBox> {
                       ),
                       offset: const Offset(0, 40),
                       itemBuilder: (BuildContext context) => [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'report',
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.center,
                             child: Text(
                               'Report',

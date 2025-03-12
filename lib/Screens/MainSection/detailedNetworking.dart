@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stringly/Screens/FAQ%20Qusetions/Repor.dart';
+import 'package:stringly/Screens/report/new-report-style-in-bottom-sheet.dart';
 import 'package:stringly/models/user_profile_params_model.dart';
 
 import '../../Reuseable Widget/ImageOverlay.dart';
@@ -11,7 +12,8 @@ import '../loaders/request_process_loader.dart';
 import '../mainScreenNav.dart';
 
 class Detailednetworking extends StatefulWidget {
-  Detailednetworking({Key? key, required this.data, required this.userId}) : super(key: key);
+  Detailednetworking({Key? key, required this.data, required this.userId})
+      : super(key: key);
   userProfileParamsModel data;
   String userId;
 
@@ -43,8 +45,7 @@ class _DetailednetworkingState extends State<Detailednetworking> {
 
   Future<void> _handleMenuItemClickn(BuildContext context, String value) async {
     if (value == 'report') {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ReportIssueScreen()));
+      showReportBottomSheet(context);
     } else if (value == 'hide') {
       await _hideUserFunctionNetworking();
     }
