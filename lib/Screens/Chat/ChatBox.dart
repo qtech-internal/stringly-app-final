@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'package:stringly/GetxControllerAndBindings/controllers/chatBoxScreenController/chatBoxScreenController.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/messageScreenController/messageScreenController.dart';
+import 'package:stringly/GetxControllerAndBindings/controllers/report/report_controller.dart';
 import 'package:stringly/Screens/Chat/audio_record_button.dart';
 import 'package:stringly/Screens/Chat/message_tile.dart';
 import 'package:stringly/Screens/NotificationScreen.dart';
@@ -25,6 +26,7 @@ class ChatBox extends StatefulWidget {
 
 class _ChatBoxState extends State<ChatBox> {
   late ChatScreenController controller;
+  late ReportController reportController;
   bool _intentions = false;
 
   final messageController = Get.find<MessageScreenController>();
@@ -33,6 +35,7 @@ class _ChatBoxState extends State<ChatBox> {
   void initState() {
     super.initState();
     controller = Get.put(ChatScreenController());
+    reportController = Get.put(ReportController());
     controller.initialize(widget.userInfo['chat_id'], widget.userInfo);
     controller.scrollController.value.addListener(() {
       if (controller.scrollController.value.position.userScrollDirection !=
@@ -88,7 +91,8 @@ class _ChatBoxState extends State<ChatBox> {
         return false;
       },
       child: Obx(() {
-        return controller.profileLoading.value
+        return controller.profileLoading.value ||
+                reportController.isReporting.value
             ? Scaffold(
                 body:
                     MessageScreenLoader.simpleLoader(text: 'Wait, Loading...'),

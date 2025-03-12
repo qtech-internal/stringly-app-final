@@ -1,46 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stringly/Reuseable%20Widget/snackbar/custom_snack_bar.dart';
-import 'package:stringly/intraction.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:stringly/GetxControllerAndBindings/controllers/report/report_controller.dart';
+
 import '../../Reuseable Widget/GradientWidget.dart';
 
 void showReportBottomSheet(BuildContext context, {required String userId}) {
-
-  final String url = "https://script.google.com/macros/s/AKfycbzxvuCxKRt-wqJAdog9gGmRg5R27SHp3KbtS36g7tpiRy80EqGEpI209vXX6jjN-igY/exec";
-  final String loggedUserId = Intraction.loggedUserId!;
-  Future<void> submitReportFunction({required String selectedOption, required String message}) async {
-    // try {
-      var response = await http.post(
-        Uri.parse(url),
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: jsonEncode({
-          "fromUser": loggedUserId,
-          "toUser": userId,
-          "optionSelected": selectedOption,
-          "message": message,
-        }),
-      );
-
-      CustomSnackbar.successSnackbar(message: 'Report submitted successfully...');
-    //   var responseData = jsonDecode(response.body);
-    //
-    //   if (response.statusCode == 200  || responseData['status'] == 'success') {
-    //     CustomSnackbar.successSnackbar(message: 'Report submitted successfully...');
-    //   } else {
-    //     CustomSnackbar.errorSnackbar(
-    //       message: 'Something went wrong, Please try again..\nError: ${responseData['message']}',
-    //     );
-    //   }
-    // } catch (e) {
-    //   CustomSnackbar.errorSnackbar(message: 'Something went wrong, Please try again..');
-    // }
-  }
-
+  final controller = Get.find<ReportController>();
   String selectedReason = "";
   TextEditingController detailsController = TextEditingController();
 
@@ -149,10 +114,10 @@ void showReportBottomSheet(BuildContext context, {required String userId}) {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () async {
-                          // (selectedReason + "\n" + detailsController.text);
-                          if(selectedReason.isNotEmpty) {
-                            await submitReportFunction(
+                          if (selectedReason.isNotEmpty) {
+                            await controller.submitReportFunction(
                                 selectedOption: selectedReason,
+                                userId: userId,
                                 message: detailsController.text);
                           }
                           Navigator.pop(context);

@@ -4,7 +4,6 @@ import 'package:stringly/Screens/AccountSettings/privacy_policy_page.dart';
 import 'FAQ.dart';
 import 'Repor.dart';
 
-
 class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -51,25 +50,28 @@ class HelpScreen extends StatelessWidget {
                         imagePath: 'assets/FAQ.png', // Custom image for FAQ
                         text: 'FAQ',
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => FAQScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FAQScreen()));
                         },
                       ),
                       const SizedBox(height: 15),
                       TextButtonRow(
-                        imagePath: 'assets/policy.png', // Custom image for Terms and Privacy Policy
+                        imagePath:
+                            'assets/policy.png', // Custom image for Terms and Privacy Policy
                         text: 'Terms and Privacy Policy',
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PrivacyPolicyPage()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PrivacyPolicyPage()));
                         },
                       ),
                       const SizedBox(height: 15),
-                      TextButtonRow(
-                        imagePath: 'assets/report.png', // Custom image for Report an Issue
-                        text: 'Report an Issue',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ReportIssueScreen()));
-                        },
-                      ),
+                      // TextButtonRow(
+                      //   imagePath: 'assets/report.png', // Custom image for Report an Issue
+                      //   text: 'Report an Issue',
+                      //   onTap: () {
+                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => ReportIssueScreen()));
+                      //   },
+                      // ),
                     ],
                   ),
                 ],
@@ -100,7 +102,7 @@ class TextButtonRow extends StatelessWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        textStyle: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14),
+        textStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
         foregroundColor: Colors.black,
         padding: const EdgeInsets.symmetric(vertical: 12), // Text color
       ),
@@ -109,7 +111,8 @@ class TextButtonRow extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(width: 20,
+              Container(
+                width: 20,
                 child: Image.asset(
                   fit: BoxFit.contain,
                   imagePath,
@@ -120,11 +123,13 @@ class TextButtonRow extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 text,
-                style: const TextStyle(fontSize: 16), // Adjust text size as needed
+                style:
+                    const TextStyle(fontSize: 16), // Adjust text size as needed
               ),
             ],
           ),
-          const Icon(Icons.arrow_forward_ios, color: Colors.black, size: 15), // Right arrow
+          const Icon(Icons.arrow_forward_ios,
+              color: Colors.black, size: 15), // Right arrow
         ],
       ),
     );
