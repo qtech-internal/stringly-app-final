@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-void showGenderBottomSheet(BuildContext context) {
-  String selectedGender = "Man";
+void showGenderBottomSheet(BuildContext context, String initialGender,
+    Function(String) onGenderSelected) {
+  String selectedGender = initialGender;
   String? selectedIdentity;
   bool isShownOnProfile = true;
   bool isDropdownVisible = false;
@@ -38,11 +39,7 @@ void showGenderBottomSheet(BuildContext context) {
                 "Bigender",
                 "Genderfluid",
                 "Genderqueer",
-                "Gender nonconforming",
-                "Gender questioning",
-                "Gender variant",
-                "Intersex",
-                "Neutrois"
+                "Gender nonconforming"
               ];
             }
           }
@@ -62,24 +59,15 @@ void showGenderBottomSheet(BuildContext context) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Update your gender",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                      const Text("Update your gender",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                       IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                      )
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(context)),
                     ],
                   ),
                   const Divider(),
-                  const Text("Pick which best describes you",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text("Then add more about your gender if you’d like",
-                      style: TextStyle(color: Colors.grey[600])),
-                  const SizedBox(height: 10),
                   _buildGenderTile(
                     "Woman",
                     selectedGender,
@@ -134,7 +122,6 @@ void showGenderBottomSheet(BuildContext context) {
                       isDropdownVisible = false;
                     }),
                   ),
-                  const SizedBox(height: 10),
                   const Divider(),
                   SwitchListTile(
                     title: const Text("Shown on your profile",
@@ -146,9 +133,8 @@ void showGenderBottomSheet(BuildContext context) {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.yellow[700],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+                              color: Colors.yellow[700],
+                              borderRadius: BorderRadius.circular(4)),
                           child: Text(selectedIdentity ?? selectedGender,
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
@@ -161,7 +147,10 @@ void showGenderBottomSheet(BuildContext context) {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      onGenderSelected(selectedIdentity ?? selectedGender);
+                      Navigator.pop(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       minimumSize: const Size(double.infinity, 50),
@@ -171,7 +160,7 @@ void showGenderBottomSheet(BuildContext context) {
                     child: const Text("Save and close",
                         style: TextStyle(color: Colors.white)),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20)
                 ],
               ),
             ),
