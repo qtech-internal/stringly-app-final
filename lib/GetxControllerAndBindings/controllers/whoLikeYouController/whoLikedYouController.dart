@@ -62,7 +62,7 @@ class WhoLikeYouPageController extends GetxController {
       for (var dataWithContext in allData) {
         final context = dataWithContext['context'];
         final data = dataWithContext['profile'];
-        final interest = data['matched_profiles'];
+        final interest = 1;
         final userId = data['user_id'];
         final singleUserInfo = UpdateUserAccountModel.fromMap(data['params']);
         userProfileParamsModel detailNetworking =
@@ -85,7 +85,7 @@ class WhoLikeYouPageController extends GetxController {
           'userId': userId,
           'loggedUserId': loggedUserId,
           'context': context,
-          'interest': interest.length,
+          'interest': interest,
         });
       }
       numberOfLikes.value = allRightSwipeData.length;
