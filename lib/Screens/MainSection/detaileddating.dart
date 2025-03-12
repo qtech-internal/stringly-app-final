@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stringly/Screens/FAQ%20Qusetions/Repor.dart';
 import 'package:stringly/Screens/loaders/request_process_loader.dart';
+import 'package:stringly/Screens/report/new-report-style-in-bottom-sheet.dart';
 
 import '../../Reuseable Widget/ImageOverlay.dart';
 import '../../intraction.dart';
@@ -39,8 +40,9 @@ class _DetailedDatingState extends State<DetailedDating> {
 
   Future<void> _handleMenuItemClick(BuildContext context, String value) async {
     if (value == 'report') {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => ReportIssueScreen()));
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (_) => ReportIssueScreen()));
+      showReportBottomSheet(context);
     } else if (value == 'hide') {
       await _hideUserFunctionDating();
     }
