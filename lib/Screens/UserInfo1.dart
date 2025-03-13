@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
+import 'package:stringly/Screens/updateGender/update_gender.dart';
 import '../Reuseable Widget/GradientWidget.dart';
 import '../Reuseable Widget/gradienttextfield.dart';
 import '../models/user_input_params.dart';
@@ -467,89 +468,72 @@ class _Userinfo1State extends State<Userinfo1> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        GradientdropdownTextField(
-                          hintText: 'Specify your gender',
-                          items: const ['Male', 'Female', 'Non Binary'],
-                          onChanged: (value) {
-                            if (value != null) {
+                        GestureDetector(
+                          onTap: () async {
+                            void handleGenderSelected(
+                                Map<String, dynamic> userSelectedData) {
                               setState(() {
-                                selectedGender = value?.value;
-                                debugPrint('$selectedGender');
-                                genderError = null;
+                                selectedGender = userSelectedData['gender'];
+                                additionalGenderInfo =
+                                    userSelectedData['identity'];
+                                //   profileVisibility = userSelectedData['profile'];
                               });
                             }
-                          },
-                          label: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child: RichText(
-                              text: const TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Gender ',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        backgroundColor: Colors.white,
-                                        fontSize: 14),
-                                  ),
-                                  TextSpan(
-                                    text: '*',
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 14), // Red asterisk style
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (genderError != null)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              '$genderError',
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 12),
-                            ),
-                          ),
-                        const SizedBox(height: 20),
-                        GestureDetector(
-                          onTap: () {
-                            // Call the dialog with the currently selected gender
-                            _showGenderInfoDialog(selectedGender);
+
+                            showGenderBottomSheet(
+                                context, selectedGender, handleGenderSelected);
                           },
                           child: Container(
                             height: 56,
                             width: double.infinity,
-                            padding: const EdgeInsets.only(
-                              left: 10,
-                              right: 15,
-                            ),
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.white,
                               border: Border.all(
                                   color: const Color(0xffD6D6D6), width: 2),
-                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  additionalGenderInfo ??
-                                      'Add more about gender', // Show selected gender or label
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: additionalGenderInfo != null
-                                        ? Colors
-                                            .black // Selected gender in black
-                                        : Colors.black, // Placeholder in grey
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 9.0, right: 10),
+                                  child: selectedGender == null
+                                      ? RichText(
+                                          text: const TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'Gender',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' *',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Text(
+                                          additionalGenderInfo != null
+                                              ? ' $selectedGender - $additionalGenderInfo'
+                                              : '  $selectedGender',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                 ),
-                                const Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: Colors.black,
-                                  size:
-                                      27, // Adjust icon size to match the design
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 16.0),
+                                  child: Icon(Icons.keyboard_arrow_down,
+                                      size: 27, color: Colors.black),
                                 ),
                               ],
                             ),

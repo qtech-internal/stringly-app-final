@@ -596,80 +596,80 @@ class _AccountSettingBasicInfoEditState
                             //     ),
                             //   ),
                             // ),
-                            const SizedBox(height: 20),
-                            GestureDetector(
-                              onTap: () async {
-                                void handleGenderSelected(
-                                    Map<String, dynamic> userSelectedData) {
-                                  setState(() {
-                                    selectedGender = userSelectedData['gender'];
-                                    additionalGenderInfo =
-                                        userSelectedData['identity'];
-                                    profileVisibility =
-                                        userSelectedData['profile'];
-                                  });
-                                }
+                            //  const SizedBox(height: 20),
+                            // GestureDetector(
+                            //   onTap: () async {
+                            //     void handleGenderSelected(
+                            //         Map<String, dynamic> userSelectedData) {
+                            //       setState(() {
+                            //         selectedGender = userSelectedData['gender'];
+                            //         additionalGenderInfo =
+                            //             userSelectedData['identity'];
+                            //         profileVisibility =
+                            //             userSelectedData['profile'];
+                            //       });
+                            //     }
 
-                                showGenderBottomSheet(context, selectedGender,
-                                    handleGenderSelected);
-                              },
-                              child: Container(
-                                height: 56,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: const Color(0xffD6D6D6), width: 2),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 9.0, right: 10),
-                                      child: selectedGender == null
-                                          ? RichText(
-                                              text: const TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: 'Gender',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: ' *',
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : Text(
-                                              additionalGenderInfo != null
-                                                  ? ' $selectedGender - $additionalGenderInfo'
-                                                  : '  $selectedGender',
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 16.0),
-                                      child: Icon(Icons.keyboard_arrow_down,
-                                          size: 27, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            //     showGenderBottomSheet(context, selectedGender,
+                            //         handleGenderSelected);
+                            //   },
+                            //   child: Container(
+                            //     height: 56,
+                            //     width: double.infinity,
+                            //     decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(8),
+                            //       color: Colors.white,
+                            //       border: Border.all(
+                            //           color: const Color(0xffD6D6D6), width: 2),
+                            //     ),
+                            //     child: Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(
+                            //               left: 9.0, right: 10),
+                            //           child: selectedGender == null
+                            //               ? RichText(
+                            //                   text: const TextSpan(
+                            //                     children: [
+                            //                       TextSpan(
+                            //                         text: 'Gender',
+                            //                         style: TextStyle(
+                            //                           color: Colors.black,
+                            //                           fontSize: 14,
+                            //                         ),
+                            //                       ),
+                            //                       TextSpan(
+                            //                         text: ' *',
+                            //                         style: TextStyle(
+                            //                           color: Colors.red,
+                            //                           fontSize: 14,
+                            //                         ),
+                            //                       ),
+                            //                     ],
+                            //                   ),
+                            //                 )
+                            //               : Text(
+                            //                   additionalGenderInfo != null
+                            //                       ? ' $selectedGender - $additionalGenderInfo'
+                            //                       : '  $selectedGender',
+                            //                   style: const TextStyle(
+                            //                     color: Colors.black,
+                            //                     fontSize: 14,
+                            //                     fontWeight: FontWeight.bold,
+                            //                   ),
+                            //                 ),
+                            //         ),
+                            //         const Padding(
+                            //           padding: EdgeInsets.only(right: 16.0),
+                            //           child: Icon(Icons.keyboard_arrow_down,
+                            //               size: 27, color: Colors.black),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
 
                             const SizedBox(height: 20),
                             Row(
