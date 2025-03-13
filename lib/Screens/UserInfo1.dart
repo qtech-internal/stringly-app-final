@@ -25,6 +25,7 @@ class _Userinfo1State extends State<Userinfo1> {
   String? height_in_feet;
   String? height_in_inche;
   String? additionalGenderInfo;
+  bool? profileVisibility;
   final _formKey = GlobalKey<FormState>();
   final SingleValueDropDownController _genderController =
       SingleValueDropDownController();
@@ -476,7 +477,7 @@ class _Userinfo1State extends State<Userinfo1> {
                                 selectedGender = userSelectedData['gender'];
                                 additionalGenderInfo =
                                     userSelectedData['identity'];
-                                //   profileVisibility = userSelectedData['profile'];
+                                  profileVisibility = userSelectedData['profile'];
                               });
                             }
 
@@ -697,6 +698,19 @@ class _Userinfo1State extends State<Userinfo1> {
                                               'subgender',
                                               additionalGenderInfo);
                                         }
+                                        if(profileVisibility != null) {
+                                          if(profileVisibility == true) {
+                                            if(additionalGenderInfo != null) {
+                                              userInputParams.updateField(
+                                                  'genderPronouns',
+                                                  additionalGenderInfo);
+                                            } else {
+                                              userInputParams.updateField(
+                                                  'genderPronouns', selectedGender);
+                                            }
+                                          }
+                                        }
+
                                       }
                                       print("gender ${additionalGenderInfo}");
 
