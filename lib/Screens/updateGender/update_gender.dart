@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
- showGenderBottomSheet(BuildContext context, String initialGender,
+showGenderBottomSheet(BuildContext context, String? initialGender,
     Function(Map<String, dynamic>) onGenderSelected) {
-  String selectedGender = initialGender;
+  String? selectedGender =
+      initialGender; // Keep it null if initialGender is null
   String? selectedIdentity;
   bool isShownOnProfile = true;
   bool isDropdownVisible = false;
@@ -33,7 +34,7 @@ import 'package:flutter/material.dart';
                 "Woman and Nonbinary",
                 "Cis woman"
               ];
-            } else {
+            } else if (selectedGender == "Nonbinary") {
               return [
                 "Agender",
                 "Bigender",
@@ -42,6 +43,7 @@ import 'package:flutter/material.dart';
                 "Gender nonconforming"
               ];
             }
+            return [];
           }
 
           return SingleChildScrollView(
@@ -68,11 +70,16 @@ import 'package:flutter/material.dart';
                     ],
                   ),
                   const Divider(),
-                  const Text('Pick which bes describes you', style: TextStyle(fontWeight: FontWeight.bold),),
-                  const SizedBox(height: 5,),
-                  const Text('Then add more about your gender if you\'d like', style: TextStyle(color: Colors.grey),),
-                  const SizedBox(height: 2,),
-                  const Text('Learn what this means', style: TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                  const Text('Pick which best describes you',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 5),
+                  const Text('Then add more about your gender if you\'d like',
+                      style: TextStyle(color: Colors.grey)),
+                  const SizedBox(height: 2),
+                  const Text('Learn what this means',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline)),
                   _buildGenderTile(
                     "Female",
                     selectedGender,
@@ -140,7 +147,8 @@ import 'package:flutter/material.dart';
                           decoration: BoxDecoration(
                               color: Colors.yellow[700],
                               borderRadius: BorderRadius.circular(4)),
-                          child: Text(selectedIdentity ?? selectedGender,
+                          child: Text(
+                              selectedIdentity ?? selectedGender ?? "Not Set",
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
                         )
@@ -153,7 +161,11 @@ import 'package:flutter/material.dart';
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      onGenderSelected({'gender': selectedGender, 'identity': selectedIdentity, 'profile': isShownOnProfile});
+                      onGenderSelected({
+                        'gender': selectedGender,
+                        'identity': selectedIdentity,
+                        'profile': isShownOnProfile
+                      });
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
@@ -178,7 +190,7 @@ import 'package:flutter/material.dart';
 
 Widget _buildGenderTile(
   String title,
-  String selectedGender,
+  String? selectedGender,
   String? selectedIdentity,
   bool isDropdownVisible,
   VoidCallback onTap,
