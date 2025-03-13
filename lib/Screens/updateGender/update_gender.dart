@@ -61,7 +61,7 @@ showGenderBottomSheet(BuildContext context, String? initialGender,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Update your gender",
+                      const Text("Add your gender",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18)),
                       IconButton(

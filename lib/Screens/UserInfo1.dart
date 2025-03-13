@@ -503,16 +503,19 @@ class _Userinfo1State extends State<Userinfo1> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      selectedGender == null
-                                          ? ''
-                                          : additionalGenderInfo != null
-                                              ? '$selectedGender - $additionalGenderInfo'
-                                              : '$selectedGender',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                                    Padding(
+                                      padding: const EdgeInsets.only( bottom: 4.0),
+                                      child: Text(
+                                        selectedGender == null
+                                            ? ''
+                                            : additionalGenderInfo != null
+                                                ? '$selectedGender - $additionalGenderInfo'
+                                                : '$selectedGender',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                     const Icon(Icons.keyboard_arrow_down,
@@ -534,14 +537,14 @@ class _Userinfo1State extends State<Userinfo1> {
                                   color: Colors
                                       .white, // Background to prevent cutoff
                                   child: RichText(
-                                    text: const TextSpan(
+                                    text: TextSpan(
                                       children: [
                                         TextSpan(
                                           text: 'Gender',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize:
-                                                12, // Smaller when floating
+                                               selectedGender != null? 12 : 14, // Smaller when floating
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -549,7 +552,7 @@ class _Userinfo1State extends State<Userinfo1> {
                                           text: ' *',
                                           style: TextStyle(
                                             color: Colors.red,
-                                            fontSize: 12,
+                                            fontSize: selectedGender != null ? 12 : 14,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
@@ -561,6 +564,15 @@ class _Userinfo1State extends State<Userinfo1> {
                             ],
                           ),
                         ),
+                        if (genderError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              '$genderError',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 12),
+                            ),
+                          ),
                         const SizedBox(
                           height: 20,
                         ),

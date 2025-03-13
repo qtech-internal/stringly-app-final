@@ -596,7 +596,7 @@ class _AccountSettingBasicInfoEditState
                             //     ),
                             //   ),
                             // ),
-                            const SizedBox(height: 20),
+                            // const SizedBox(height: 20),
                             // GestureDetector(
                             //   onTap: () async {
                             //     void handleGenderSelected(Map<String, dynamic> userSelectedData) {
