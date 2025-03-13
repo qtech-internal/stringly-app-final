@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:get/get.dart';
 import 'package:stringly/GetxControllerAndBindings/controllers/profile/profile_controller.dart';
+import 'package:stringly/Screens/updateGender/update_gender.dart';
 import 'package:stringly/intraction.dart';
 import '../../GetxControllerAndBindings/controllers/account/account_settings_controller.dart';
 import '../../Reuseable Widget/GradientWidget.dart';
@@ -29,6 +30,7 @@ class _AccountSettingBasicInfoEditState
   TextEditingController last_name = TextEditingController();
   DateTime? selectedDate;
   String? selectedGender;
+  bool? profileVisibility;
   String? height_in_feet;
   String? height_in_inche;
   String? initialHeight_feet;
@@ -594,7 +596,90 @@ class _AccountSettingBasicInfoEditState
                             //     ),
                             //   ),
                             // ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: () async {
+                                void handleGenderSelected(Map<String, dynamic> userSelectedData) {
+                                  setState(() {
+                                    selectedGender = userSelectedData['gender'];
+                                    additionalGenderInfo =userSelectedData['identity'];
+                                    profileVisibility = userSelectedData['profile'];
+                                  });
+                                }
+                                showGenderBottomSheet(context, 'Male', handleGenderSelected);
+                              },
+                              child: Container(
+                                height: 56,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: const Color(0xffD6D6D6), width: 2),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(left: 9.0, right: 10),
+                                      child: RichText(
+                                        text: const TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: 'Gender',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  backgroundColor: Colors.white,
+                                                  fontSize: 14),
+                                            ),
+                                            TextSpan(
+                                              text: ' *',
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 14), // Red asterisk style
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 16.0),
+                                      child: Icon(Icons.keyboard_arrow_down, size: 27,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          if(selectedGender != null)  Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  child: Text('$selectedGender', style: TextStyle(color: Colors.white),),
+                                ),
+                                if(additionalGenderInfo != null) Row(
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    SizedBox(width: 10,),
+                                    Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Colors.black
+                                      ),
+                                      child: Text('$additionalGenderInfo', style: TextStyle(color: Colors.white),),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20),
                             Row(
                               children: [
                                 Expanded(

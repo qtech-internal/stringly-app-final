@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-void showGenderBottomSheet(BuildContext context, String initialGender,
-    Function(String) onGenderSelected) {
+ showGenderBottomSheet(BuildContext context, String initialGender,
+    Function(Map<String, dynamic>) onGenderSelected) {
   String selectedGender = initialGender;
   String? selectedIdentity;
   bool isShownOnProfile = true;
@@ -17,7 +17,7 @@ void showGenderBottomSheet(BuildContext context, String initialGender,
       return StatefulBuilder(
         builder: (context, setState) {
           List<String> getGenderOptions() {
-            if (selectedGender == "Man") {
+            if (selectedGender == "Male") {
               return [
                 "Intersex man",
                 "Trans man",
@@ -25,7 +25,7 @@ void showGenderBottomSheet(BuildContext context, String initialGender,
                 "Man and Nonbinary",
                 "Cis man"
               ];
-            } else if (selectedGender == "Woman") {
+            } else if (selectedGender == "Female") {
               return [
                 "Intersex woman",
                 "Trans woman",
@@ -68,13 +68,18 @@ void showGenderBottomSheet(BuildContext context, String initialGender,
                     ],
                   ),
                   const Divider(),
+                  const Text('Pick which bes describes you', style: TextStyle(fontWeight: FontWeight.bold),),
+                  const SizedBox(height: 5,),
+                  const Text('Then add more about your gender if you\'d like', style: TextStyle(color: Colors.grey),),
+                  const SizedBox(height: 2,),
+                  const Text('Learn what this means', style: TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
                   _buildGenderTile(
-                    "Woman",
+                    "Female",
                     selectedGender,
                     selectedIdentity,
                     isDropdownVisible,
                     () => setState(() {
-                      selectedGender = "Woman";
+                      selectedGender = "Female";
                       selectedIdentity = null;
                     }),
                     () => setState(() {
@@ -87,12 +92,12 @@ void showGenderBottomSheet(BuildContext context, String initialGender,
                     }),
                   ),
                   _buildGenderTile(
-                    "Man",
+                    "Male",
                     selectedGender,
                     selectedIdentity,
                     isDropdownVisible,
                     () => setState(() {
-                      selectedGender = "Man";
+                      selectedGender = "Male";
                       selectedIdentity = null;
                     }),
                     () => setState(() {
@@ -148,7 +153,7 @@ void showGenderBottomSheet(BuildContext context, String initialGender,
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      onGenderSelected(selectedIdentity ?? selectedGender);
+                      onGenderSelected({'gender': selectedGender, 'identity': selectedIdentity, 'profile': isShownOnProfile});
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
