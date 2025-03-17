@@ -16,6 +16,7 @@ import 'package:stringly/intraction.dart';
 import './notifications/NotificationService.dart';
 import 'Reuseable Widget/Routes/app_routes.dart';
 import 'Screens/UserInfo1.dart';
+import 'StorageServices/delete_all_cache_on_update.dart';
 import 'integration.dart';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ void main() async {
 
   await GetStorage.init();
   await NotificationService.initialize();
+  await clearCacheOnUpdate();
   await Firebase.initializeApp(
     options: FirebaseOptions(
       apiKey: dotenv.env['FIREBASE_API_KEY']!,
