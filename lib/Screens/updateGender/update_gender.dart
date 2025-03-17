@@ -23,7 +23,7 @@ showGenderBottomSheet(BuildContext context, String? initialGender,
                 "Intersex man",
                 "Trans man",
                 "Transmasculine",
-                "Man and Nonbinary",
+                "Man and Non Binary",
                 "Cis man"
               ];
             } else if (selectedGender == "Female") {
@@ -31,10 +31,10 @@ showGenderBottomSheet(BuildContext context, String? initialGender,
                 "Intersex woman",
                 "Trans woman",
                 "Transfeminine",
-                "Woman and Nonbinary",
+                "Woman and Non Binary",
                 "Cis woman"
               ];
-            } else if (selectedGender == "Nonbinary") {
+            } else if (selectedGender == "Non Binary") {
               return [
                 "Agender",
                 "Bigender",
@@ -117,12 +117,12 @@ showGenderBottomSheet(BuildContext context, String? initialGender,
                     }),
                   ),
                   _buildGenderTile(
-                    "Nonbinary",
+                    "Non Binary",
                     selectedGender,
                     selectedIdentity,
                     isDropdownVisible,
                     () => setState(() {
-                      selectedGender = "Nonbinary";
+                      selectedGender = "Non Binary";
                       selectedIdentity = null;
                     }),
                     () => setState(() {
