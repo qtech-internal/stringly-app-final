@@ -353,91 +353,113 @@ class _WelcomepageState extends State<Welcomepage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.4),
-              ScaleTransition(
-                scale: _scaleAnimation,
-                child: Image.asset(
-                  'assets/newImage/COLOURED LOGO.png',
-                  width: 174,
-                  height: 46.76,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.39),
+            ScaleTransition(
+              scale: _scaleAnimation,
+              child: Image.asset(
+                'assets/newImage/COLOURED LOGO.png',
+                width: 174,
+                height: 46.76,
+              ),
+            ),
+            const SizedBox(height: 5),
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: const Text(
+                'String your vibe.',
+                style: TextStyle(
+                  fontFamily: 'SFProDisplay',
+                  fontSize: 14,
+                  color: Color(0xFF000000),
                 ),
               ),
-              const SizedBox(height: 5),
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: const Text(
-                  'String your vibe.',
-                  style: TextStyle(
-                    fontFamily: 'SFProDisplay',
-                    fontSize: 14,
-                    color: Color(0xFF000000),
-                  ),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 13, right: 13),
-                  child: SizedBox(
-                    width: 276,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        StorageService.write('FirstTimeOpeningThisApp', 'No');
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+            FadeTransition(
+              opacity: _fadeAnimation,
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(left: 13, right: 13),
+                child: SizedBox(
+                  width: 276,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      StorageService.write('FirstTimeOpeningThisApp', 'No');
 
-                        if (!isLoggedIn) {
-                          await AuthLogIn.authenticate(
-                              isLocal,
-                              middlePageCanisterId,
-                              "exampleCallback",
-                              "example");
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 19, vertical: 15),
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                      if (!isLoggedIn) {
+                        await AuthLogIn.authenticate(
+                            isLocal,
+                            middlePageCanisterId,
+                            "exampleCallback",
+                            "example");
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 19, vertical: 15),
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Sign Up with Internet Identity',
+                          style: TextStyle(
+                              fontFamily: 'SFProDisplay',
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500),
                         ),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Sign Up with Internet Identity',
-                            style: TextStyle(
-                                fontFamily: 'SFProDisplay',
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15,),
-              InkWell(
-                   onTap: () async {
-                     final Uri _url = Uri.parse("https://stringly.net/privacy");
-                     if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
-                       throw Exception('Could not launch $_url');
-                     }
-                   },
-                  child: const Text('Privacy Policy', style: TextStyle(color: Colors.blue, letterSpacing: 1.3, decoration: TextDecoration.underline, decorationColor: Colors.blue,),)),
-              const SizedBox(height: 20,)
-            ],
-          ),
+            ),
+            const Spacer(),
+            const SizedBox(height: 10,),
+            Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                const Text('By signing up, you agree to our '),
+                InkWell(
+                  onTap: () async {
+                    final Uri _url = Uri.parse("https://stringly.net/privacy");
+                    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                      throw Exception('Could not launch $_url');
+                    }
+                  },
+                  child: const Text(
+                    'Terms.',
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                ),
+                const Text(' See how we use your data in our '),
+                InkWell(
+                  onTap: () async {
+                    final Uri _url = Uri.parse("https://stringly.net/privacy");
+                    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                      throw Exception('Could not launch $_url');
+                    }
+                  },
+                  child: const Text(
+                    'Privacy Policy.',
+                    style: TextStyle(decoration: TextDecoration.underline),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8,)
+          ],
         ),
       ),
     );
