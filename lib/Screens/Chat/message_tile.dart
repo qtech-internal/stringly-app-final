@@ -11,13 +11,13 @@ class MessageTile extends StatelessWidget {
   final VoidCallback imageScrollController;
 
   const MessageTile({
-    Key? key,
+    super.key,
     required this.message,
     required this.isSender,
     required this.isLastMessage,
     required this.scrollToBottom,
     required this.imageScrollController,
-  }) : super(key: key);
+  });
 
   bool get isShortTextMessage {
     return message['photo'] == null &&
@@ -27,7 +27,6 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Message content: $message');
     // Check if the message contains audio
     if (message['audio'] != null) {
       return AudioPlayerWidget(
