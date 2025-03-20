@@ -95,49 +95,53 @@ class ChatScreenController extends GetxController {
       debugPrint('Message received----: $data');
       Map<String, dynamic> messageData = data['data'];
 
-      Map<String, dynamic> newMessage = {
-        'sender': messageData['to_user_id'] == ids.value['receiver_id']
-            ? ids.value['sender_id']
-            : ids.value['receiver_id'],
-        'local': false,
-        'senderName': userInfo['name'],
-        'rawTime': messageData['createdAt'],
-        'photo': messageData['photo'],
-        'video': messageData['video'],
-        'audio': messageData['audio'],
-        'text': messageData['message'], // Keep it dynamic
-        'timestamp': convertCreateTimeAtFetchMessage(messageData['createdAt']),
-      };
+      if(messageData['from_user_id'] == ids.value['receiver_id']) {
+        Map<String, dynamic> newMessage = {
+          'sender': messageData['to_user_id'] == ids.value['receiver_id']
+              ? ids.value['sender_id']
+              : ids.value['receiver_id'],
+          'local': false,
+          'senderName': userInfo['name'],
+          'rawTime': messageData['createdAt'],
+          'photo': messageData['photo'],
+          'video': messageData['video'],
+          'audio': messageData['audio'],
+          'text': messageData['message'], // Keep it dynamic
+          'timestamp': convertCreateTimeAtFetchMessage(
+              messageData['createdAt']),
+        };
 
-      messages.value.add(newMessage);
-      messages.refresh();
+        messages.value.add(newMessage);
+        messages.refresh();
 
-      //  print('Message Received ------------------------------');
+        //  print('Message Received ------------------------------');
 
-      bool todayKeyExists = sortedMessages.value.any(
-        (message) => message['type'] == 'date' && message['date'] == 'Today',
-      );
+        bool todayKeyExists = sortedMessages.value.any(
+              (message) =>
+          message['type'] == 'date' && message['date'] == 'Today',
+        );
 
-      if (todayKeyExists) {
-        int todayLength = sortedMessages.value
-            .map((today) => today['date'] == 'Today')
-            .length;
+        if (todayKeyExists) {
+          int todayLength = sortedMessages.value
+              .map((today) => today['date'] == 'Today')
+              .length;
 
-        sortedMessages.value.insert(todayLength, newMessage);
-      } else {
-        sortedMessages.value.add({'type': 'date', 'date': 'Today'});
-        sortedMessages.value.add(newMessage);
+          sortedMessages.value.insert(todayLength, newMessage);
+        } else {
+          sortedMessages.value.add({'type': 'date', 'date': 'Today'});
+          sortedMessages.value.add(newMessage);
+        }
+
+        sortedMessages.refresh();
+        isUserScrolling.value = false;
+        scrollToBottom();
+        InitializeSocket.socket.emit(
+            'updateMessageStatus',
+            json.encode({
+              'user_id': ids.value['sender_id'],
+              'to_user_id': ids.value['receiver_id'],
+            }));
       }
-
-      sortedMessages.refresh();
-      isUserScrolling.value = false;
-      scrollToBottom();
-      InitializeSocket.socket.emit(
-          'updateMessageStatus',
-          json.encode({
-            'user_id': ids.value['sender_id'],
-            'to_user_id': ids.value['receiver_id'],
-          }));
     });
   }
 
