@@ -24,6 +24,7 @@ import 'package:agent_dart/agent_dart.dart';
 import 'Screens/mainScreenNav.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -358,7 +359,7 @@ class _WelcomepageState extends State<Welcomepage>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.43),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.4),
               ScaleTransition(
                 scale: _scaleAnimation,
                 child: Image.asset(
@@ -384,7 +385,7 @@ class _WelcomepageState extends State<Welcomepage>
                 opacity: _fadeAnimation,
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(bottom: 200, left: 13, right: 13),
+                      const EdgeInsets.only(left: 13, right: 13),
                   child: SizedBox(
                     width: 276,
                     height: 50,
@@ -425,6 +426,16 @@ class _WelcomepageState extends State<Welcomepage>
                   ),
                 ),
               ),
+              const SizedBox(height: 15,),
+              InkWell(
+                   onTap: () async {
+                     final Uri _url = Uri.parse("https://stringly.net/privacy");
+                     if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                       throw Exception('Could not launch $_url');
+                     }
+                   },
+                  child: const Text('Privacy Policy', style: TextStyle(color: Colors.blue, letterSpacing: 1.3, decoration: TextDecoration.underline, decorationColor: Colors.blue,),)),
+              const SizedBox(height: 20,)
             ],
           ),
         ),
