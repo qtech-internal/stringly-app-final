@@ -15,6 +15,8 @@ import 'package:stringly/Screens/report/new-report-style-in-bottom-sheet.dart';
 import 'package:stringly/StorageServices/get_storage_service.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
 
+import '../../notifications/local-notification.dart';
+
 class ChatBox extends StatefulWidget {
   ChatBox({super.key, required this.userInfo, this.isFromMessages = true});
 
@@ -36,7 +38,9 @@ class _ChatBoxState extends State<ChatBox> {
     super.initState();
     controller = Get.put(ChatScreenController());
     reportController = Get.put(ReportController());
-    controller.initialize(widget.userInfo['chat_id'], widget.userInfo);
+    controller.initialize(widget.userInfo['chat_id'], widget.userInfo).then((_) {
+      LocalNotificationSetup.userWithChatBoxOpened = controller.ids.value['receiver_id'];
+    });
     controller.scrollController.value.addListener(() {
       if (controller.scrollController.value.position.userScrollDirection !=
           ScrollDirection.idle) {
@@ -75,6 +79,7 @@ class _ChatBoxState extends State<ChatBox> {
     InitializeSocket.socket.off('receiveMessage');
     InitializeSocket.socket.off('historyResponse');
     InitializeSocket.socket.off('messageResponse');
+    LocalNotificationSetup.userWithChatBoxOpened = null;
     //  controller.scrollController.value.dispose();
     controller.audioRecorder.closeRecorder();
 

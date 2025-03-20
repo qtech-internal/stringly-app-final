@@ -1,6 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 
-import '../../notifications/matched_queue.dart';
+import '../../notifications/local-notification.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +25,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
     with SingleTickerProviderStateMixin {
   final List<Map<String, dynamic>> images = [];
   late Future<dynamic> _allUserData;
-  final MatchedQueue matchedQueue = MatchedQueue();
+  final LocalNotificationSetup matchedQueue = LocalNotificationSetup();
   final GlobalKey dialog1Key = GlobalKey();
   final GlobalKey dialog2Key = GlobalKey();
   List<String> skillsItem = [
@@ -494,7 +494,7 @@ class _SwipingScreenPremiumState extends State<SwipingScreenPremium>
   }
 
   Future<void> initializeMatchedQueue() async {
-    await MatchedQueue.getMatchedQueue();
+    await LocalNotificationSetup.getMatchedQueue();
 
     matchedQueue.getNewMessagesFromUser();
   }

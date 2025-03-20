@@ -1,13 +1,15 @@
 import 'dart:convert';
 
+import 'package:stringly/constants/globals.dart';
 import 'package:stringly/intraction.dart';
 import 'package:stringly/models/user_profile_params_model.dart';
 import 'package:stringly/webSocketRegisterLogin/initialize_socket.dart';
 import 'NotificationService.dart';
 import 'package:get_storage/get_storage.dart';
 
-class MatchedQueue {
+class LocalNotificationSetup {
   static final List<Map<String, dynamic>> matchQueueData = [];
+  static String? userWithChatBoxOpened;
 
   final storage = GetStorage();
 
@@ -75,9 +77,14 @@ class MatchedQueue {
       List<dynamic> unreadMessages = data['unreadMessages'];
 
       for (var message in unreadMessages) {
-        var userData = getUserDataById(message['from_user_id']);
 
-        print("User Data $userData");
+        if(userWithChatBoxOpened == message['from_user_id']) {
+          continue;
+        }
+
+        var userData = await getUserDataById(message['from_user_id']);
+
+        print("User Data $userData  $userWithChatBoxOpened");
         print("Message $message");
         String senderName = userData?['name'] ?? '';
 
@@ -132,18 +139,5 @@ class MatchedQueue {
       }
     });
   }
-
-  Map<String, dynamic> _findUnReadMessageFromWebSocket(
-      List<dynamic> messages, String? userId) {
-    if (userId == null || userId.isEmpty) {
-      return {};
-    }
-
-    final matchedMessage = messages.firstWhere(
-      (message) => message['from_user_id'] == userId,
-      orElse: () => {},
-    );
-
-    return matchedMessage.isNotEmpty ? matchedMessage : {};
-  }
+  
 }
