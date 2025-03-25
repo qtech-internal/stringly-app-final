@@ -28,6 +28,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await clearCacheOnUpdate();
   await dotenv.load();
   await FlutterLocalNotificationsPlugin()
       .resolvePlatformSpecificImplementation<
@@ -36,7 +37,6 @@ void main() async {
 
   await GetStorage.init();
   await NotificationService.initialize();
-  await clearCacheOnUpdate();
   await Firebase.initializeApp(
     options: FirebaseOptions(
       apiKey: dotenv.env['FIREBASE_API_KEY']!,
@@ -433,7 +433,7 @@ class _WelcomepageState extends State<Welcomepage>
                 const Text('By signing up, you agree to our '),
                 InkWell(
                   onTap: () async {
-                    final Uri _url = Uri.parse("https://stringly.net/privacy");
+                    final Uri _url = Uri.parse("https://stringly.net/guidelines/termsofuse");
                     if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
                       throw Exception('Could not launch $_url');
                     }

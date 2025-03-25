@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-const String currentAppVersion = "1.0.0+18"; // Manually update this in each release
+const String currentAppVersion = "1.0.0+19"; // Manually update this in each release
 
 Future<void> clearCacheOnUpdate() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
