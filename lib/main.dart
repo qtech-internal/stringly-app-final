@@ -62,10 +62,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'SFProDisplay', // Set default font family here
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white, // Set global AppBar color
         ),
-        popupMenuTheme: PopupMenuThemeData(
+        popupMenuTheme: const PopupMenuThemeData(
           color: Colors.white, // Set popup menu background color
           textStyle:
               TextStyle(color: Colors.black), // Set popup menu text color
@@ -80,7 +80,12 @@ class MyApp extends StatelessWidget {
         page: () {
           // Redirect to splash screen or initial route
           Future.microtask(() => Get.offAllNamed(AppPages.initial));
-          return Container(); // Placeholder widget, never shown
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(), // Show loading instead of blank screen
+            ),
+          ); // Placeholder widget, never shown
         },
       ),// Register your routes with GetX
     );
