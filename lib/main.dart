@@ -74,7 +74,15 @@ class MyApp extends StatelessWidget {
       navigatorKey: GlobalConstant.navigatorKey,
       initialRoute:
           AppPages.initial, // Set the initial route for GetX navigation
-      getPages: AppPages.routes, // Register your routes with GetX
+      getPages: AppPages.routes,
+      unknownRoute: GetPage(
+        name: '/not-found',
+        page: () {
+          // Redirect to splash screen or initial route
+          Future.microtask(() => Get.offAllNamed(AppPages.initial));
+          return Container(); // Placeholder widget, never shown
+        },
+      ),// Register your routes with GetX
     );
   }
 }
@@ -434,7 +442,7 @@ class _WelcomepageState extends State<Welcomepage>
                 InkWell(
                   onTap: () async {
                     final Uri _url = Uri.parse("https://stringly.net/guidelines/termsofuse");
-                    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                    if (!await launchUrl(_url, mode: LaunchMode.inAppWebView)) {
                       throw Exception('Could not launch $_url');
                     }
                   },
@@ -447,7 +455,7 @@ class _WelcomepageState extends State<Welcomepage>
                 InkWell(
                   onTap: () async {
                     final Uri _url = Uri.parse("https://stringly.net/privacy");
-                    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+                    if (!await launchUrl(_url, mode: LaunchMode.inAppWebView)) {
                       throw Exception('Could not launch $_url');
                     }
                   },
