@@ -26,7 +26,6 @@ dependencies:
   image: ^4.3.0
   path_provider: ^2.1.5
   google_place: ^0.4.7
-
   cupertino_icons: ^1.0.8
   dropdown_textfield: ^1.2.0
   image_picker: ^1.1.2
@@ -54,36 +53,30 @@ dependencies:
   just_audio: ^0.9.46
   url_launcher: ^6.3.1
 
+flutter_native_splash:
+  color: "#ffffff"  # Background color
+  android: true
+  ios: true
+
 dependency_overrides:
   http: ^0.13.1
   uni_links: ^0.5.0
   js: ^0.7.1
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_native_splash: ^2.3.10  # Added this to generate splash screen
 
-
-# The following section is specific to Flutter packages.
 flutter:
-
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
     - assets/hobbies/
     - assets/socialMedia/
     - assets/svg/
     - assets/newNavBarIcon/
-    - assets/hobbies/
     - assets/newImage/
     - .env
-
