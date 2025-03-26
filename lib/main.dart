@@ -83,11 +83,12 @@ class MyApp extends StatelessWidget {
           return const Scaffold(
             backgroundColor: Colors.white,
             body: Center(
-              child: CircularProgressIndicator(), // Show loading instead of blank screen
+              child:
+                  CircularProgressIndicator(), // Show loading instead of blank screen
             ),
           ); // Placeholder widget, never shown
         },
-      ),// Register your routes with GetX
+      ), // Register your routes with GetX
     );
   }
 }
@@ -396,8 +397,7 @@ class _WelcomepageState extends State<Welcomepage>
             FadeTransition(
               opacity: _fadeAnimation,
               child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 13, right: 13),
+                padding: const EdgeInsets.only(left: 13, right: 13),
                 child: SizedBox(
                   width: 276,
                   height: 50,
@@ -406,11 +406,8 @@ class _WelcomepageState extends State<Welcomepage>
                       StorageService.write('FirstTimeOpeningThisApp', 'No');
 
                       if (!isLoggedIn) {
-                        await AuthLogIn.authenticate(
-                            isLocal,
-                            middlePageCanisterId,
-                            "exampleCallback",
-                            "example");
+                        await AuthLogIn.authenticate(isLocal,
+                            middlePageCanisterId, "exampleCallback", "example");
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -439,15 +436,19 @@ class _WelcomepageState extends State<Welcomepage>
               ),
             ),
             const Spacer(),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Wrap(
               alignment: WrapAlignment.center,
               children: [
                 const Text('By signing up, you agree to our '),
                 InkWell(
                   onTap: () async {
-                    final Uri _url = Uri.parse("https://stringly.net/guidelines/termsofuse");
-                    if (!await launchUrl(_url, mode: LaunchMode.inAppWebView)) {
+                    final Uri _url =
+                        Uri.parse("https://stringly.net/guidelines/termsofuse");
+                    if (!await launchUrl(_url,
+                        mode: LaunchMode.externalApplication)) {
                       throw Exception('Could not launch $_url');
                     }
                   },
@@ -460,7 +461,8 @@ class _WelcomepageState extends State<Welcomepage>
                 InkWell(
                   onTap: () async {
                     final Uri _url = Uri.parse("https://stringly.net/privacy");
-                    if (!await launchUrl(_url, mode: LaunchMode.inAppWebView)) {
+                    if (!await launchUrl(_url,
+                        mode: LaunchMode.externalApplication)) {
                       throw Exception('Could not launch $_url');
                     }
                   },
@@ -471,7 +473,9 @@ class _WelcomepageState extends State<Welcomepage>
                 ),
               ],
             ),
-            const SizedBox(height: 8,)
+            const SizedBox(
+              height: 8,
+            )
           ],
         ),
       ),
