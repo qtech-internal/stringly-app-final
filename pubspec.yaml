@@ -3,7 +3,7 @@ description: "stringly"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+18
+version: 1.0.0+19
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
@@ -53,11 +53,6 @@ dependencies:
   just_audio: ^0.9.46
   url_launcher: ^6.3.1
 
-flutter_native_splash:
-  color: "#ffffff"  # Background color
-  android: true
-  ios: true
-
 dependency_overrides:
   http: ^0.13.1
   uni_links: ^0.5.0
@@ -67,7 +62,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
-  flutter_native_splash: ^2.3.10  # Added this to generate splash screen
 
 flutter:
   uses-material-design: true
