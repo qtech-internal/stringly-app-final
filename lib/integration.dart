@@ -321,4 +321,3 @@ abstract class FieldsMethod {
     FieldsMethod.delete_an_account: IDL.Func([IDL.Text], [result_1], []),
   });
 }
-
